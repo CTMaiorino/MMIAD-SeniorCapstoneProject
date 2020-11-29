@@ -1,23 +1,56 @@
-import logo from './logo.svg';
 import './App.css';
+import Dropdowns from './components/selectionDropdowns'
+import SearchCriteria from './components/searchCriteria'
+import SearchCriteriaTools from './components/tools'
+import Header from './components/header'
+import Button from "react-bootstrap/Button";
+import 'bootstrap/dist/css/bootstrap.css';
+
+const referenceData = {
+  label: 'Reference',
+  criteria: ['Species', 'Common Name', 'Rank', 'Genome Version', 'Ensemble Version']
+}
+
+const geneData = {
+  label: 'Gene',
+  criteria: ['Name', 'NCBI Gene ID', 'Ensemble Gene ID', 'Sequence', 'Coordinates', 'Length', 'Strand', 'Ensemble Transcript ID']
+}
+
+const intronData = {
+  label: 'Intron',
+  criteria: ['Length', 'Coordinates', 'Sequence', 'Type', 'Subtype', 'Score', 'Branch Point Sequence', 'Acceptor Splice Site', 'Donor Splice Site']
+}
+
+const externalData = {
+  label: 'External',
+  criteria: ['NCBI Gene Link', 'Ensemble Gene Link', 'Transcript Ensemble Link', 'UCSC Link - Gene', 'UCSC Link - Intron']
+}
+
+const species = [
+  "Apis mellifera", "Arabidopsis thaliana", "80s taurus", "Caenorhabditis elegans", "Canis familiaris", "Ciona intestinalis", "Danio rerio", "Drosophila melanogaster", "Fugu rubripes", "Gallus_gallus", "Homo_sapiens", "Macaca mulatta", "Monodelphis_domestica",
+  "Mus musculus", "Pan_troglodytes", "Rattus_norvegicus", "Saccharomyces_cerevisiae", "Tetraodon_nigroviridis", "Xenopus_tropicalis"];
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Header />
+      <div class='container'>
+        <div class='row'>
+          <div class='col-lg-6 my-5'>
+            <Dropdowns species={species} />
+            <SearchCriteria />
+          </div>
+          <div class='col-lg-6 my-5'>
+            <SearchCriteriaTools title={referenceData.label} criteria={referenceData.criteria} />
+            <SearchCriteriaTools title={geneData.label} criteria={geneData.criteria} />
+            <SearchCriteriaTools title={intronData.label} criteria={intronData.criteria} />
+            <SearchCriteriaTools title={externalData.label} criteria={externalData.criteria} />
+            <Button class="m-auto p-auto">Search</Button>
+          </div>
+          <div />
+        </div>
+      </div>
     </div>
   );
 }
