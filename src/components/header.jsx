@@ -9,7 +9,7 @@ class Header extends Component {
     render() {
         return (
             <Navbar bg="light" className="border-bottom" expand="lg">
-                <h1>Major & Minor Intron Annotation Database</h1>
+                <h1 className="ml-auto">Major & Minor Intron Annotation Database</h1>
                 <Button className="ml-auto" variant="outline-primary">About</Button>
             </Navbar>
         )

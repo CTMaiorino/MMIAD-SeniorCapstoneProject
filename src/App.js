@@ -35,18 +35,18 @@ function App() {
   return (
     <div>
       <Header />
-      <div class='container'>
-        <div class='row'>
-          <div class='col-lg-6 my-5'>
+      <div className='container-fluid '>
+        <div className='row'>
+          <div className='col-lg-4 p-auto my-5 '>
             <Dropdowns species={species} />
             <SearchCriteria />
           </div>
-          <div class='col-lg-6 my-5'>
+          <div className='col-lg-8 p-auto my-5'>
             <SearchCriteriaTools title={referenceData.label} criteria={referenceData.criteria} />
             <SearchCriteriaTools title={geneData.label} criteria={geneData.criteria} />
             <SearchCriteriaTools title={intronData.label} criteria={intronData.criteria} />
             <SearchCriteriaTools title={externalData.label} criteria={externalData.criteria} />
-            <Button class="m-auto p-auto">Search</Button>
+            <Button className="float-right" size="lg">Search</Button>
           </div>
           <div />
         </div>
