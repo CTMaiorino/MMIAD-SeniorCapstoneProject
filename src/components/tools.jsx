@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Form from 'react-bootstrap/Form'
+import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Image from 'react-bootstrap/Image';
 class SearchCriteriaTools extends Component {
@@ -34,9 +34,6 @@ class SearchCriteriaTools extends Component {
             </div >
 
         )
-
-
-    };
-
+    }''
 }
 export default SearchCriteriaTools;
