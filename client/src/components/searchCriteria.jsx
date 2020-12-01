@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import Dropdown from "react-bootstrap/Dropdown";
 import Image from "react-bootstrap/Image";
+
 class SearchCriteria extends Component {
   constructor(props) {
     super(props);
     console.log(props);
+    this.myRef = React.createRef();
   }
 
   state = {
@@ -20,24 +21,33 @@ class SearchCriteria extends Component {
 
   setVisibility = (e) => {
     this.setState({
-      radio: this.state.radio,
+      strand: this.state.strand,
       isVisible: !this.state.isVisible,
     });
   };
+
+
+  onClick = (num) => () => {
+    this.setState({
+      strand: num
+    });
+
+  }
+
   render() {
     return (
       <div className={this.state.isVisible === true ? "border" : ""}>
         <div className="border border-dark d-flex p-3">
-          <Button className="m-2 p-2" onClick={this.setVisibility}>
+          <Button variant="light" className="m-2 p-1" onClick={this.setVisibility}>
             <Image
               src="icon.png"
               width="30px"
               alt={this.state.isVisible === true ? "Hide" : "Show"}
             />
           </Button>
-          <h1 className="m-2">Search Criteria</h1>
+          <h2 className="m-2">Search Criteria</h2>
         </div>
-        <Form
+        <div
           variant="Primary"
           className={
             this.state.isVisible === true ? "p-3 visable" : "p-3 invisible"
@@ -45,74 +55,69 @@ class SearchCriteria extends Component {
         >
           <Form.Group className="container">
             <div className="row p-auto m-2">
-              <Form.Label className="col-sm m-auto ">
+              <Form.Label style={{fontSize: 22}} className="col-sm m-auto " >
                 Ensemble Gene ID:
               </Form.Label>
-              <Form.Control className="col-sm" />
+              <Form.Control size="lg" style={{fontSize: 22}} className="col-sm" name="Ensemble Gene ID" />
             </div>
             <div className="row p-auto m-2">
-              <Form.Label className="col-sm m-auto">
+              <Form.Label style={{fontSize: 22}} className="col-sm m-auto">
                 Ensemble Transcript ID:
               </Form.Label>
-              <Form.Control className="col-sm" />
+              <Form.Control size="lg" className="col-sm" name="Ensembl Transcript ID" />
             </div>
             <div className="row p-auto m-2">
-              <Form.Label className="col-sm m-auto">Gene Symbol:</Form.Label>
-              <Form.Control className="col-sm" />
+              <Form.Label style={{fontSize: 22}} className="col-sm m-auto">Gene Symbol:</Form.Label>
+              <Form.Control size="lg" className="col-sm" name="Gene Symbol" />
             </div>
             <div className="row p-auto m-2">
-              <Form.Label className="col-sm p-auto m-auto">
+              <Form.Label style={{fontSize: 22}} className="col-sm p-auto m-auto">
                 Intron Class:
               </Form.Label>
               <div className="col-sm m-auto p-auto">
-                <Form.Check inline type="checkbox" label="U2" />
-                <Form.Check inline type="checkbox" label="U12" />
+                <Form.Check  style={{fontSize: 22}} name="U2" inline type="checkbox" label="U2" />
+                <Form.Check  style={{fontSize: 22}}  name="U12" inline type="checkbox" label="U12" />
               </div>
             </div>
             <div className="row p-auto m-2">
-              <Form.Label className="col-sm m-auto">Exact Length:</Form.Label>
-              <Form.Control className="col-sm" />
+              <Form.Label style={{fontSize: 22}} className="col-sm m-auto">Exact Length:</Form.Label>
+              <Form.Control size="lg" className="col-sm" name="Exact Length" />
             </div>
             <div className="row p-auto m-2">
-              <Form.Label className="col-sm m-auto">
+              <Form.Label style={{fontSize: 22}} className="col-sm m-auto">
                 Relative Length:
               </Form.Label>
-              <Form.Control className="col-sm" />
+              <Form.Control size="lg" className="col-sm" name="Relative Length" />
             </div>
             <div className="row p-auto m-2">
-              <Dropdown className="col-sm m-auto" onSelect={this.handleSelect}>
-                <Dropdown.Toggle variant="secondary">
-                  {this.state.strand}
-                </Dropdown.Toggle>
-
-                <Dropdown.Menu>
-                  <Dropdown.Item eventKey="+">+</Dropdown.Item>
-                  <Dropdown.Item eventKey="-">-</Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
+              <Form.Label style={{fontSize: 22}} className="col-sm p-auto m-auto" >Strand:</Form.Label>
+              <div className="col-sm m-auto p-auto">
+              <Form.Check  style={{fontSize: 22}} inline type="radio" name="+" label="+" onClick={this.onClick(1)} checked={this.state.strand === 1 ? true : false} />
+              <Form.Check   style={{fontSize: 22}} inline type="radio" name="-" eventKey='-' label="-" onClick={this.onClick(2)} checked={this.state.strand === 2 ? true : false} />
+              </div>
             </div>
             <div className="row p-auto m-2">
-              <Form.Label className="col-sm m-auto">Coordinates:</Form.Label>
-              <Form.Control className="col-sm" />
+              <Form.Label style={{fontSize: 22}} className="col-sm m-auto">Coordinates:</Form.Label>
+              <Form.Control size="lg" className="col-sm" name="Coordinates" />
             </div>
             <div className="row p-auto m-2">
-              <Form.Label className="col-sm m-auto">
+              <Form.Label style={{fontSize: 22}} className="col-sm m-auto">
                 Exact Exon Rank:
               </Form.Label>
-              <Form.Control className="col-sm" />
+              <Form.Control size="lg" className="col-sm"  name="Exact Exon Rank"/>
             </div>
             <div className="row p-auto m-2">
-              <Form.Label className="col-sm m-auto">
+              <Form.Label style={{fontSize: 22}} className="col-sm m-auto">
                 Relative Exon Length:
               </Form.Label>
-              <Form.Control className="col-sm" />
+              <Form.Control size="lg" className="col-sm" name="Relative Exon Length" />
             </div>
             <div className="row p-auto m-2">
-              <Form.Label className="col-sm m-auto">Sequence:</Form.Label>
-              <Form.Control className="col-sm" />
+              <Form.Label style={{fontSize: 22}} className="col-sm m-auto">Sequence:</Form.Label>
+              <Form.Control size="lg" className="col-sm" name="Sequence" />
             </div>
           </Form.Group>
-        </Form>
+        </div>
       </div>
     );
   }

@@ -1,47 +1,44 @@
 import React, { Component } from "react";
-import Dropdown from "react-bootstrap/Dropdown";
+import Form from "react-bootstrap/Form";
 class Dropdowns extends Component {
   constructor(props) {
     super(props);
     console.log(props);
-    this.state = { activeSpecies: "Species" };
+    this.handleSelectSpecies = this.handleSelectSpecies.bind(this)
   }
 
   state = {
-    activeSpecies: "Species",
+    selectedSpecies: false,
+    selectedVersion: true
   };
 
-  handleSelect = (e) => {
-    this.setState({ activeSpecies: e });
-  };
+  handleSelectSpecies(event) {
+    this.setState({ selectedSpecies: true, selectedVersion: this.state.selectedVersion })
+  }
 
   render() {
     return (
       <div className="my-4 d-flex">
-        <Dropdown onSelect={this.handleSelect} className="m-auto">
-          <Dropdown.Toggle variant="secondary">
-            {this.state.activeSpecies}
-          </Dropdown.Toggle>
+        <Form.Control onChange={this.handleSelectSpecies} name="species" as="select" size="lg" className="m-auto">Species
+        <option disabled={this.state.selectedSpecies}>Species</option>
+          {this.props.species.map((speciesName) => (
+            <option eventKey={speciesName}>
+              {speciesName}
+            </option>
+          ))};
+               </Form.Control>
 
-          <Dropdown.Menu>
-            {this.props.species.map((speciesName) => (
-              <Dropdown.Item eventKey={speciesName}>
-                {speciesName}
-              </Dropdown.Item>
-            ))}
-          </Dropdown.Menu>
-        </Dropdown>
-        <Dropdown className="m-auto">
-          <Dropdown.Toggle variant="secondary">Version</Dropdown.Toggle>
-
-          <Dropdown.Menu>
-            <Dropdown.Item>Version 1</Dropdown.Item>
-            <Dropdown.Item>Version 2</Dropdown.Item>
-            <Dropdown.Item>Version 3</Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
+        <Form.Control disabled={!this.state.selectedSpecies} onChange={this.handleSelect} name="version" as="select" size="lg" className="m-auto">Species
+        <option disabled={this.state.selectedSpecies}>Version</option>
+          {this.props.species.map((speciesName) => (
+            <option eventKey={speciesName} onSelect={this.handleEvent}>
+              {speciesName}
+            </option>
+          ))};
+               </Form.Control>
       </div>
-    );
+    )
   }
 }
+
 export default Dropdowns;

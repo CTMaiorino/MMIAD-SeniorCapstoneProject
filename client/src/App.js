@@ -5,6 +5,7 @@ import SearchCriteriaTools from "./components/tools";
 import Header from "./components/header";
 import Button from "react-bootstrap/Button";
 import "bootstrap/dist/css/bootstrap.css";
+import Form from "react-bootstrap/Form";
 
 const referenceData = {
   label: "Reference",
@@ -83,7 +84,14 @@ const searchParams = {};
 
 // Debugging purposes
 function onSearch() {
-  alert("Button was clicked!");
+  
+}
+
+const onFormSubmit = e => {
+  e.preventDefault()
+  const formData = new FormData(e.target),
+        formDataObj = Object.fromEntries(formData.entries())
+  console.log(formDataObj)
 }
 
 function App() {
@@ -91,6 +99,7 @@ function App() {
     <div>
       <Header />
       <div className="container-fluid ">
+      <Form onSubmit={onFormSubmit}>
         <div className="row">
           <div className="col-lg-4 p-auto my-5 ">
             <Dropdowns species={species} />
@@ -113,14 +122,15 @@ function App() {
               title={externalData.label}
               criteria={externalData.criteria}
             />
-            <Button className="float-right" size="lg" type="submit">
+            <Button className="float-right" size="lg" type="submit" onClick={onSearch}>
               Search
             </Button>
           </div>
           <div />
         </div>
+        </Form>
       </div>
-    </div>
+      </div>
   );
 }
 

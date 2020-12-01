@@ -24,18 +24,17 @@ class SearchCriteriaTools extends Component {
     return (
       <div className={this.state.isVisible === true ? "border m-2" : "m-2"}>
         <div className="border border-dark d-flex p-3">
-          <Button className="m-2 p-2" size="small" onClick={this.setVisibility}>
-            {" "}
+          <Button variant="light" className="m-1 p-2" size="small" onClick={this.setVisibility}>
             <Image
               src="icon.png"
               width="30px"
               alt={this.state.isVisible === true ? "Hide" : "Show"}
-            />{" "}
+            />
           </Button>
-          <h1 className="m-2">{this.props.title}</h1>
+          <h2 className="m-2">{this.props.title}</h2>
         </div>
         <br></br>
-        <Form
+        <div
           variant="Primary"
           className={
             this.state.isVisible === true ? "visable p-3" : "invisible p-3"
@@ -43,14 +42,13 @@ class SearchCriteriaTools extends Component {
         >
           <Form.Group>
             {this.props.criteria.map((item) => (
-              <Form.Check inline label={item} value={item} />
+              <Form.Check style={{fontSize: 22}} inline label={item} value={true} name={item + " from " + this.props.title} />
             ))}
           </Form.Group>
-        </Form>
+        </div>
       </div>
     );
-  }
-  "";
+  };
 }
 
 export default SearchCriteriaTools;
