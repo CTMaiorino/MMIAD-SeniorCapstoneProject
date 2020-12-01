@@ -8,14 +8,10 @@ router
     res.send("respond with a resource");
   })
 
+  //Testing
   .get("/phil", function (req, res, next) {
     console.log("Test");
     res.send("hello phil");
-  })
-
-  .get("/phil/nam", function (req, res, next) {
-    console.log("Test");
-    res.send("hello phil nam");
   });
 
 module.exports = router;
