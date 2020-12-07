@@ -7,4 +7,9 @@ router.get("/", function (req, res, next) {
   res.send("This is the search page");
 });
 
+router.post("/", function (req, res, next) {
+  console.log(req.body); //Debugging
+  res.send(req.body);
+});
+
 module.exports = router;

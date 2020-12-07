@@ -88,11 +88,22 @@ function onSearch() {
   
 }
 
-const onFormSubmit = e => {
-  e.preventDefault()
+const onFormSubmit = (e) => {
+  e.preventDefault();
   const formData = new FormData(e.target),
-        formDataObj = Object.fromEntries(formData.entries())
-  console.log(formDataObj)
+    formDataObj = Object.fromEntries(formData.entries());
+  console.log(formDataObj);
+
+  var data = formDataObj;
+  const options = {
+    method: "POST",
+    mode: 'no-cors',
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  }
+  fetch("http://localhost:5000/search", options);
 }
 
 function App() {
