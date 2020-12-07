@@ -2,29 +2,26 @@ import React, { Component } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Image from "react-bootstrap/Image";
+import Collapse from "react-bootstrap/Collapse";
 
 class SearchCriteriaTools extends Component {
   constructor(props) {
     super(props);
     console.log(props);
   }
-
   state = {
-    isVisible: true, // The whole component is visible by default
+    open: true, // The whole component is visible by default
   };
-
   // The visibility of the whole component is updated here (visible by default)
-  setVisibility = (e) => {
-    this.setState({
-      isVisible: !this.state.isVisible,
-    });
-  };
 
+
+  
   render() {
+    const { open } = this.state;
     return (
-      <div className={this.state.isVisible === true ? "border m-2" : "m-2"}>
+      <div className="border m-2">
         <div className="border border-dark d-flex p-3">
-          <Button variant="light" className="m-1 p-2" size="small" onClick={this.setVisibility}>
+          <Button variant="light" className="m-1 p-2" size="small" onClick={() => this.setState({ open: !open })} aria-controls="tool" aria-expanded={this.state.open}>
             <Image
               src="icon.png"
               width="30px"
@@ -33,18 +30,16 @@ class SearchCriteriaTools extends Component {
           </Button>
           <h2 className="m-2">{this.props.title}</h2>
         </div>
-        <br></br>
         <div
-          variant="Primary"
-          className={
-            this.state.isVisible === true ? "visable p-3" : "invisible p-3"
-          }
+          aria-controls="tool"
         >
-          <Form.Group>
-            {this.props.criteria.map((item) => (
-              <Form.Check style={{fontSize: 22}} inline label={item} value={true} name={item + " from " + this.props.title} />
-            ))}
-          </Form.Group>
+          <Collapse in={open}>
+            <Form.Group>
+              {this.props.criteria.map((item) => (
+                <Form.Check className="m-2" style={{ fontSize: 22 }} inline label={item} value={true} name={item + " from " + this.props.title} />
+              ))}
+            </Form.Group>
+          </Collapse>
         </div>
       </div>
     );

@@ -6,6 +6,7 @@ import Header from "./components/header";
 import Button from "react-bootstrap/Button";
 import "bootstrap/dist/css/bootstrap.css";
 import Form from "react-bootstrap/Form";
+import Image from "react-bootstrap/Image";
 
 const referenceData = {
   label: "Reference",
@@ -123,6 +124,10 @@ function App() {
               criteria={externalData.criteria}
             />
             <Button className="float-right" size="lg" type="submit" onClick={onSearch}>
+            <Image
+              src="searchIcon.jpg"
+              width="20px"
+            />
               Search
             </Button>
           </div>
