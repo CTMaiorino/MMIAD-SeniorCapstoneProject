@@ -81,12 +81,8 @@ const species = [
   "Xenopus_tropicalis",
 ];
 
-const searchParams = {};
-
 // Debugging purposes
-function onSearch() {
-  
-}
+function onSearch() {}
 
 const onFormSubmit = (e) => {
   e.preventDefault();
@@ -94,59 +90,65 @@ const onFormSubmit = (e) => {
     formDataObj = Object.fromEntries(formData.entries());
   console.log(formDataObj);
 
-  var data = formDataObj;
+  var data = formDataObj; // The object containing search parameters
+
   const options = {
     method: "POST",
-    mode: 'no-cors',
+    body: JSON.stringify(data),
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(data),
-  }
+  };
+
   fetch("http://localhost:5000/search", options);
-}
+  // console.log(options); //Debugging
+  console.log(options.body); //Debugging (Displays the JSON object)
+  // console.log("JSON Object was sent to the server"); //Debugging
+};
 
 function App() {
   return (
     <div>
       <Header />
       <div className="container-fluid ">
-      <Form onSubmit={onFormSubmit}>
-        <div className="row">
-          <div className="col-lg-4 p-auto my-5 ">
-            <Dropdowns species={species} />
-            <SearchCriteria />
+        <Form onSubmit={onFormSubmit}>
+          <div className="row">
+            <div className="col-lg-4 p-auto my-5 ">
+              <Dropdowns species={species} />
+              <SearchCriteria />
+            </div>
+            <div className="col-lg-8 p-auto my-5">
+              <SearchCriteriaTools
+                title={referenceData.label}
+                criteria={referenceData.criteria}
+              />
+              <SearchCriteriaTools
+                title={geneData.label}
+                criteria={geneData.criteria}
+              />
+              <SearchCriteriaTools
+                title={intronData.label}
+                criteria={intronData.criteria}
+              />
+              <SearchCriteriaTools
+                title={externalData.label}
+                criteria={externalData.criteria}
+              />
+              <Button
+                className="float-right"
+                size="lg"
+                type="submit"
+                onClick={onSearch}
+              >
+                <Image src="searchIcon.jpg" width="20px" />
+                Search
+              </Button>
+            </div>
+            <div />
           </div>
-          <div className="col-lg-8 p-auto my-5">
-            <SearchCriteriaTools
-              title={referenceData.label}
-              criteria={referenceData.criteria}
-            />
-            <SearchCriteriaTools
-              title={geneData.label}
-              criteria={geneData.criteria}
-            />
-            <SearchCriteriaTools
-              title={intronData.label}
-              criteria={intronData.criteria}
-            />
-            <SearchCriteriaTools
-              title={externalData.label}
-              criteria={externalData.criteria}
-            />
-            <Button className="float-right" size="lg" type="submit" onClick={onSearch}>
-            <Image
-              src="searchIcon.jpg"
-              width="20px"
-            />
-              Search
-            </Button>
-          </div>
-          <div />
-        </div>
         </Form>
       </div>
-      </div>
+    </div>
   );
 }
 

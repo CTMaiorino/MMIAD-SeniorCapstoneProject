@@ -1,15 +1,22 @@
 var express = require("express");
-var router = express.Router();
+var searchRouter = express.Router();
+var bodyParser = require("body-parser");
+
+searchRouter.use(bodyParser.json());
 
 /* GET search listings. */
-router.get("/", function (req, res, next) {
+searchRouter.get("/", function (req, res, next) {
   console.log("Search page accessed."); //Debugging
+  // console.log(req.body); //Debug (Print Search Paramters)
   res.send("This is the search page");
 });
 
-router.post("/", function (req, res, next) {
-  console.log(req.body); //Debugging
-  res.send(req.body);
+//Current issue: JSON object is empty
+searchRouter.post("/", function (req, res, next) {
+  console.log("I got a request!");
+  console.log(req.body); //Debugging (Print the JSON object)
+
+  // res.send(req.body);
 });
 
-module.exports = router;
+module.exports = searchRouter;

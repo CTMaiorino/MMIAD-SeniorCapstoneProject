@@ -14,14 +14,19 @@ class SearchCriteriaTools extends Component {
   };
   // The visibility of the whole component is updated here (visible by default)
 
-
-  
   render() {
     const { open } = this.state;
     return (
       <div className="border m-2">
         <div className="border border-dark d-flex p-3">
-          <Button variant="light" className="m-1 p-2" size="small" onClick={() => this.setState({ open: !open })} aria-controls="tool" aria-expanded={this.state.open}>
+          <Button
+            variant="light"
+            className="m-1 p-2"
+            size="small"
+            onClick={() => this.setState({ open: !open })}
+            aria-controls="tool"
+            aria-expanded={this.state.open}
+          >
             <Image
               src="icon.png"
               width="30px"
@@ -30,20 +35,25 @@ class SearchCriteriaTools extends Component {
           </Button>
           <h2 className="m-2">{this.props.title}</h2>
         </div>
-        <div
-          aria-controls="tool"
-        >
+        <div aria-controls="tool">
           <Collapse in={open}>
             <Form.Group>
               {this.props.criteria.map((item) => (
-                <Form.Check className="m-2" style={{ fontSize: 22 }} inline label={item} value={true} name={item + " from " + this.props.title} />
+                <Form.Check
+                  className="m-2"
+                  style={{ fontSize: 22 }}
+                  inline
+                  label={item}
+                  value={true}
+                  name={item + "From" + this.props.title}
+                />
               ))}
             </Form.Group>
           </Collapse>
         </div>
       </div>
     );
-  };
+  }
 }
 
 export default SearchCriteriaTools;
