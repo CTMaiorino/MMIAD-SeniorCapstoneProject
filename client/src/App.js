@@ -88,7 +88,7 @@ const onFormSubmit = (e) => {
   e.preventDefault();
   const formData = new FormData(e.target),
     formDataObj = Object.fromEntries(formData.entries());
-  console.log(formDataObj);
+  //console.log(formDataObj);
 
   var data = formDataObj; // The object containing search parameters
 

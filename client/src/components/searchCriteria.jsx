@@ -6,7 +6,6 @@ import Image from "react-bootstrap/Image";
 class SearchCriteria extends Component {
   constructor(props) {
     super(props);
-    console.log(props);
     this.myRef = React.createRef();
   }
 
@@ -178,7 +177,7 @@ class SearchCriteria extends Component {
               <Form.Label style={{ fontSize: 22 }} className="col-sm m-auto">
                 Sequence:
               </Form.Label>
-              <Form.Control size="lg" className="col-sm" name="sequence" />
+              <Form.Control size="lg" className="col-sm" name="sequence" as="textarea" rows={5} />
             </div>
           </Form.Group>
         </div>

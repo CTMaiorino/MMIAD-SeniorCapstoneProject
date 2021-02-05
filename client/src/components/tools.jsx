@@ -7,7 +7,6 @@ import Collapse from "react-bootstrap/Collapse";
 class SearchCriteriaTools extends Component {
   constructor(props) {
     super(props);
-    console.log(props);
   }
   state = {
     open: true, // The whole component is visible by default

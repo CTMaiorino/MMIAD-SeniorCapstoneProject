@@ -1,0 +1,2 @@
+runtime: nodejs12 # or another supported version
+service: default
