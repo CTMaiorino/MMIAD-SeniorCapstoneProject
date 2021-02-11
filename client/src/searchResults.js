@@ -1,17 +1,24 @@
-import Dropdowns from "./components/selectionDropdowns";
-import SearchCriteria from "./components/searchCriteria";
-import SearchCriteriaTools from "./components/tools";
 import Header from "./components/header";
-import Button from "react-bootstrap/Button";
 import "bootstrap/dist/css/bootstrap.css";
-import Form from "react-bootstrap/Form";
-import Image from "react-bootstrap/Image";
+import Button from "react-bootstrap/Button";
+import Image from "react-bootstrap/Image"
+import ResultsTable from "./components/resultsTable";
 
 
 
 function SearchResults() {
   return (
-    <h1>Hello World!</h1>
+    <div>
+      <Header />
+
+      <div className="container-fluid ">
+       <h2>Results:</h2>
+          <Button className="m-2 p-auto float-right" variant="outline-primary"><Image src="icon-email.png" width="20px" />Email</Button>
+          <Button className="m-2 p-auto float-right" variant="outline-primary"><Image src="icon-download.png" width="20px" />Export</Button>
+        <ResultsTable/>
+      </div>
+    </div>
+
   )
 }
 
