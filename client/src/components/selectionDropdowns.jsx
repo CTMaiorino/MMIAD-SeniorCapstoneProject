@@ -10,15 +10,28 @@ class Dropdowns extends Component {
   state = {
     selectedSpecies: false,
     selectedVersion: true,
+    speciesData: null
   };
 
   handleSelectSpecies(event) {
     this.setState({
       selectedSpecies: true,
       selectedVersion: this.state.selectedVersion,
+      speciesData: this.state.speciesData
     });
   }
 
+  componentDidMount() {
+    fetch('/species')
+      .then(response => response.json())
+      .then((data) => {
+        this.setState({
+          selectedSpecies: this.state.selectedSpecies,
+          selectedVersion: this.state.selectedVersion,
+          speciesData: data
+        })
+      });
+  }
   render() {
     return (
       <div className="my-4 d-flex">
