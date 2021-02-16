@@ -3,22 +3,35 @@ import Form from "react-bootstrap/Form";
 class Dropdowns extends Component {
   constructor(props) {
     super(props);
-    console.log(props);
     this.handleSelectSpecies = this.handleSelectSpecies.bind(this);
+
   }
 
   state = {
     selectedSpecies: false,
     selectedVersion: true,
+    speciesData: [{"speciesName":"Monkey"}]
   };
 
   handleSelectSpecies(event) {
     this.setState({
       selectedSpecies: true,
       selectedVersion: this.state.selectedVersion,
+      speciesData: this.state.speciesData
     });
   }
-
+ async componentDidMount() {
+    fetch('http://localhost:5000/search/species')
+      .then(response => response.json())
+      .then(data => { 
+        this.setState({
+          selectedSpecies: this.state.selectedSpecies,
+          selectedVersion: this.state.selectedVersion,
+          speciesData: data
+        })
+      })
+      
+  }
   render() {
     return (
       <div className="my-4 d-flex">
@@ -31,8 +44,8 @@ class Dropdowns extends Component {
         >
           Species
           <option disabled={this.state.selectedSpecies}>Species</option>
-          {this.props.species.map((speciesName) => (
-            <option eventKey={speciesName}>{speciesName}</option>
+          {Object.values(this.state.speciesData).map((val,k) => (
+            <option eventKey={val.speciesName}>{val.speciesName}</option>
           ))}
           ;
         </Form.Control>
@@ -49,7 +62,7 @@ class Dropdowns extends Component {
           <option disabled={this.state.selectedSpecies}>Version</option>
           {this.props.species.map((speciesName) => (
             <option eventKey={speciesName} onSelect={this.handleEvent}>
-              {speciesName}
+              {speciesName.speciesName}
             </option>
           ))}
           ;
