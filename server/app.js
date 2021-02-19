@@ -6,6 +6,11 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 
+require('dotenv').config(); //
+const mysql = require('mysql'); //DB Connection
+var connection = require("./database");
+
+
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var searchRouter = require("./routes/search");
@@ -16,12 +21,11 @@ var app = express();
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "jade");
 
-
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(__dirname + '/public/build'));
+app.use(express.static(path.join(__dirname, "public")));
 app.use(cors());
 app.use(bodyParser.json());
 app.use(
@@ -29,6 +33,21 @@ app.use(
     extended: false,
   })
 );
+
+
+//app.use(connection);
+/*
+app.route('/search')
+  .get(function(req, res, next) {
+    connection.query(
+      "SELECT `speciesName` FROM `Species` ",
+      function(error, results, fields) {
+        if (error) throw error;
+        res.json(results);
+      }
+    );
+  });
+*/
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);

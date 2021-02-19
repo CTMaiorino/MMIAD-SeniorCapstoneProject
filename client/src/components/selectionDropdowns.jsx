@@ -3,34 +3,52 @@ import Form from "react-bootstrap/Form";
 class Dropdowns extends Component {
   constructor(props) {
     super(props);
-    console.log(props);
     this.handleSelectSpecies = this.handleSelectSpecies.bind(this);
+
   }
 
   state = {
     selectedSpecies: false,
     selectedVersion: true,
-    speciesData: null
+    speciesData: [{"speciesName":"Test Monkey"}]
   };
 
   handleSelectSpecies(event) {
+
+    const version=event.target.value;
+
+    console.log(version)
+
+  
+    fetch('https://major-and-minor-intron-db.ue.r.appspot.com/search/species/:'+version)
+    .then(response => response.json())
+    .then(data => { 
+      this.setState({
+        selectedSpecies: this.state.selectedSpecies,
+        selectedVersion: this.state.selectedVersion,
+        speciesData: data
+      })
+      console.log(data)
+    })
+    
     this.setState({
       selectedSpecies: true,
       selectedVersion: this.state.selectedVersion,
       speciesData: this.state.speciesData
     });
   }
-
-  componentDidMount() {
-    fetch('/species')
+ async componentDidMount() {
+    fetch('https://major-and-minor-intron-db.ue.r.appspot.com/search/species')
       .then(response => response.json())
-      .then((data) => {
+      .then(data => { 
         this.setState({
           selectedSpecies: this.state.selectedSpecies,
           selectedVersion: this.state.selectedVersion,
           speciesData: data
         })
-      });
+        console.log(data)
+      })
+      
   }
   render() {
     return (
@@ -44,8 +62,8 @@ class Dropdowns extends Component {
         >
           Species
           <option disabled={this.state.selectedSpecies}>Species</option>
-          {this.props.species.map((speciesName) => (
-            <option eventKey={speciesName}>{speciesName}</option>
+          {Object.values(this.state.speciesData).map((val,k) => (
+            <option eventKey={val.speciesName}>{val.speciesName}</option>
           ))}
           ;
         </Form.Control>
@@ -62,7 +80,7 @@ class Dropdowns extends Component {
           <option disabled={this.state.selectedSpecies}>Version</option>
           {this.props.species.map((speciesName) => (
             <option eventKey={speciesName} onSelect={this.handleEvent}>
-              {speciesName}
+              {speciesName.speciesName}
             </option>
           ))}
           ;
