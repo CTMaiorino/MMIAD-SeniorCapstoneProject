@@ -10,10 +10,27 @@ class Dropdowns extends Component {
   state = {
     selectedSpecies: false,
     selectedVersion: true,
-    speciesData: [{"speciesName":"Monkey"}]
+    speciesData: [{"speciesName":"Test Monkey"}]
   };
 
   handleSelectSpecies(event) {
+
+    const version=event.target.value;
+
+    console.log(version)
+
+  
+    fetch('https://major-and-minor-intron-db.ue.r.appspot.com/search/species/:'+version)
+    .then(response => response.json())
+    .then(data => { 
+      this.setState({
+        selectedSpecies: this.state.selectedSpecies,
+        selectedVersion: this.state.selectedVersion,
+        speciesData: data
+      })
+      console.log(data)
+    })
+    
     this.setState({
       selectedSpecies: true,
       selectedVersion: this.state.selectedVersion,
@@ -21,7 +38,7 @@ class Dropdowns extends Component {
     });
   }
  async componentDidMount() {
-    fetch('http://localhost:5000/search/species')
+    fetch('https://major-and-minor-intron-db.ue.r.appspot.com/search/species')
       .then(response => response.json())
       .then(data => { 
         this.setState({
@@ -29,6 +46,7 @@ class Dropdowns extends Component {
           selectedVersion: this.state.selectedVersion,
           speciesData: data
         })
+        console.log(data)
       })
       
   }
