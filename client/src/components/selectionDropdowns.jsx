@@ -9,46 +9,35 @@ class Dropdowns extends Component {
 
   state = {
     selectedSpecies: false,
-    selectedVersion: true,
-    speciesData: [{"speciesName":"Test Monkey"}]
+    speciesList: [{ "speciesName": "Test Monkey" }],
+    versionList: [{ "version": "Monkey" }]
   };
 
-  handleSelectSpecies(event) {
-
-    const version=event.target.value;
-
-    console.log(version)
-
-  
-    fetch('https://major-and-minor-intron-db.ue.r.appspot.com/search/species/:'+version)
-    .then(response => response.json())
-    .then(data => { 
-      this.setState({
-        selectedSpecies: this.state.selectedSpecies,
-        selectedVersion: this.state.selectedVersion,
-        speciesData: data
-      })
-      console.log(data)
-    })
-    
-    this.setState({
-      selectedSpecies: true,
-      selectedVersion: this.state.selectedVersion,
-      speciesData: this.state.speciesData
-    });
-  }
- async componentDidMount() {
+  async componentDidMount() {
+    //Retrives all of the species in the database, and places them into the species selection dropdown
     fetch('https://major-and-minor-intron-db.ue.r.appspot.com/search/species')
       .then(response => response.json())
-      .then(data => { 
+      .then(data => {
         this.setState({
           selectedSpecies: this.state.selectedSpecies,
-          selectedVersion: this.state.selectedVersion,
-          speciesData: data
+          speciesList: data,
+          versionList: this.state.versionList
         })
-        console.log(data)
       })
-      
+
+  }
+  handleSelectSpecies(event) {
+    //The database retrives the selected species and gets its genome versions
+    const version = event.target.value;
+    fetch('https://major-and-minor-intron-db.ue.r.appspot.com/search/species/' + version)
+      .then(response => response.json())
+      .then(data => {
+        this.setState({
+          selectedSpecies: true,
+          speciesList: this.state.speciesList,
+          versionList: data
+        })
+      })
   }
   render() {
     return (
@@ -62,7 +51,7 @@ class Dropdowns extends Component {
         >
           Species
           <option disabled={this.state.selectedSpecies}>Species</option>
-          {Object.values(this.state.speciesData).map((val,k) => (
+          {Object.values(this.state.speciesList).map((val, k) => (
             <option eventKey={val.speciesName}>{val.speciesName}</option>
           ))}
           ;
@@ -78,9 +67,9 @@ class Dropdowns extends Component {
         >
           Species
           <option disabled={this.state.selectedSpecies}>Version</option>
-          {this.props.species.map((speciesName) => (
-            <option eventKey={speciesName} onSelect={this.handleEvent}>
-              {speciesName.speciesName}
+          {this.state.versionList.map((versionName) => (
+            <option eventKey={versionName} onSelect={this.handleEvent}>
+              {versionName.genomeVersion}
             </option>
           ))}
           ;
