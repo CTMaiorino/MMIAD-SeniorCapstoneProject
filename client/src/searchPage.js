@@ -59,27 +59,7 @@ const externalData = {
   ],
 };
 
-const species = [
-  "Apis mellifera",
-  "Arabidopsis thaliana",
-  "Bos taurus",
-  "Caenorhabditis elegans",
-  "Canis familiaris",
-  "Ciona intestinalis",
-  "Danio rerio",
-  "Drosophila melanogaster",
-  "Fugu rubripes",
-  "Gallus_gallus",
-  "Homo_sapiens",
-  "Macaca mulatta",
-  "Monodelphis_domestica",
-  "Mus musculus",
-  "Pan_troglodytes",
-  "Rattus_norvegicus",
-  "Saccharomyces_cerevisiae",
-  "Tetraodon_nigroviridis",
-  "Xenopus_tropicalis",
-];
+
 
 // Debugging purposes
 function onSearch() {
@@ -116,7 +96,7 @@ function SearchPage() {
         <Form onSubmit={onFormSubmit}>
           <div className="row">
             <div className="col-lg-4 p-auto my-5 ">
-              <Dropdowns species={species} />
+              <Dropdowns />
               <SearchCriteria />
             </div>
             <div className="col-lg-8 p-auto my-5">
