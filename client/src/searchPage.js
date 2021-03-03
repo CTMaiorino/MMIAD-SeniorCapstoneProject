@@ -6,7 +6,7 @@ import Button from "react-bootstrap/Button";
 import "bootstrap/dist/css/bootstrap.css";
 import Form from "react-bootstrap/Form";
 import Image from "react-bootstrap/Image";
-import {Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const referenceData = {
   label: "Reference",
@@ -62,9 +62,7 @@ const externalData = {
 
 
 // Debugging purposes
-function onSearch() {
-
-}
+function onSearch() {}
 
 const onFormSubmit = (e) => {
   e.preventDefault();
@@ -116,16 +114,16 @@ function SearchPage() {
                 title={externalData.label}
                 criteria={externalData.criteria}
               />
-              <Link to="/results"><Button
-                className="float-right"
-                size="lg"
-                type="submit"
-                onClick={onSearch}
-              >
-                  
-                <Image src="searchIcon.jpg" width="20px" />
-                Search
-              </Button>
+              <Link to="/results">
+                <Button
+                  className="float-right"
+                  size="lg"
+                  type="submit"
+                  onClick={onSearch}
+                >
+                  <Image src="searchIcon.jpg" width="20px" />
+                  Search
+                </Button>
               </Link>
             </div>
             <div />
