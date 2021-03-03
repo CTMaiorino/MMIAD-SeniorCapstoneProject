@@ -29,10 +29,11 @@ searchRouter.get("/species",function(req, res, next) {
   
 });
 
-searchRouter.get("/species/:speciesName",function(req, res, next) {
+searchRouter.get("/species/:speciesName/:genomeVersion",function(req, res, next) {
   
   connection.query(
     "SELECT * FROM `Species`  WHERE speciesName = ? ", req.params.speciesName,
+    "AND genomeVersion = ?", req.params.genomeVersion,
     function(error, results, fields) {
       if (error) throw error;
       res.json(results);
