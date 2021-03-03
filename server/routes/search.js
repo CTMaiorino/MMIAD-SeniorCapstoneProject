@@ -31,16 +31,19 @@ searchRouter.get("/species",function(req, res, next) {
 
 searchRouter.get("/species/:speciesName/:genomeVersion",function(req, res, next) {
   
+  var species=req.params.speciesName
+  var version=req.params.genomeVersion
+
   connection.query(
-    "SELECT * FROM `Species`  WHERE speciesName = ? AND genomeVersion = ?",
-    req.params.speciesName,
-    req.params.genomeVersion,
+    "SELECT * FROM `Species`  WHERE speciesName = '" + species + "' AND genomeVersion = '" + version + "'" ,
     function(error, results, fields) {
       if (error) throw error;
       res.json(results);
     }
   );
+
 });
+
 
 searchRouter.get("/species/:speciesName",function(req, res, next) {
   connection.query(
