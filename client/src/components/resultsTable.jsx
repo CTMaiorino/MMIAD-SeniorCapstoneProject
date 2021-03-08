@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 class ResultsTable extends Component {
     constructor(props) {
         super(props);
-        console.log(props);
+        console.log(props.introns);
     }
 
     state = {
@@ -33,31 +33,23 @@ class ResultsTable extends Component {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="bg-warning">
-                        <td >Result 1:Genome Version</td>
-                        <td class="bg-warning"><Link to="/results/details">Result 1:Species</Link></td>
-                        <td class="bg-warning">Result 1:Gene </td>
-                        <td class="bg-warning">Result 1:Type</td>
-                        <td class="bg-warning">Result 1:Subtype</td>
-                        <td class="bg-warning">Result 1:Chromosome</td>
-                        <td class="bg-warning">Result 1:Start</td>
-                        <td class="bg-warning">Result 1:End</td>
-                    </tr>
-                    {/*
-                    {this.dataFromDatabaseSearch.map((Data) => (
+
+                    {this.props.introns.map((intron) => (
                         <tr>
-                            <td>Data[0][0]:Genome Version</td>
-                            <td>Data[0][1]:Species</td>
-                            <td>Data[0][2]:Gene Name</td>
-                            <td>Data[0][3]:Type</td>
-                            <td>Data[0][4]:Subtype</td>
-                            <td>Data[0][5]:Chromosome</td>
-                            <td>Data[0][6]:Start</td>
-                            <td>Data[0][7]:End</td>
+                            <td class="bg-warning"><Link to="/results/details">{intron.genomeVersion}</Link></td>
+                            <td class="bg-warning">{intron.speciesName}</td>
+                            <td class="bg-warning">{intron.geneName}</td>
+                            <td class="bg-warning">{intron.type}</td>
+                            <td class="bg-warning">{intron.subtype}</td>
+                            <td class="bg-warning">{intron.chromosome}</td>
+                            <td class="bg-warning">{intron.start}</td>
+                            <td class="bg-warning">{intron.end}</td>
+
+
                         </tr>
 
-                    ))};
-                    */}
+                    ))}
+
                 </tbody>
             </Table>
         )

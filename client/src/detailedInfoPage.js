@@ -1,6 +1,7 @@
 import Header from "./components/header";
 import "bootstrap/dist/css/bootstrap.css";
 import IntronInfoCollapsable from './components/introInfoCollapsables';
+import BackToSearch from "./components/backToSearch";
 
 const basicData = {
   label: "Basic",
@@ -57,7 +58,8 @@ function DetailedIntronInfo() {
   return (
     <div>
       <Header />
-
+      <div className="mt-3"><BackToSearch/></div>
+      
       <div className="container-fluid ">
           <IntronInfoCollapsable title={basicData.label} criteria={basicData.criteria}/>
           <IntronInfoCollapsable title={geneData.label} criteria={geneData.criteria}/>

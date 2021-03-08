@@ -11,9 +11,9 @@ class Header extends Component {
   render() {
     return (
       <Navbar bg="light" className="border-bottom justify-content-center" expand="lg">
-        <h1 className="">Major & Minor Intron Annotation Database</h1>
+        <h1 className="m-auto">Major & Minor Intron Annotation Database</h1>
         <Link to="/about">
-          <Button className="ml-auto" variant="outline-primary">
+          <Button className="pull-right" variant="outline-primary">
             About
           </Button>
         </Link>
