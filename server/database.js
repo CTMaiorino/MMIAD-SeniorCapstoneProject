@@ -1,7 +1,8 @@
 const mysql = require('mysql');
+const Sequelize = require('sequelize');
 
 // Database Connection for Production
-
+/*
 let config = {
      user: process.env.DB_USER,
      database: process.env.DB_DATABASE,
@@ -14,7 +15,7 @@ let config = {
  }
  
 let connection = mysql.createConnection(config);
-
+*/
 // Database Connection for Development
 /*
 let connection = mysql.createConnection({  
@@ -29,10 +30,7 @@ let connection = mysql.createConnection({
   
 
 
-const DB_HOST = process.env.DB_HOST;
-const DB_USER = process.env.DB_USER;
-const DB_PASS = process.env.DB_PASS;
-const DB_NAME = process.env.DB_NAME;
+
 
 const connection = mysql.createConnection({
   host: DB_HOST,
@@ -49,4 +47,31 @@ connection.connect(function(err) {
   console.log('Connected as thread id: ' + connection.threadId);
 });
 */
-  module.exports = connection;
+
+//Database connection for sequlize 
+
+const DB_HOST = process.env.DB_HOST;
+const DB_USER = process.env.DB_USER;
+const DB_PASS = process.env.DB_PASS;
+const DB_NAME = process.env.DB_NAME;
+const DB_INSTANCE_NAME = process.env.DB_INSTANCE_NAME;
+/*
+const sequelize = new Sequelize(
+  DB_NAME,
+  DB_USER,
+  DB_PASS,
+  {
+  dialect:
+  "mysql",
+  dialectOptions: {
+  socketPath: `/cloudsql/${DB_INSTANCE_NAME}`,
+  },
+  }
+  );
+*/
+const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASS, {
+  host: DB_HOST,
+  dialect: 'mysql'
+});
+
+  module.exports = sequelize;

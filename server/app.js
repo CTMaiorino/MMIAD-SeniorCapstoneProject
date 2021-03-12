@@ -6,10 +6,15 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 
+
 require('dotenv').config(); //
 const mysql = require('mysql'); //DB Connection
 var connection = require("./database");
 
+//Test Sequelize connection
+connection.authenticate()
+  .then(()=> console.log('DB Connected'))
+  .catch(err => console.log('Error' + err))
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");

@@ -2,8 +2,17 @@ var express = require("express");
 var searchRouter = express.Router();
 var bodyParser = require("body-parser");
 var connection = require("../database");
+const Species = require('../models/Species');
 
 searchRouter.use(bodyParser.json());
+
+searchRouter.get("/test", (req, res) =>
+  Species.findAll()
+      .then(species => {
+        console.log(species);
+        res.sendStatus(200);
+      })
+      .catch(err => console.log(err)));
 
 /* GET search listings. */
 searchRouter.get("/",function(req, res, next) {
