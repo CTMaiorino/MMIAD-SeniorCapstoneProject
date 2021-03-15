@@ -6,8 +6,6 @@ import Button from "react-bootstrap/Button";
 import "bootstrap/dist/css/bootstrap.css";
 import Form from "react-bootstrap/Form";
 import Image from "react-bootstrap/Image";
-import { Link } from "react-router-dom";
-import { Redirect } from "react-router-dom";
 import React, { Component } from "react";
 
 class SearchPage extends Component {
@@ -30,6 +28,7 @@ class SearchPage extends Component {
       "Ensembl Version",
     ],
   }
+
 
 
 
@@ -60,7 +59,7 @@ class SearchPage extends Component {
       "Acceptor Splice Site",
       "Donor Splice Site",
     ],
-  };
+  }
 
   externalData = {
     label: "External",
@@ -71,11 +70,13 @@ class SearchPage extends Component {
       "UCSC Link - Gene",
       "UCSC Link - Intron",
     ],
-  };
+  }
 
   state = {
     params: "Test Param"
   }
+
+  
 
 
 

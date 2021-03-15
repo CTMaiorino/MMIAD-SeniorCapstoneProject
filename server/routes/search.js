@@ -29,6 +29,38 @@ searchRouter.get("/species",function(req, res, next) {
   
 });
 
+searchRouter.get("/intron",function(req, res, next) {
+  connection.query(
+    "SELECT * FROM `Intron`",
+    
+    function(error, results, fields) {
+      if (error) throw error;
+      
+      res.json(results);
+      
+    })
+  
+});
+
+searchRouter.get("/intron/:intronId",function(req, res, next) {
+
+  var intronId=req.params.intronId;
+
+  connection.query(
+
+    
+    "SELECT * FROM `Intron` WHERE  intronId = '" + intronId + "'",
+    
+    function(error, results, fields) {
+      if (error) throw error;
+      
+      res.json(results);
+      
+    })
+  
+});
+
+
 searchRouter.get("/species/:speciesName/:genomeVersion",function(req, res, next) {
   
   var species=req.params.speciesName
@@ -43,6 +75,10 @@ searchRouter.get("/species/:speciesName/:genomeVersion",function(req, res, next)
   );
 
 });
+
+
+
+
 
 
 searchRouter.get("/species/:speciesName",function(req, res, next) {

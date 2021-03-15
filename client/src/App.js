@@ -14,7 +14,7 @@ function App() {
     <BrowserRouter>
       <Switch>
         <Route exact path="/" component={SearchPage} />
-        <Route path="/results/details" component={DetailedIntronInfo} />
+        <Route path="/results/details/:intronId" component={DetailedIntronInfo} />
         <Route path="/results" component={SearchResults} />
         <Route path="/about" component={About} />
       </Switch>

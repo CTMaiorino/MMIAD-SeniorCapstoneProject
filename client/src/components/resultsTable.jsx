@@ -1,6 +1,7 @@
 import Table from "react-bootstrap/Table";
 import React, { Component } from "react";
 import { Link } from 'react-router-dom';
+import ResultsTableRow from "./resultsTableRow";
 
 
 
@@ -9,6 +10,7 @@ class ResultsTable extends Component {
     constructor(props) {
         super(props);
         console.log(props.introns);
+        this.onFormSubmit = this.onFormSubmit.bind(this);
     }
 
     state = {
@@ -16,37 +18,51 @@ class ResultsTable extends Component {
         selectedVersion: true,
     };
 
+    onFormSubmit = (e) => {
+        console.log(e)
+        
+        const formData = new FormData(e.target),
+          formDataObj = Object.fromEntries(formData.entries());
+        console.log(formDataObj);
+    
+        var params = formDataObj; // The object containing search parameters
+        var species = params.species
+        var version = params.version
+        fetch("https://major-and-minor-intron-db.ue.r.appspot.com/search/species/" + species + "/" + version)
+        .then(response => response.json())
+          .then(intron => {
+            this.props.history.push({
+              pathname: "/results",
+              state: {
+                data: intron
+              }
+            })
+            })
 
+        }
     render() {
         return (
             <Table bordered hover>
                 <thead>
                     <tr>
-                        <th class="bg-secondary">Genome Version</th>
-                        <th class="bg-secondary">Species</th>
-                        <th class="bg-secondary">Gene </th>
-                        <th class="bg-secondary">Type</th>
-                        <th class="bg-secondary">Subtype</th>
-                        <th class="bg-secondary">Chromosome</th>
-                        <th class="bg-secondary">Start</th>
-                        <th class="bg-secondary">End</th>
+                        <th>Genome Version</th>
+                        <th>Species</th>
+                        <th>Gene </th>
+                        <th>Type</th>
+                        <th>Subtype</th>
+                        <th>Chromosome</th>
+                        <th>Start</th>
+                        <th>End</th>
                     </tr>
                 </thead>
                 <tbody>
 
                     {this.props.introns.map((intron) => (
-                        <tr>
-                            <td class="bg-warning"><Link to="/results/details">{intron.genomeVersion}</Link></td>
-                            <td class="bg-warning">{intron.speciesName}</td>
-                            <td class="bg-warning">{intron.geneName}</td>
-                            <td class="bg-warning">{intron.type}</td>
-                            <td class="bg-warning">{intron.subtype}</td>
-                            <td class="bg-warning">{intron.chromosome}</td>
-                            <td class="bg-warning">{intron.start}</td>
-                            <td class="bg-warning">{intron.end}</td>
+                        
+                            <ResultsTableRow intron={intron}/>
 
 
-                        </tr>
+                        
 
                     ))}
 

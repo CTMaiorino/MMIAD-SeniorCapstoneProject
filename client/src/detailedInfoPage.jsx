@@ -2,8 +2,16 @@ import Header from "./components/header";
 import "bootstrap/dist/css/bootstrap.css";
 import IntronInfoCollapsable from './components/introInfoCollapsables';
 import BackToSearch from "./components/backToSearch";
+import React, { Component } from "react";
 
-const basicData = {
+class DetailedIntronInfo extends Component {
+  constructor(props) {
+    super(props);
+    console.log(props);
+    
+  }
+
+basicData = {
   label: "Basic",
   criteria: [
     "Species",
@@ -12,9 +20,9 @@ const basicData = {
     "Genome Version",
     "Ensembl Version",
   ],
-};
+}
 
-const geneData = {
+geneData = {
   label: "Gene",
   criteria: [
     "Name",
@@ -26,9 +34,9 @@ const geneData = {
     "Strand",
     "Ensembl Transcript ID",
   ],
-};
+}
 
-const intronData = {
+intronData = {
   label: "Intron",
   criteria: [
     "Length",
@@ -43,7 +51,7 @@ const intronData = {
   ],
 };
 
-const externalData = {
+externalData = {
   label: "External",
   criteria: [
     "NCBI Gene Link",
@@ -54,21 +62,21 @@ const externalData = {
   ],
 };
 
-function DetailedIntronInfo() {
+render (){
   return (
     <div>
       <Header />
       <div className="mt-3"><BackToSearch/></div>
       
       <div className="container-fluid ">
-          <IntronInfoCollapsable title={basicData.label} criteria={basicData.criteria}/>
-          <IntronInfoCollapsable title={geneData.label} criteria={geneData.criteria}/>
-          <IntronInfoCollapsable title={intronData.label} criteria={intronData.criteria}/>
-          <IntronInfoCollapsable title={externalData.label} criteria={externalData.criteria}/>
+          <IntronInfoCollapsable title={this.basicData.label} criteria={this.basicData.criteria}/>
+          <IntronInfoCollapsable title={this.geneData.label} criteria={this.geneData.criteria}/>
+          <IntronInfoCollapsable title={this.intronData.label} criteria={this.intronData.criteria}/>
+          <IntronInfoCollapsable title={this.externalData.label} criteria={this.externalData.criteria}/>
       </div>
     </div>
 
   )
 }
-
+}
 export default DetailedIntronInfo;

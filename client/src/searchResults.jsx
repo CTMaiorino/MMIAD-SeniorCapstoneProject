@@ -13,10 +13,15 @@ class SearchResults extends Component {
     console.log(props.location);
   }
 
-  state={
-    detail:null
-  }
+  on
+
   render() {
+    var results=this.props.location.state
+    if(results==undefined)
+    {
+      
+      results={data:[]}
+    }
     return (
       <div>
         <Header />
@@ -31,7 +36,7 @@ class SearchResults extends Component {
           <Icon.ArrowDownCircleFill style={{ paddingRight: "5px" }}  />
           Export
         </Button>
-          <ResultsTable introns={this.props.location.state.data} />
+          <ResultsTable introns={results.data}/>
           <BackToSearch />
         </div>
       </div>
