@@ -66,8 +66,7 @@ const sequelize = new Sequelize(
   dialectOptions: {
   socketPath: `/cloudsql/${process.env.DB_INSTANCE_NAME}`,
   },
-  }
-  );
+  });
 */
 
 const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASS, {

@@ -4,28 +4,28 @@ const Gene = require("../models/Gene");
 
 const Transcriptome = db.define("transcriptome", {
   transcriptomeId: {
-    type: DataTypes.INTEGER,
+    type: Sequelize.INTEGER,
     primaryKey: true,
     allowNull: false,
   },
   transcriptomeEnsemblLink: {
-    type: DataTypes.CHAR,
+    type: Sequelize.CHAR,
     allowNull: true,
   },
   transcriptomeStartCoord: {
-    type: DataTypes.BIGINT,
+    type: Sequelize.BIGINT,
     allowNull: true,
   },
   transcriptomeEndCoord: {
-    type: DataTypes.BIGINT,
+    type: Sequelize.BIGINT,
     allowNull: true,
   },
   geneId: {
-    type: DataTypes.INTEGER,
+    type: Sequelize.INTEGER,
     allowNull: true,
   },
   ensemblId: {
-    type: DataTypes.CHAR,
+    type: Sequelize.CHAR,
     allowNull: true,
   },
 });

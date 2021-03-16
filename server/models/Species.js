@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 const db = require("../database");
 
-const Species = db.define("species", {
+const Species = db.define("Species", {
   speciesId: {
     type: Sequelize.INTEGER,
     primaryKey: true,
@@ -20,6 +20,12 @@ const Species = db.define("species", {
   ensemblVersion: {
     type: Sequelize.CHAR,
   },
+  createdAt: {
+    type: Sequelize.DATE
+  },
+  updatedAt: {
+    type: Sequelize.DATE
+  }
 });
 
 module.exports = Species;

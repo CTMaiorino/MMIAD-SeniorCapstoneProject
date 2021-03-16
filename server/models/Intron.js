@@ -40,7 +40,7 @@ const Intron = db.define("intron", {
     allowNull: true 
   },
   strand: { 
-    type: DataTypes.BOOLEAN, 
+    type: Sequelize.BOOLEAN, 
     allowNull: true 
   },
   cluster: { 
