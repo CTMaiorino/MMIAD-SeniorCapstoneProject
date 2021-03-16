@@ -5,11 +5,44 @@ import Collapse from "react-bootstrap/Collapse";
 class IntronInfoCollapsable extends Component {
   constructor(props) {
     super(props);
+    this.matchTextWithKey = this.matchTextWithKey.bind(this)
   }
 
   state = {
-    open:true
+    open: true
   };
+
+  matchTextWithKey(criterion) {
+    var intron = this.props.intron[0]
+    var intronKeys = new Array();
+    var intronValues = new Array();
+    for (var key in intron) {
+      var count = intronKeys.push(key);
+      var blah = intronValues.push(intron[key])
+    }
+    //console.log(intronKeys)
+
+    for (var index in intronKeys) {
+      console.log(intronKeys[index])
+      var dullKey=intronKeys[index].toLocaleLowerCase().replace(/\s/g, '');
+      var dullCriterion=criterion.toLocaleLowerCase().replace(/\s/g, '');
+     // console.log(intronKeys[j].toLocaleLowerCase().replace(/\s/g, '') + ":" + criterion.toLocaleLowerCase().replace(/\s/g, ''))
+      if (dullKey===dullCriterion)
+      {
+        
+        return (
+          <div className="m-4 d-flex justify-content-between">
+            <h5 >
+              {criterion}
+            </h5>
+            <span className="">{intronValues[index]}</span>
+
+          </div>
+
+        )
+      }
+    }
+  }
 
   render() {
     const { open } = this.state;
@@ -33,22 +66,17 @@ class IntronInfoCollapsable extends Component {
           <h2 className="m-2">{this.props.title}</h2>
         </div>
         <div aria-controls="tool">
-        <Collapse in={open}>
-          <div>
-            {this.props.criteria.map((item) => (
-              <div className="m-4 d-flex justify-content-between">
-              <h5 >
-                {item}
-              </h5>
-              <span className="">result</span>
-              
-              </div>
-              
-            ))}
+          <Collapse in={open}>
+            <div>
+              {this.props.criteria.map((criterion) => (
+               this.matchTextWithKey(criterion)
+
+              ))}
             </div>
           </Collapse>
         </div>
       </div>
-    )}
+    )
+  }
 }
 export default IntronInfoCollapsable;

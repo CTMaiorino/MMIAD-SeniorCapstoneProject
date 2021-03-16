@@ -11,6 +11,23 @@ class DetailedIntronInfo extends Component {
     
   }
 
+  state = {
+    intron:{}
+  }
+
+  async componentDidMount(){
+
+    var link=window.location.href
+    const intronId = link.split("/").pop();
+    console.log(intronId);
+    fetch('https://major-and-minor-intron-db.ue.r.appspot.com/search/intron/' + intronId)
+      .then(response => response.json())
+      .then(data => {
+        this.setState({intron:data})
+      })
+
+  }
+
 basicData = {
   label: "Basic",
   criteria: [
@@ -69,10 +86,10 @@ render (){
       <div className="mt-3"><BackToSearch/></div>
       
       <div className="container-fluid ">
-          <IntronInfoCollapsable title={this.basicData.label} criteria={this.basicData.criteria}/>
-          <IntronInfoCollapsable title={this.geneData.label} criteria={this.geneData.criteria}/>
-          <IntronInfoCollapsable title={this.intronData.label} criteria={this.intronData.criteria}/>
-          <IntronInfoCollapsable title={this.externalData.label} criteria={this.externalData.criteria}/>
+          <IntronInfoCollapsable title={this.basicData.label} criteria={this.basicData.criteria} intron={this.state.intron}/>
+          <IntronInfoCollapsable title={this.geneData.label} criteria={this.geneData.criteria}  intron={this.state.intron}/>
+          <IntronInfoCollapsable title={this.intronData.label} criteria={this.intronData.criteria}  intron={this.state.intron}/>
+          <IntronInfoCollapsable title={this.externalData.label} criteria={this.externalData.criteria}  intron={this.state.intron}/>
       </div>
     </div>
 
