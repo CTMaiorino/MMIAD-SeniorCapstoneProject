@@ -1,17 +1,63 @@
-const Gene = sequelize.define("gene", {
-  geneId: { type: DataTypes.INTEGER, primaryKey: true, allowNull: false },
-  geneName: { type: DataTypes.CHAR, allowNull: true },
-  ncbiGeneId: { type: DataTypes.CHAR, allowNull: true },
-  ensemblGeneId: { type: DataTypes.CHAR, allowNull: true },
-  geneType: { type: DataTypes.CHAR, allowNull: true },
-  geneStartCoord: { type: DataTypes.BIGINT, allowNull: true },
-  geneEndCoord: { type: DataTypes.BIGINT, allowNull: true },
-  geneLength: { type: DataTypes.INTEGER, allowNull: true },
-  geneSequence: { type: DataTypes.CHAR(20000), allowNull: true },
-  ncbiGeneLink: { type: DataTypes.CHAR, allowNull: true },
-  ensembleGeneLink: { type: DataTypes.CHAR, allowNull: true },
-  ucscLink: { type: DataTypes.CHAR, allowNull: true },
-  speciesId: { type: DataTypes.INTEGER, allowNull: true },
+const Sequelize = require('sequelize');
+const db = require('../database');
+
+const Gene = db.define("gene", {
+  geneId: { 
+    type: Sequelize.INTEGER, 
+    primaryKey: true, 
+    allowNull: false 
+  },
+  geneName: { 
+    type: Sequelize.CHAR, 
+    allowNull: true 
+  },
+  ncbiGeneId: { 
+    type: Sequelize.CHAR, 
+    allowNull: true 
+  },
+  ensemblGeneId: { 
+    type: Sequelize.CHAR, 
+    allowNull: true 
+  },
+  geneType: { 
+    type: Sequelize.CHAR, 
+    allowNull: true 
+  },
+  geneStartCoord: { 
+    type: Sequelize.BIGINT, 
+    allowNull: true 
+  },
+  geneEndCoord: { 
+    type: Sequelize.BIGINT, 
+    allowNull: true 
+  },
+  geneLength: { 
+    type: Sequelize.INTEGER, 
+    allowNull: true 
+  },
+  geneSequence: { 
+    type: Sequelize.CHAR(20000), 
+    allowNull: true 
+  },
+  ncbiGeneLink: { 
+    type: Sequelize.CHAR, 
+    allowNull: true 
+  },
+  ensembleGeneLink: { 
+    type: Sequelize.CHAR, 
+    allowNull: true 
+  },
+  ucscLink: { 
+    type: Sequelize.CHAR, 
+    allowNull: true 
+  },
+  speciesId: { 
+    type: Sequelize.INTEGER, 
+    allowNull: true 
+  },
 });
 
 // Add foreign key (speciesId)
+
+//Export
+module.exports = Gene;
