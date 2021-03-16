@@ -22,7 +22,13 @@ const Score = db.define('score', {
     },
     type: {
         type: Sequelize.CHAR
-    }
+    },
+    createdAt: {
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        type: Sequelize.DATE
+      },
 })
 
 module.exports = Score;

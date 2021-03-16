@@ -9,6 +9,7 @@ const Score = require("../models/Score");
 const Transcriptome = require("../models/Transcriptome");
 const Intron_Score_Junction = require("../models/Intron_Score_Junction");
 const Intron_Transcriptome_Junction = require("../models/Intron_Transcriptome_Junction");
+const Intron = require("../models/Intron");
 
 searchRouter.use(bodyParser.json());
 
@@ -22,6 +23,21 @@ searchRouter.get("/test", function (req, res) {
     .catch((err) => console.log(err));
 });
 
+searchRouter.get("/intron", function (req, res) {
+  Intron.findAll()
+    .then((intron) => {
+      console.log(intron);
+      res.json(intron);
+      res.sendStatus(200);
+    })
+    .catch((err) => console.log(err));
+});
+/*
+searchRouter.get("/Intron/:subtype", function (req, res) {
+  await Intron.findOne({ where: { title: 'My Title' } });
+    
+});
+*/
 /* GET search listings. */
 searchRouter.get("/", function (req, res, next) {
   connection.query(

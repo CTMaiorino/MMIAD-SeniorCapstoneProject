@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const db = require('../database');
 
-const Intron = db.define("intron", {
+const Intron = db.define("Intron", {
   intronId: { 
     type: Sequelize.INTEGER, 
     primaryKey: true, 
@@ -62,6 +62,12 @@ const Intron = db.define("intron", {
   donorSpliceSite: { 
     type: Sequelize.CHAR, 
     allowNull: true 
+  },
+  createdAt: {
+    type: Sequelize.DATE
+  },
+  updatedAt: {
+    type: Sequelize.DATE
   },
 });
 

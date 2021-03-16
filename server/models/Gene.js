@@ -56,6 +56,12 @@ const Gene = db.define("gene", {
     type: Sequelize.INTEGER,
     allowNull: true,
   },
+  createdAt: {
+    type: Sequelize.DATE
+  },
+  updatedAt: {
+    type: Sequelize.DATE
+  },
 });
 
 // Add foreign key (speciesId)

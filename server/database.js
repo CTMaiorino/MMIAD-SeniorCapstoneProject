@@ -71,6 +71,10 @@ const sequelize = new Sequelize(
 
 const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASS, {
   dialect: "mysql",
+  define: {
+    timestamps: true,
+    freezeTableName: true
+  },
   host: "/cloudsql/major-and-minor-intron-db:us-east1:mmiad-db",
   timestamps: false,
   dialectOptions: {

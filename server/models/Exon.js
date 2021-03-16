@@ -28,6 +28,12 @@ const Exon = db.define("exon", {
     type: Sequelize.BIGINT,
     allowNull: true,
   },
+  createdAt: {
+    type: Sequelize.DATE
+  },
+  updatedAt: {
+    type: Sequelize.DATE
+  },
 });
 
 // Foreign key (intronId)

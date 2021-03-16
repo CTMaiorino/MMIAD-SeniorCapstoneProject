@@ -28,6 +28,12 @@ const Transcriptome = db.define("transcriptome", {
     type: Sequelize.CHAR,
     allowNull: true,
   },
+  createdAt: {
+    type: Sequelize.DATE
+  },
+  updatedAt: {
+    type: Sequelize.DATE
+  },
 });
 
 // Foreign key (geneId)
