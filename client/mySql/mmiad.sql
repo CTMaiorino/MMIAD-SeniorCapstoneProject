@@ -46,7 +46,7 @@ ADD FOREIGN KEY (speciesId) REFERENCES Species(speciesId);
 
 CREATE TABLE Intron(
 	intronId INT NOT NULL,
-	intronType BIT NULL,
+	intronType VARCHAR(3),
 	subtype NCHAR(5) NULL,
 	intronStartCoord BIGINT NULL,
 	intronSequence VARCHAR(20000) NULL,

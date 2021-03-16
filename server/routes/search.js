@@ -6,13 +6,16 @@ const Species = require('../models/Species');
 
 searchRouter.use(bodyParser.json());
 
-searchRouter.get("/test", (req, res) =>
+searchRouter.get("/test", function(req, res){
   Species.findAll()
       .then(species => {
         console.log(species);
+        res.json(species);
         res.sendStatus(200);
       })
-      .catch(err => console.log(err)));
+      .catch(err => console.log(err))
+});
+
 
 /* GET search listings. */
 searchRouter.get("/",function(req, res, next) {

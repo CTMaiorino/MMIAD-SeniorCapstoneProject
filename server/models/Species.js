@@ -3,19 +3,22 @@ const db = require('../database');
 
 const Species = db.define('species', {
     speciesId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        allowNull: false, 
+        unique: true
     },
     speciesName: {
-        type: Sequelize.STRING
+        type: Sequelize.CHAR
     },
     commonName: {
-        type: Sequelize.STRING
+        type: Sequelize.CHAR
     },
     genomeVersion: {
-        type: Sequelize.STRING
+        type: Sequelize.CHAR
     },
     ensemblVersion: {
-        type: Sequelize.STRING
+        type: Sequelize.CHAR
     },
 })
 

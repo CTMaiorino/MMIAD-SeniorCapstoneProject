@@ -64,14 +64,35 @@ const sequelize = new Sequelize(
   dialect:
   "mysql",
   dialectOptions: {
-  socketPath: `/cloudsql/${DB_INSTANCE_NAME}`,
+  socketPath: `/cloudsql/${process.env.DB_INSTANCE_NAME}`,
   },
   }
   );
 */
+
 const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASS, {
-  host: DB_HOST,
-  dialect: 'mysql'
+  dialect: 'mysql',
+  host: '/cloudsql/major-and-minor-intron-db:us-east1:mmiad-db',
+  timestamps: false,
+  dialectOptions: {
+    socketPath: '/cloudsql/major-and-minor-intron-db:us-east1:mmiad-db',
+},
 });
 
+/*
+const sequelize = new Sequelize('{db_name}', '{db_user}', '{db_password}', {
+  dialect: 'mysql',
+  host: '/cloudsql/{instance}',
+  timestamps: false,
+  dialectOptions: {
+    socketPath: '/cloudsql/{instance}'
+},
+});
+*/
+/*
+const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASS, {
+  host: DB_HOST,
+  dialect: 'mysql',
+});
+*/
   module.exports = sequelize;
