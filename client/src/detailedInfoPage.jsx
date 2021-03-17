@@ -8,92 +8,100 @@ class DetailedIntronInfo extends Component {
   constructor(props) {
     super(props);
     console.log(props);
-    
+
   }
 
   state = {
-    intron:{}
+    intron: {}
   }
 
-  async componentDidMount(){
+  async componentDidMount() {
 
-    var link=window.location.href
+    var link = window.location.href
     const intronId = link.split("/").pop();
     console.log(intronId);
     fetch('https://major-and-minor-intron-db.ue.r.appspot.com/search/intron/' + intronId)
       .then(response => response.json())
       .then(data => {
-        this.setState({intron:data})
+        this.setState({ intron: data })
       })
 
   }
 
-basicData = {
-  label: "Basic",
-  criteria: [
-    "Species",
-    "Common Name",
-    "Rank",
-    "Genome Version",
-    "Ensembl Version",
-  ],
-}
+  basicData = {
+    label: "Basic",
+    criteria: [
+      "Species",
+      "Common Name",
+      "Rank",
+      "Genome Version",
+      "Ensembl Version",
+    ],
+  }
 
-geneData = {
-  label: "Gene",
-  criteria: [
-    "Name",
-    "NCBI Gene ID",
-    "Ensembl Gene ID",
-    "Sequence",
-    "Coordinates",
-    "Length",
-    "Strand",
-    "Ensembl Transcript ID",
-  ],
-}
+  geneData = {
+    label: "Gene",
+    criteria: [
+      "Name",
+      "NCBI Gene ID",
+      "Ensembl Gene ID",
+      "Sequence",
+      "Coordinates",
+      "Length",
+      "Strand",
+      "Ensembl Transcript ID",
+    ],
+  }
 
-intronData = {
-  label: "Intron",
-  criteria: [
-    "Length",
-    "Coordinates",
-    "Sequence",
-    "Type",
-    "Subtype",
-    "Score",
-    "Branch Point Sequence",
-    "Acceptor Splice Site",
-    "Donor Splice Site",
-  ],
-};
+  intronData = {
+    label: "Intron",
+    criteria: [
+      "Length",
+      "Coordinates",
+      "Sequence",
+      "Type",
+      "Subtype",
+      "Score",
+      "Branch Point Sequence",
+      "Acceptor Splice Site",
+      "Donor Splice Site",
+    ],
+  };
 
-externalData = {
-  label: "External",
-  criteria: [
-    "NCBI Gene Link",
-    "Ensembl Gene Link",
-    "Transcript Ensembl Link",
-    "UCSC Link - Gene",
-    "UCSC Link - Intron",
-  ],
-};
+  externalData = {
+    label: "External",
+    criteria: [
+      "NCBI Gene Link",
+      "Ensembl Gene Link",
+      "Transcript Ensembl Link",
+      "UCSC Link - Gene",
+      "UCSC Link - Intron",
+    ],
+  };
 
-render (){
-  return (
-    <div>
-      <Header />
-      <div className="mt-3"><BackToSearch/></div>
-      
-      <div className="container-fluid ">
-          <IntronInfoCollapsable title={this.basicData.label} criteria={this.basicData.criteria} intron={this.state.intron}/>
-          <IntronInfoCollapsable title={this.geneData.label} criteria={this.geneData.criteria}  intron={this.state.intron}/>
-          <IntronInfoCollapsable title={this.intronData.label} criteria={this.intronData.criteria}  intron={this.state.intron}/>
-          <IntronInfoCollapsable title={this.externalData.label} criteria={this.externalData.criteria}  intron={this.state.intron}/>
+
+
+
+
+
+
+
+
+  render() {
+    return (
+      <div>
+        <Header />
+        <div className="mt-3"><BackToSearch /></div>
+
+        <div className="container-fluid ">
+          <IntronInfoCollapsable title={this.basicData.label} criteria={this.basicData.criteria} intron={this.state.intron} />
+          <IntronInfoCollapsable title={this.geneData.label} criteria={this.geneData.criteria} intron={this.state.intron} />
+          <IntronInfoCollapsable title={this.intronData.label} criteria={this.intronData.criteria} intron={this.state.intron} />
+          <IntronInfoCollapsable title={this.externalData.label} criteria={this.externalData.criteria} intron={this.state.intron} />
+        </div>
       </div>
-    </div>
 
-  )
-}
+    )
+  }
 }
 export default DetailedIntronInfo;
