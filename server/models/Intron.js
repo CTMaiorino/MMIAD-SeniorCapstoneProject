@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const db = require('../database');
+const Species = require("../models/Species");
 
 const Intron = db.define("Intron", {
   intronId: { 
@@ -70,6 +71,7 @@ const Intron = db.define("Intron", {
     type: Sequelize.DATE
   },
 });
+
 
 //Export
 module.exports = Intron;

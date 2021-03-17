@@ -37,7 +37,7 @@ const Transcriptome = db.define("transcriptome", {
 });
 
 // Foreign key (geneId)
-Transcriptome.belongsTo(Gene, { foreignKey: "geneId" });
+//Transcriptome.belongsTo(Gene, { foreignKey: "geneId" });
 
 //Export
 module.exports = Transcriptome;
