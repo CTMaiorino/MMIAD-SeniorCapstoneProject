@@ -14,7 +14,7 @@ class ResultsTableRow extends Component {
 
     state = {
         intron: this.props.intron,
-        intronId: 1
+        intronId: 1 //Temp. will be replace with props.intron.intronid once the search route contains that data
     };
     
     render() {
@@ -28,6 +28,7 @@ class ResultsTableRow extends Component {
                 <td>{this.state.intron.geneName}</td>
                 <td>{this.state.intron.type}</td>
                 <td>{this.state.intron.subtype}</td>
+                <td>{this.state.intron.chromosome}</td>
                 <td>{this.state.intron.start}</td>
                 <td>{this.state.intron.end}</td>
 

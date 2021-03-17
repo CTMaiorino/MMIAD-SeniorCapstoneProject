@@ -10,7 +10,7 @@ class ResultsTable extends Component {
     constructor(props) {
         super(props);
         console.log(props.introns);
-        this.onFormSubmit = this.onFormSubmit.bind(this);
+        
     }
 
     state = {
@@ -18,28 +18,7 @@ class ResultsTable extends Component {
         selectedVersion: true,
     };
 
-    onFormSubmit = (e) => {
-        console.log(e)
-        
-        const formData = new FormData(e.target),
-          formDataObj = Object.fromEntries(formData.entries());
-        console.log(formDataObj);
-    
-        var params = formDataObj; // The object containing search parameters
-        var species = params.species
-        var version = params.version
-        fetch("https://major-and-minor-intron-db.ue.r.appspot.com/search/species/" + species + "/" + version)
-        .then(response => response.json())
-          .then(intron => {
-            this.props.history.push({
-              pathname: "/results",
-              state: {
-                data: intron
-              }
-            })
-            })
 
-        }
     render() {
         return (
             <Table bordered hover>
