@@ -9,12 +9,14 @@ var logger = require("morgan");
 
 require('dotenv').config(); //
 const mysql = require('mysql'); //DB Connection
-var connection = require("./database");
+var db = require("./database");
 
 //Test Sequelize connection
+/*
 connection.authenticate()
   .then(()=> console.log('DB Connected'))
   .catch(err => console.log('Error' + err))
+*/
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
@@ -38,21 +40,6 @@ app.use(
     extended: false,
   })
 );
-
-
-//app.use(connection);
-/*
-app.route('/search')
-  .get(function(req, res, next) {
-    connection.query(
-      "SELECT `speciesName` FROM `Species` ",
-      function(error, results, fields) {
-        if (error) throw error;
-        res.json(results);
-      }
-    );
-  });
-*/
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);

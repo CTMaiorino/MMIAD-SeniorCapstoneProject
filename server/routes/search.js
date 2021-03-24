@@ -11,11 +11,43 @@ const Intron_Score_Junction = require("../models/Intron_Score_Junction");
 const Intron_Transcriptome_Junction = require("../models/Intron_Transcriptome_Junction");
 const Intron = require("../models/Intron");
 const { Op } = require("sequelize");
+const QueryTypes = require("sequelize");
+const sequelize = connection.sequelize;
 
 // Gene.belongsToMany(Species, { foreignKey: "speciesId"});
 // Species.HasOne(Gene, { foreignKey: "speciesId"});
 
 searchRouter.use(bodyParser.json());
+
+
+////Test Code////
+
+const getJoinData = speciesId => {
+  return  sequelize.query('SELECT * FROM `Species` INNER JOIN `Gene` ON Species.speciesId = Gene.speciesId', {
+    replacements: { id: speciesId},
+    type: QueryTypes.SELECT
+  }).then(response => {
+      console.log(response);
+      return response;
+  });
+};
+//findall subsections by sectionID 
+searchRouter.get("/new/:speciesId", async (req, res) => {
+  getJoinData(req.params.speciesId).then(foundSection => {
+    console.log(foundSection);
+  res.send(foundSection);
+  }); 
+  const foundSections = await sequelize.query('SELECT * FROM `Species` INNER JOIN `Gene` ON Species.speciesId = Gene.speciesId', {
+    replacements: { id: speciesId},
+    type: QueryTypes.SELECT
+  }); 
+  res.json(foundSections);
+});
+
+
+//////   /////
+
+
 
 searchRouter.get("/test", function (req, res) {
   Species.findAll()
@@ -29,13 +61,32 @@ searchRouter.get("/test", function (req, res) {
 
 // Raw SQL Query
 searchRouter.get("/test/sql", function (req, res) {
-  connection.query("SELECT * FROM `Species` INNER JOIN `Gene` ON Species.speciesId = Gene.speciesId",
+  sequelize.query("SELECT * FROM `Species` INNER JOIN `Gene` ON Species.speciesId = Gene.speciesId",
     function (error, results, fields) {
       if (error) throw error;
       res.json(results);
     }
   )
 });
+
+searchRouter.get("/:speciesId", async (req, res) => {
+  //console.log(foundSections);
+  getSpeciesGene(req.params.speciesId).then(foundSection => {
+    console.log(foundSection);
+    res.send(foundSection);
+  })
+  .catch((err) => console.log(err));
+});
+
+const getSpeciesGene = speciesId => {
+  return  sequelize.query('SELECT * FROM `Species` INNER JOIN `Gene` ON Species.speciesId = Gene.speciesId', {
+    replacements: { id: speciesId},
+    type: QueryTypes.SELECT
+  }).then(response => {
+      console.log(response);
+      return response;
+  }).catch((err) => console.log(err));
+}; 
 
 // INNER JOIN QUERY (Species and Gene) - NOT WORKING - (ERROR) ASSOCIATION W/ INTRON
 searchRouter.get("/test/:speciesId", function (req, res) {

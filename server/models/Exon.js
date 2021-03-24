@@ -1,43 +1,17 @@
-const Sequelize = require("sequelize");
-const db = require("../database");
-const Intron = require("../models/Intron");
+const {Sequelize, DataTypes } = require('sequelize');
 
-const Exon = db.define("exon", {
-  exonId: {
-    type: Sequelize.INTEGER,
-    primaryKey: true,
-    allowNull: false,
-  },
-  exonStartCoordUp: {
-    type: Sequelize.BIGINT,
-    allowNull: true,
-  },
-  exonEndCoordUp: {
-    type: Sequelize.BIGINT,
-    allowNull: true,
-  },
-  intronId: {
-    type: Sequelize.INTEGER,
-    allowNull: true,
-  },
-  exonStartCoordDown: {
-    type: Sequelize.BIGINT,
-    allowNull: true,
-  },
-  exonStartCoordDown: {
-    type: Sequelize.BIGINT,
-    allowNull: true,
-  },
-  createdAt: {
-    type: Sequelize.DATE
-  },
-  updatedAt: {
-    type: Sequelize.DATE
-  },
-});
-
-// Foreign key (intronId)
-Intron.hasMany(Exon, { foreignKey: "intronId" });
-
-//Export
-module.exports = Exon;
+module.exports = (connection, Sequelize) => {
+const Exon = connection.define("Exon", {
+  exonId: {type: DataTypes.INTEGER, primaryKey: true, allowNull: false, unique: true},
+  exonStartCoordUp: {type: DataTypes.BIGINT},
+  exonEndCoordUp: {type: DataTypes.BIGINT},
+  intronId: {type: DataTypes.INTEGER, foreignKey: true},
+  exonStartCoordDown: {type: DataTypes.BIGINT},
+  exonStartCoordDown: {type: DataTypes.BIGINT},
+  createdAt: {type: DataTypes.DATE},
+  updatedAt: {type: DataTypes.DATE}},
+  {
+  timestamps: false
+  });
+  return Exon;
+};

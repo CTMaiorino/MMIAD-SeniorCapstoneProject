@@ -1,43 +1,17 @@
-const Sequelize = require("sequelize");
-const db = require("../database");
-const Gene = require("../models/Gene");
+const {Sequelize, DataTypes } = require('sequelize');
 
-const Transcriptome = db.define("transcriptome", {
-  transcriptomeId: {
-    type: Sequelize.INTEGER,
-    primaryKey: true,
-    allowNull: false,
-  },
-  transcriptomeEnsemblLink: {
-    type: Sequelize.CHAR,
-    allowNull: true,
-  },
-  transcriptomeStartCoord: {
-    type: Sequelize.BIGINT,
-    allowNull: true,
-  },
-  transcriptomeEndCoord: {
-    type: Sequelize.BIGINT,
-    allowNull: true,
-  },
-  geneId: {
-    type: Sequelize.INTEGER,
-    allowNull: true,
-  },
-  ensemblId: {
-    type: Sequelize.CHAR,
-    allowNull: true,
-  },
-  createdAt: {
-    type: Sequelize.DATE
-  },
-  updatedAt: {
-    type: Sequelize.DATE
-  },
-});
-
-// Foreign key (geneId)
-//Transcriptome.belongsTo(Gene, { foreignKey: "geneId" });
-
-//Export
-module.exports = Transcriptome;
+module.exports = (connection, Sequelize) => {
+const Transcriptome = connection.define("Transcriptome", {
+  transcriptomeId: {type: DataTypes.INTEGER, primaryKey: true, allowNull: false, unique: true},
+  transcriptomeEnsemblLink: {type: DataTypes.CHAR},
+  transcriptomeStartCoord: {type: DataTypes.BIGINT},
+  transcriptomeEndCoord: {type: DataTypes.BIGINT},
+  geneId: {type: DataTypes.INTEGER},
+  ensemblId: {type: DataTypes.CHAR},
+  createdAt: {type: DataTypes.DATE},
+  updatedAt: {type: DataTypes.DATE}},
+  {
+  timestamps: false
+  });
+  return Transcriptome;
+};

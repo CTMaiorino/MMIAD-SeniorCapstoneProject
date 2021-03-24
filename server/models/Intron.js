@@ -1,77 +1,26 @@
-const Sequelize = require('sequelize');
-const db = require('../database');
-const Species = require("../models/Species");
+const {Sequelize, DataTypes } = require('sequelize');
 
-const Intron = db.define("Intron", {
-  intronId: { 
-    type: Sequelize.INTEGER, 
-    primaryKey: true, 
-    allowNull: false 
-  },
-  intronType: { 
-    type: Sequelize.CHAR(3), 
-    allowNull: true 
-  },
-  subtype: { 
-    type: Sequelize.CHAR(3), 
-    allowNull: true 
-  },
-  intronStartCoord: { 
-    type: Sequelize.BIGINT, 
-    allowNull: true 
-  },
-  intronSequence: { 
-    type: Sequelize.CHAR(20000), 
-    allowNull: true 
-  },
-  rank: { 
-    type: Sequelize.INTEGER, 
-    allowNull: true 
-  },
-  intronLength: { 
-    type: Sequelize.INTEGER, 
-    allowNull: true 
-  },
-  branchPoint: { 
-    type: Sequelize.CHAR, 
-    allowNull: true 
-  },
-  acceptorSpliceSite: { 
-    type: Sequelize.CHAR, 
-    allowNull: true 
-  },
-  strand: { 
-    type: Sequelize.BOOLEAN, 
-    allowNull: true 
-  },
-  cluster: { 
-    type: Sequelize.INTEGER, 
-    allowNull: true 
-  },
-  frame: { 
-    type: Sequelize.INTEGER, 
-    allowNull: true 
-  },
-  chromosome: { 
-    type: Sequelize.CHAR, 
-    allowNull: true 
-  },
-  intronEndCoord: { 
-    type: Sequelize.BIGINT, 
-    allowNull: true 
-  },
-  donorSpliceSite: { 
-    type: Sequelize.CHAR, 
-    allowNull: true 
-  },
-  createdAt: {
-    type: Sequelize.DATE
-  },
-  updatedAt: {
-    type: Sequelize.DATE
-  },
-});
-
-
-//Export
-module.exports = Intron;
+module.exports = (connection, Sequelize) => {
+const Intron = connection.define("Intron", {
+  intronId: {type: DataTypes.INTEGER, primaryKey: true, allowNull: false, unique: true},
+  intronType: {type: DataTypes.CHAR(3)},
+  subtype: {type: DataTypes.CHAR(3)},
+  intronStartCoord: {type: DataTypes.BIGINT},
+  intronSequence: {type: DataTypes.CHAR(20000)},
+  rank: {type: DataTypes.INTEGER},
+  intronLength: {type: DataTypes.INTEGER},
+  branchPoint: {type: DataTypes.CHAR},
+  acceptorSpliceSite: {type: DataTypes.CHAR},
+  strand: {type: DataTypes.BOOLEAN},
+  cluster: {type: DataTypes.INTEGER},
+  frame: {type: DataTypes.INTEGER},
+  chromosome: {type: DataTypes.CHAR},
+  intronEndCoord: {type: DataTypes.BIGINT},
+  donorSpliceSite: {type: DataTypes.CHAR},
+  createdAt: {type: DataTypes.DATE},
+  updatedAt: {type: DataTypes.DATE}},
+  {
+  timestamps: false
+  });
+  return Intron;
+};

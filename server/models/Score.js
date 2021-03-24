@@ -1,34 +1,17 @@
-const Sequelize = require('sequelize');
-const db = require('../database');
+const {Sequelize, DataTypes } = require('sequelize');
 
-const Score = db.define('score', {
-    scoreId: {
-        type: Sequelize.INTEGER,
-        primaryKey: true,
-        allowNull: false, 
-        unique: true
-    },
-    overallScore: {
-        type: Sequelize.FLOAT
-    },
-    fiveScore: {
-        type: Sequelize.FLOAT
-    },
-    threeScore: {
-        type: Sequelize.FLOAT
-    },
-    breakpointScore: {
-        type: Sequelize.FLOAT
-    },
-    type: {
-        type: Sequelize.CHAR
-    },
-    createdAt: {
-        type: Sequelize.DATE
-      },
-      updatedAt: {
-        type: Sequelize.DATE
-      },
-})
-
-module.exports = Score;
+module.exports = (connection, Sequelize) => {
+const Score = connection.define("Score", {
+  scoreId: {type: DataTypes.INTEGER, primaryKey: true, allowNull: false, unique: true},
+  overallScore: {type: DataTypes.FLOAT},
+  fiveScore: {type: DataTypes.FLOAT},
+  threeScore: {type: DataTypes.FLOAT},
+  breakpointScore: {type: DataTypes.FLOAT},
+  type: {type: DataTypes.CHAR},
+  createdAt: {type: DataTypes.DATE},
+  updatedAt: {type: DataTypes.DATE}},
+  {
+  timestamps: false
+  });
+  return Score;
+};
