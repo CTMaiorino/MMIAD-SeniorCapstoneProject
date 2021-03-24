@@ -4,7 +4,7 @@ var bodyParser = require("body-parser");
 var connection = require("../database");
 const Species = require("../models/Species");
 const Exon = require("../models/Exon");
-const  Gene  = require("../models/Gene");
+const Gene = require("../models/Gene");
 const Score = require("../models/Score");
 const Transcriptome = require("../models/Transcriptome");
 const Intron_Score_Junction = require("../models/Intron_Score_Junction");
@@ -30,39 +30,45 @@ searchRouter.get("/test", function (req, res) {
 // Raw SQL Query
 searchRouter.get("/test/sql", function (req, res) {
   connection.query("SELECT * FROM `Species` INNER JOIN `Gene` ON Species.speciesId = Gene.speciesId",
-  function (error, results, fields) {
-    if (error) throw error;
-    res.json(results);
-  }
-)});
+    function (error, results, fields) {
+      if (error) throw error;
+      res.json(results);
+    }
+  )
+});
 
 // INNER JOIN QUERY (Species and Gene) - NOT WORKING - (ERROR) ASSOCIATION W/ INTRON
 searchRouter.get("/test/:speciesId", function (req, res) {
   Species.findOne({
     include: {
+      all:true,
       model: Gene,
+      attributes: req.params.speciesId,
       as: 'Gene',
       where: {
-        speciesId: { [Op.and]: req.params.speciesId }
+        speciesId: { [Op.and]: req.params.speciesId } // was Op.and
       }
     }
   }).then((species) => {
-      console.log(species);
-      res.json(species);
-      res.sendStatus(200);
-    })
+    console.log(species);
+    res.json(species);
+    res.sendStatus(200);
+  })
     .catch((err) => console.log(err));
 });
 
 searchRouter.get("/test/join/:speciesId", function (req, res) {
-  Gene.findOne({ 
-    include: { 
-      model: Species,
-      as: 'Species',
-      where: { 
-    speciesId: req.params.speciesId,
-   }}})
-  .then((species) => {
+  Species.findOne({
+    include: {
+      all: true,
+      model: Gene,
+      as: 'Gene',
+      where: {
+        speciesId: req.params.speciesId,
+      }
+    }
+  })
+    .then((species) => {
       console.log(species);
       res.json(species);
       res.sendStatus(200);
@@ -72,7 +78,7 @@ searchRouter.get("/test/join/:speciesId", function (req, res) {
 
 searchRouter.get("/intron", function (req, res) {
   Intron.findAll()
-  .then((intron) => {
+    .then((intron) => {
       console.log(intron);
       res.json(intron);
       res.sendStatus(200);
@@ -88,10 +94,10 @@ searchRouter.get("/intron/:intronId", function (req, res) {
       ]
     }
   }).then((intron) => {
-      console.log(intron);
-      res.json(intron);
-      res.sendStatus(200);
-    })
+    console.log(intron);
+    res.json(intron);
+    res.sendStatus(200);
+  })
     .catch((err) => console.log(err));
 });
 
@@ -116,7 +122,7 @@ searchRouter.get("/", function (req, res, next) {
 // GET all species
 searchRouter.get("/species", function (req, res, next) {
   Species.findAll({ attributes: ['speciesName'] })
-  .then((intron) => {
+    .then((intron) => {
       console.log(intron);
       res.json(intron);
       res.sendStatus(200);
@@ -167,10 +173,10 @@ searchRouter.get("/species/:speciesName", function (req, res, next) {
       ]
     }
   }).then((intron) => {
-      console.log(intron);
-      res.json(intron);
-      res.sendStatus(200);
-    })
+    console.log(intron);
+    res.json(intron);
+    res.sendStatus(200);
+  })
     .catch((err) => console.log(err));
 });
 

@@ -1,6 +1,6 @@
 const Sequelize = require("sequelize");
 const db = require("../database");
-const Species = require("../models/Species");
+//const Species = require("../models/Species");
 
 const Gene = db.define("Gene", {
   geneId: {
@@ -69,10 +69,10 @@ const Gene = db.define("Gene", {
 
 
  Gene.associate = (models) => {
-  //Gene.belongsToMany(models.Species, {foreignKey: 'speciesId'});
-  Gene.belongsToMany(models.Species);
-  Species.hasOne(models.Gene);
+  Gene.belongsToMany(models.Species, {foreignKey: "speciesId"});
  };
+ //Species.hasOne(models.Gene, { foreignKey: "speciesId"});
+ //Gene.belongsToMany(models.Species, {foreignKey: 'speciesId'});
 /*
  Species.associate = (models) => {
   //Species.hasOne(models.Gene, { foreignKey: "speciesId"});
