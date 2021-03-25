@@ -19,35 +19,39 @@ const sequelize = connection.sequelize;
 
 searchRouter.use(bodyParser.json());
 
-
 ////Test Code////
 
-const getJoinData = speciesId => {
-  return  sequelize.query('SELECT * FROM `Species` INNER JOIN `Gene` ON Species.speciesId = Gene.speciesId', {
-    replacements: { id: speciesId},
-    type: QueryTypes.SELECT
-  }).then(response => {
+const getJoinData = (speciesId) => {
+  return sequelize
+    .query(
+      "SELECT * FROM `Species` INNER JOIN `Gene` ON Species.speciesId = Gene.speciesId",
+      {
+        replacements: { id: speciesId },
+        type: QueryTypes.SELECT,
+      }
+    )
+    .then((response) => {
       console.log(response);
       return response;
-  });
+    });
 };
-//findall subsections by sectionID 
+//findall subsections by sectionID
 searchRouter.get("/new/:speciesId", async (req, res) => {
-  getJoinData(req.params.speciesId).then(foundSection => {
+  getJoinData(req.params.speciesId).then((foundSection) => {
     console.log(foundSection);
-  res.send(foundSection);
-  }); 
-  const foundSections = await sequelize.query('SELECT * FROM `Species` INNER JOIN `Gene` ON Species.speciesId = Gene.speciesId', {
-    replacements: { id: speciesId},
-    type: QueryTypes.SELECT
-  }); 
+    res.send(foundSection);
+  });
+  const foundSections = await sequelize.query(
+    "SELECT * FROM `Species` INNER JOIN `Gene` ON Species.speciesId = Gene.speciesId",
+    {
+      replacements: { id: speciesId },
+      type: QueryTypes.SELECT,
+    }
+  );
   res.json(foundSections);
 });
 
-
 //////   /////
-
-
 
 searchRouter.get("/test", function (req, res) {
   Species.findAll()
@@ -61,50 +65,59 @@ searchRouter.get("/test", function (req, res) {
 
 // Raw SQL Query
 searchRouter.get("/test/sql", function (req, res) {
-  sequelize.query("SELECT * FROM `Species` INNER JOIN `Gene` ON Species.speciesId = Gene.speciesId",
+  sequelize.query(
+    "SELECT * FROM `Species` INNER JOIN `Gene` ON Species.speciesId = Gene.speciesId",
     function (error, results, fields) {
       if (error) throw error;
       res.json(results);
     }
-  )
+  );
 });
 
 searchRouter.get("/:speciesId", async (req, res) => {
   //console.log(foundSections);
-  getSpeciesGene(req.params.speciesId).then(foundSection => {
-    console.log(foundSection);
-    res.send(foundSection);
-  })
-  .catch((err) => console.log(err));
+  getSpeciesGene(req.params.speciesId)
+    .then((foundSection) => {
+      console.log(foundSection);
+      res.send(foundSection);
+    })
+    .catch((err) => console.log(err));
 });
 
-const getSpeciesGene = speciesId => {
-  return  sequelize.query('SELECT * FROM `Species` INNER JOIN `Gene` ON Species.speciesId = Gene.speciesId', {
-    replacements: { id: speciesId},
-    type: QueryTypes.SELECT
-  }).then(response => {
+const getSpeciesGene = (speciesId) => {
+  return sequelize
+    .query(
+      "SELECT * FROM `Species` INNER JOIN `Gene` ON Species.speciesId = Gene.speciesId",
+      {
+        replacements: { id: speciesId },
+        type: QueryTypes.SELECT,
+      }
+    )
+    .then((response) => {
       console.log(response);
       return response;
-  }).catch((err) => console.log(err));
-}; 
+    })
+    .catch((err) => console.log(err));
+};
 
 // INNER JOIN QUERY (Species and Gene) - NOT WORKING - (ERROR) ASSOCIATION W/ INTRON
 searchRouter.get("/test/:speciesId", function (req, res) {
   Species.findOne({
     include: {
-      all:true,
+      all: true,
       model: Gene,
       attributes: req.params.speciesId,
-      as: 'Gene',
+      as: "Gene",
       where: {
-        speciesId: { [Op.and]: req.params.speciesId } // was Op.and
-      }
-    }
-  }).then((species) => {
-    console.log(species);
-    res.json(species);
-    res.sendStatus(200);
+        speciesId: { [Op.and]: req.params.speciesId }, // was Op.and
+      },
+    },
   })
+    .then((species) => {
+      console.log(species);
+      res.json(species);
+      res.sendStatus(200);
+    })
     .catch((err) => console.log(err));
 });
 
@@ -113,11 +126,11 @@ searchRouter.get("/test/join/:speciesId", function (req, res) {
     include: {
       all: true,
       model: Gene,
-      as: 'Gene',
+      as: "Gene",
       where: {
         speciesId: req.params.speciesId,
-      }
-    }
+      },
+    },
   })
     .then((species) => {
       console.log(species);
@@ -140,15 +153,14 @@ searchRouter.get("/intron", function (req, res) {
 searchRouter.get("/intron/:intronId", function (req, res) {
   Intron.findAll({
     where: {
-      [Op.and]: [
-        { intronId: req.params.intronId },
-      ]
-    }
-  }).then((intron) => {
-    console.log(intron);
-    res.json(intron);
-    res.sendStatus(200);
+      [Op.and]: [{ intronId: req.params.intronId }],
+    },
   })
+    .then((intron) => {
+      console.log(intron);
+      res.json(intron);
+      res.sendStatus(200);
+    })
     .catch((err) => console.log(err));
 });
 
@@ -172,7 +184,7 @@ searchRouter.get("/", function (req, res, next) {
 
 // GET all species
 searchRouter.get("/species", function (req, res, next) {
-  Species.findAll({ attributes: ['speciesName'] })
+  Species.findAll({ attributes: ["speciesName"] })
     .then((intron) => {
       console.log(intron);
       res.json(intron);
@@ -204,8 +216,8 @@ searchRouter.get("/species/:speciesName/:genomeVersion", function (req, res) {
       [Op.and]: [
         { speciesName: req.params.speciesName },
         { genomeVersion: req.params.genomeVersion },
-      ]
-    }
+      ],
+    },
   })
     .then((species) => {
       console.log(species);
@@ -219,15 +231,14 @@ searchRouter.get("/species/:speciesName/:genomeVersion", function (req, res) {
 searchRouter.get("/species/:speciesName", function (req, res, next) {
   Species.findAll({
     where: {
-      [Op.and]: [
-        { speciesName: req.params.speciesName },
-      ]
-    }
-  }).then((intron) => {
-    console.log(intron);
-    res.json(intron);
-    res.sendStatus(200);
+      [Op.and]: [{ speciesName: req.params.speciesName }],
+    },
   })
+    .then((intron) => {
+      console.log(intron);
+      res.json(intron);
+      res.sendStatus(200);
+    })
     .catch((err) => console.log(err));
 });
 
@@ -240,7 +251,6 @@ searchRouter.post("/", function (req, res, next) {
 });
 
 module.exports = searchRouter;
-
 
 // SELECT *
 // FROM mmiadDB.Species s
