@@ -4,7 +4,11 @@ module.exports = (connection, Sequelize) => {
   const Gene = connection.define(
     "Gene",
     {
-      geneId: { type: DataTypes.INTEGER, primaryKey: true, allowNull: false },
+      geneId: { 
+        type: DataTypes.INTEGER, 
+        primaryKey: true, 
+        allowNull: false 
+      },
       ensemblGeneId: { type: DataTypes.CHAR },
       geneName: { type: DataTypes.CHAR },
       ncbiGeneId: { type: DataTypes.CHAR },

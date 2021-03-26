@@ -2,7 +2,12 @@ const {Sequelize, DataTypes } = require('sequelize');
 
 module.exports = (connection, Sequelize) => {
 const Species = connection.define("Species", {
-  speciesId: {type: DataTypes.INTEGER, primaryKey: true, allowNull: false, unique: true},
+  speciesId: {
+    type: DataTypes.INTEGER, 
+    primaryKey: true, 
+    allowNull: false, 
+    unique: true
+  },
   speciesName: {type: DataTypes.CHAR},
   commonName: {type: DataTypes.CHAR},
   genomeVersion: {type: DataTypes.CHAR},

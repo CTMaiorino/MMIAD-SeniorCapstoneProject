@@ -21,7 +21,7 @@ const connection = new Sequelize(DB_NAME, DB_USER, DB_PASS, {
 
 connection.authenticate()
 .then(function(err) {
-console.log('Connection successful...Testing');
+console.log('Connection successful.');
 })
 .catch(function (err) {
 console.log('Unable to connect to the database:', err);
@@ -44,7 +44,7 @@ db.Transcriptome = require('./models/Transcriptome')(connection, Sequelize);
 
 console.log("Exon table is defined: " + connection.isDefined('Exon'));
 console.log("Gene table is defined: " + connection.isDefined('Gene'));
-console.log("Intron_Score_Juction table is defined: " + connection.isDefined('Intron_Score_Juction'));
+console.log("Intron_Score_Junction table is defined: " + connection.isDefined('Intron_Score_Junction'));
 console.log("Intron_Transcriptome_Junction table is defined: " + connection.isDefined('Intron_Transcriptome_Junction'));
 console.log("Intron table is defined: " + connection.isDefined('Intron'));
 console.log("Score table is defined: " + connection.isDefined('Score'));

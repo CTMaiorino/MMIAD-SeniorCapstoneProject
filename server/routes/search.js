@@ -51,7 +51,59 @@ searchRouter.get("/new/:speciesId", async (req, res) => {
   res.json(foundSections);
 });
 
+
+
+/////////////////////////////
+const getData = (searchCriteria) => {
+  return sequelize
+    .query(
+      "SELECT * FROM Species s INNER JOIN Gene g ON s.speciesId = g.speciesId INNER JOIN Transcriptome t ON g.geneNumId = t.geneNumId INNER JOIN intron_transcriptome_junction itj ON t.transcriptomeNumId = itj.transcriptomeNumId INNER JOIN Intron i ON itj.intronNumId = i.intronNumId INNER JOIN Exon e ON i.intronNumId = e.intronNumId INNER JOIN intron_score_junction isj ON i.intronNumId = isj.intronNumId INNER JOIN Score score ON isj.scoreId = score.scoreId WHERE s.speciesName = :species AND s.genomeVersion = :version AND i.strand = :strand",
+      {
+        replacements: { 
+          species: searchCriteria.speciesName,
+          version: searchCriteria.version,
+          ensembleGeneId: searchCriteria.ensembleGeneId,
+          ensembleTranscriptId: searchCriteria.ensembleTranscriptId,
+          geneSymbol: searchCriteria.geneSymbol,
+          intronClass: searchCriteria.intronClass,
+          exactLength: searchCriteria.exactLength,
+          relativeLength: searchCriteria.relativeLength,
+          strand: searchCriteria.strand,
+          coordinates: searchCriteria.coordinates,
+          exactExonRank: searchCriteria.exactExonRank,
+          relativeExonLength: searchCriteria.relativeExonLength,
+          sequence: searchCriteria.sequence
+         },
+        type: QueryTypes.SELECT,
+      }
+    )
+    .then((response) => {
+      console.log(response);
+      return response;
+    });
+};
+//findall subsections by sectionID
+searchRouter.post("/new", async (req, res) => {
+  getData(req.body).then((foundResult) => {
+    console.log(foundResult);
+    res.send(foundResult);
+  });
+  res.json(foundResult);
+});
+
+////////
+
+
 //////   /////
+
+
+searchRouter.post("/reqTest", (req, res) => {
+  console.log(req.body);
+  res.json(req.body.name + req.body.last);
+  res.sendStatus(200);
+});
+
+////////////////////////////////////////////////////////////
 
 searchRouter.get("/test", function (req, res) {
   Species.findAll()
@@ -253,19 +305,19 @@ searchRouter.post("/", function (req, res, next) {
 module.exports = searchRouter;
 
 // SELECT *
-// FROM mmiadDB.Species s
-// INNER JOIN mmiadDB.Gene g
+// FROM Species s
+// INNER JOIN Gene g
 // 	ON s.speciesId = g.speciesId
-// INNER JOIN mmiadDB.Transcriptome t
-// 	ON g.geneId = t.geneId
-// INNER JOIN mmiadDB.intron_transcriptome_junction itj
-// 	ON t.transcriptomeId = itj.transcriptomeId
-// INNER JOIN mmiadDB.Intron i
-// 	ON itj.intronId = i.intronId
-// INNER JOIN mmiadDB.Exon e
-// 	ON i.intronId = e.intronId
-// INNER JOIN mmiadDB.intron_score_junction isj
-// 	ON i.intronId = isj.intronId
-// INNER JOIN mmiadDB.Score score
+// INNER JOIN Transcriptome t
+// 	ON g.geneNumId = t.geneNumId
+// INNER JOIN intron_transcriptome_junction itj
+// 	ON t.transcriptomeNumId = itj.transcriptomeNumId
+// INNER JOIN Intron i
+// 	ON itj.intronNumId = i.intronNumId
+// INNER JOIN Exon e
+// 	ON i.intronNumId = e.intronNumId
+// INNER JOIN intron_score_junction isj
+// 	ON i.intronNumId = isj.intronNumId
+// INNER JOIN Score score
 // 	ON isj.scoreId = score.scoreId;
-// WHERE i.intronId = ?
+// WHERE i.intronId = ? // Multiple WHERE clauses based on the selected criteria (WHERE... AND WHERE... AND WHERE...)
