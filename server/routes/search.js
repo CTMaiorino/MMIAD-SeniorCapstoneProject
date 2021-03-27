@@ -14,12 +14,37 @@ const { Op } = require("sequelize");
 const QueryTypes = require("sequelize");
 const sequelize = connection.sequelize;
 
+const filteredCriteria = {}; // An object containing only non-empty search criteria values
+
 // Gene.belongsToMany(Species, { foreignKey: "speciesId"});
 // Species.HasOne(Gene, { foreignKey: "speciesId"});
 
 searchRouter.use(bodyParser.json());
 
-////Test Code////
+// Step 1. This function takes in the searchCriteria object and returns a filtered object that only includes non-empty criteria values
+const filterSearchCriteria = (searchCriteria) => {
+  // Create a copy of the searchCriteria object
+  filteredCriteria = searchCriteria;
+  // Loop through the copied object
+  for (const key in filteredCriteria) {
+    // If value of each key/value pair is empty (''), then remove it from the object
+    if (filteredCriteria[key] == "") {
+      delete filteredCriteria.key;
+    }
+  }
+  console.log(filteredCritera); // (DEBUGGING) Print filteredCriteria object. Should only contain non-empty key/value pairs
+};
+
+// Step 2. This function takes in an array of non-empty search parameters and generates a string for a SQL query
+const generateQuery = (filteredSearchParam) => {
+  // TODO: Loop through the filteredCriteria object and create a string for each key/value pair. Add them after the tableJoin string
+  const tableJoin =
+    "SELECT * FROM Species s INNER JOIN Gene g ON s.speciesId = g.speciesId INNER JOIN Transcriptome t ON g.geneNumId = t.geneNumId INNER JOIN intron_transcriptome_junction itj ON t.transcriptomeNumId = itj.transcriptomeNumId INNER JOIN Intron i ON itj.intronNumId = i.intronNumId INNER JOIN Exon e ON i.intronNumId = e.intronNumId INNER JOIN intron_score_junction isj ON i.intronNumId = isj.intronNumId INNER JOIN Score score ON isj.scoreId = score.scoreId";
+  const generatedQuery = tableJoin; /*+*/ // The final SQL query string after adding tableJoin and extra WHERE clauses together
+  console.log;
+};
+
+/*****TEST CODE*****/
 
 const getJoinData = (speciesId) => {
   return sequelize
@@ -51,15 +76,13 @@ searchRouter.get("/new/:speciesId", async (req, res) => {
   res.json(foundSections);
 });
 
-
-
 /////////////////////////////
 const getData = (searchCriteria) => {
   return sequelize
     .query(
       "SELECT * FROM Species s INNER JOIN Gene g ON s.speciesId = g.speciesId INNER JOIN Transcriptome t ON g.geneNumId = t.geneNumId INNER JOIN intron_transcriptome_junction itj ON t.transcriptomeNumId = itj.transcriptomeNumId INNER JOIN Intron i ON itj.intronNumId = i.intronNumId INNER JOIN Exon e ON i.intronNumId = e.intronNumId INNER JOIN intron_score_junction isj ON i.intronNumId = isj.intronNumId INNER JOIN Score score ON isj.scoreId = score.scoreId WHERE s.speciesName = :species AND s.genomeVersion = :version AND i.strand = :strand",
       {
-        replacements: { 
+        replacements: {
           species: searchCriteria.speciesName,
           version: searchCriteria.version,
           ensembleGeneId: searchCriteria.ensembleGeneId,
@@ -72,8 +95,8 @@ const getData = (searchCriteria) => {
           coordinates: searchCriteria.coordinates,
           exactExonRank: searchCriteria.exactExonRank,
           relativeExonLength: searchCriteria.relativeExonLength,
-          sequence: searchCriteria.sequence
-         },
+          sequence: searchCriteria.sequence,
+        },
         type: QueryTypes.SELECT,
       }
     )
@@ -93,9 +116,7 @@ searchRouter.post("/new", async (req, res) => {
 
 ////////
 
-
 //////   /////
-
 
 searchRouter.post("/reqTest", (req, res) => {
   console.log(req.body);
