@@ -8,6 +8,7 @@ const sequelize = connection.sequelize;
 const QueryTypes = require("sequelize");
 const { Op } = require("sequelize");
 const Intron = connection['Intron'];
+const Species = connection['Species'];
 
 var filteredCriteria = {}; // An object containing only non-empty search criteria values (Global variable)
 
@@ -163,6 +164,60 @@ searchRouter.get("/intron/:intronNumId", function (req, res) {
     })
     .catch((err) => console.log(err));
 });
+
+/* GET Route 
+ *  https://major-and-minor-intron-db.ue.r.appspot.com/search/species/:speciesName/:genomeVersion
+ *  Species search route. Returns all species filtered by speciesName and genmeVersion currently in the database.
+ */
+searchRouter.get("/species/:speciesName/:genomeVersion", function (req, res) {
+  Species.findAll({
+    where: {
+      [Op.and]: [
+        { speciesName: req.params.speciesName },
+        { genomeVersion: req.params.genomeVersion },
+      ],
+    },
+  })
+    .then((species) => {
+      console.log(species);
+      res.json(species);
+      res.sendStatus(200);
+    })
+    .catch((err) => console.log(err));
+});
+
+/* GET Route 
+ *  https://major-and-minor-intron-db.ue.r.appspot.com/search/species/:speciesName
+ *  Species search route. Returns all species filtered by speciesName currently in the database.
+ */
+searchRouter.get("/species/:speciesName", function (req, res, next) {
+  Species.findAll({
+    where: {
+      [Op.and]: [{ speciesName: req.params.speciesName }],
+    },
+  })
+    .then((intron) => {
+      console.log(intron);
+      res.json(intron);
+      res.sendStatus(200);
+    })
+    .catch((err) => console.log(err));
+});
+
+/* GET Route 
+ *  https://major-and-minor-intron-db.ue.r.appspot.com/search/species
+ *  Species route. Returns all species currently in the database.
+ */
+searchRouter.get("/species", function (req, res) {
+  Species.findAll()
+    .then((species) => {
+      console.log(species);
+      res.json(species);
+      res.sendStatus(200);
+    })
+    .catch((err) => console.log(err));
+});
+
 
 module.exports = searchRouter;
 
