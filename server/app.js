@@ -5,19 +5,13 @@ var cors = require("cors");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
+require('dotenv').config(); 
+const mysql = require('mysql'); 
 
-
-require('dotenv').config(); //
-const mysql = require('mysql'); //DB Connection
+//Database connection
 var db = require("./database");
 
-//Test Sequelize connection
-/*
-connection.authenticate()
-  .then(()=> console.log('DB Connected'))
-  .catch(err => console.log('Error' + err))
-*/
-
+//Back-end Routing
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var searchRouter = require("./routes/search");
