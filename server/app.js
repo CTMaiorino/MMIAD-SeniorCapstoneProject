@@ -5,12 +5,13 @@ var cors = require("cors");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
+require('dotenv').config(); 
+const mysql = require('mysql'); 
 
-require('dotenv').config(); //
-const mysql = require('mysql'); //DB Connection
-var connection = require("./database");
+//Database connection
+var db = require("./database");
 
-
+//Back-end Routing
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var searchRouter = require("./routes/search");
@@ -33,21 +34,6 @@ app.use(
     extended: false,
   })
 );
-
-
-//app.use(connection);
-/*
-app.route('/search')
-  .get(function(req, res, next) {
-    connection.query(
-      "SELECT `speciesName` FROM `Species` ",
-      function(error, results, fields) {
-        if (error) throw error;
-        res.json(results);
-      }
-    );
-  });
-*/
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
