@@ -7,25 +7,12 @@ import React, { Component } from "react";
 class DetailedIntronInfo extends Component {
   constructor(props) {
     super(props);
-    console.log(props);
-
   }
+
+  
 
   state = {
-    intron: {}
-  }
-
-  async componentDidMount() {
-
-    var link = window.location.href
-    const intronId = link.split("/").pop();
-    console.log(intronId);
-    fetch('https://major-and-minor-intron-db.ue.r.appspot.com/search/intron/' + intronId)
-      .then(response => response.json())
-      .then(data => {
-        this.setState({ intron: data })
-      })
-
+    intron: this.props.location.state
   }
 
   basicData = {
@@ -37,6 +24,14 @@ class DetailedIntronInfo extends Component {
       "Genome Version",
       "Ensembl Version",
     ],
+
+    keys: [
+      "speciesName",
+      "commonName",
+      "rank",
+      "genomeVersion",
+      "ensemblVersion"
+    ]
   }
 
   geneData = {
@@ -46,18 +41,32 @@ class DetailedIntronInfo extends Component {
       "NCBI Gene ID",
       "Ensembl Gene ID",
       "Sequence",
-      "Coordinates",
+      "Start Coordinate",
+      "End Coordinate",
       "Length",
       "Strand",
       "Ensembl Transcript ID",
     ],
+
+    keys: [
+      "geneName",
+      "ncbiGeneId",
+      "ensemblGeneId",
+      "geneSequence",
+      "geneStartCoord",
+      "geneEndCoord",
+      "geneLength",
+      "strand",
+      "transcriptomeId"
+    ]
   }
 
   intronData = {
     label: "Intron",
     criteria: [
       "Length",
-      "Coordinates",
+      "Start Coordinate",
+      "End Coordinate",
       "Sequence",
       "Type",
       "Subtype",
@@ -66,6 +75,21 @@ class DetailedIntronInfo extends Component {
       "Acceptor Splice Site",
       "Donor Splice Site",
     ],
+
+    keys: [
+      "intronLength",
+      "intronStartCoord",
+      "intronEndCoord",
+      "intronSequence",
+      "intronType",
+      "subtype",
+      "overallScore",
+      "branchPoint",
+      "acceptorSpliceSite",
+      "donorSpliceSite"
+    ]
+
+
   };
 
   externalData = {
@@ -77,6 +101,14 @@ class DetailedIntronInfo extends Component {
       "UCSC Link - Gene",
       "UCSC Link - Intron",
     ],
+
+    keys: [
+      "ncbiGeneLink",
+      "ensemblGeneLink",
+      "transcriptomeEnsemblLink",
+      "geneUcscLink",
+      "ucscLink"
+    ]
   };
 
 
@@ -89,15 +121,15 @@ class DetailedIntronInfo extends Component {
 
   render() {
     return (
-      <div>
+      <div className="overflow-hidden">
         <Header />
-        <div className="mt-3"><BackToSearch /></div>
+        <div className="mt-3 "><BackToSearch /></div>
 
-        <div className="container-fluid ">
-          <IntronInfoCollapsable title={this.basicData.label} criteria={this.basicData.criteria} intron={this.state.intron} />
-          <IntronInfoCollapsable title={this.geneData.label} criteria={this.geneData.criteria} intron={this.state.intron} />
-          <IntronInfoCollapsable title={this.intronData.label} criteria={this.intronData.criteria} intron={this.state.intron} />
-          <IntronInfoCollapsable title={this.externalData.label} criteria={this.externalData.criteria} intron={this.state.intron} />
+        <div className="container-fluid  ">
+          <IntronInfoCollapsable title={this.basicData.label} criteria={this.basicData.criteria} dataKeys={this.basicData.keys} intron={this.state.intron} />
+          <IntronInfoCollapsable title={this.geneData.label} criteria={this.geneData.criteria} dataKeys={this.geneData.keys} intron={this.state.intron} />
+          <IntronInfoCollapsable title={this.intronData.label} criteria={this.intronData.criteria} dataKeys={this.intronData.keys} intron={this.state.intron}/>
+          <IntronInfoCollapsable title={this.externalData.label} criteria={this.externalData.criteria} dataKeys={this.externalData.keys} intron={this.state.intron} />
         </div>
       </div>
 

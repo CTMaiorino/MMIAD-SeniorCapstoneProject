@@ -45,7 +45,7 @@ class Dropdowns extends Component {
       <div className="my-4 d-flex">
         <Form.Control
           onChange={this.handleSelectSpecies}
-          name="species"
+          name="speciesName"
           as="select"
           size="lg"
           className="m-auto"

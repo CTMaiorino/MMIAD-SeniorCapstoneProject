@@ -11,7 +11,6 @@ import React, { Component } from "react";
 class SearchPage extends Component {
   constructor(props) {
     super(props);
-    console.log(props);
     this.onFormSubmit = this.onFormSubmit.bind(this);
   }
 
@@ -72,11 +71,9 @@ class SearchPage extends Component {
     ],
   }
 
-  state = {
-    params: "Test Param"
-  }
 
-  
+
+
 
 
 
@@ -87,27 +84,27 @@ class SearchPage extends Component {
     e.preventDefault();
     const formData = new FormData(e.target),
       formDataObj = Object.fromEntries(formData.entries());
-    console.log(formDataObj);
+    if (formDataObj.speciesName == "Species") {
+      alert("You must select a species and a genome version")
+    }
+    else if(formDataObj.version == undefined)
+    {
+      alert("You must select a genome version")
+    }
+    else {
 
-    var params = formDataObj; // The object containing search parameters
-    var species = params.species
-    var version = params.version
-    fetch("https://major-and-minor-intron-db.ue.r.appspot.com/search/species/" + species + "/" + version)
-    .then(response => response.json())
-      .then(intron => {
-        this.props.history.push({
-          pathname: "/results",
-          state: {
-            data: intron
-          }
-        })
-        })
+      var params = formDataObj; // The object containing search parameters
+      var species = params.species
+      var version = params.version
+
+      this.props.history.push({
+        pathname: "/results",
+        state: {
+          data: params
+        }
+      })
+    }
   }
-
-  //
-
-
-
 
   render() {
     return (
@@ -116,11 +113,12 @@ class SearchPage extends Component {
         <div className="container-fluid ">
           <Form onSubmit={this.onFormSubmit}>
             <div className="row">
-              <div className="col-lg-4 p-auto my-5 ">
+              <div className="col-lg-4 p-auto my-1 ">
                 <Dropdowns />
                 <SearchCriteria />
               </div>
-              <div className="col-lg-8 p-auto my-5">
+              <div className="col-lg-8 p-auto my-1">
+                <h1 className="my-4 text-center">Filters</h1>
                 <SearchCriteriaTools
                   title={this.referenceData.label}
                   criteria={this.referenceData.criteria}

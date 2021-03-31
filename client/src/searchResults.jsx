@@ -10,34 +10,67 @@ import * as Icon from "react-bootstrap-icons";
 class SearchResults extends Component {
   constructor(props) {
     super(props);
-    console.log(props.location);
+
   }
 
-  on
+  state = {
+    results: [],
+    loading: "Loading..."
+  }
+
+  componentDidMount() {
+    var formData = this.props.location.state.data
+    console.log(formData)
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+      body: JSON.stringify(formData)
+    };
+    fetch('https://major-and-minor-intron-db.ue.r.appspot.com/search/', requestOptions)
+      .then(response => response.json())
+      .then(data =>{
+        if(data[0].length!=0)
+        {
+        this.setState({
+          results: data[0]
+        })}
+        else
+        {
+          this.setState({
+            loading: "No results found"
+          })}
+        }
+
+      )
+
+  }
 
   render() {
-    var results=this.props.location.state
-    if(results==undefined)
-    {
-      
-      results={data:[]}
-    }
+    const introns = this.state.results
+    const isEmpty = introns.length == 0
     return (
       <div>
         <Header />
-        
+
         <div className="container-fluid ">
           <h2>Results:</h2>
           <Button className="m-2 p-auto float-right" variant="outline-primary">
-          <Icon.EnvelopeFill style={{ paddingRight: "5px" }} />
+            <Icon.EnvelopeFill style={{ paddingRight: "5px" }} />
           Email
         </Button>
           <Button className="m-2 p-auto float-right" variant="outline-primary">
-          <Icon.ArrowDownCircleFill style={{ paddingRight: "5px" }}  />
+            <Icon.ArrowDownCircleFill style={{ paddingRight: "5px" }} />
           Export
         </Button>
-          <ResultsTable introns={results.data}/>
           <BackToSearch />
+
+          {isEmpty ?
+                    (
+                      <h2>{this.state.loading}</h2>
+                    ) :
+                    (
+                      <ResultsTable introns = {this.state.results} />
+                    )}
         </div>
       </div>
     );
