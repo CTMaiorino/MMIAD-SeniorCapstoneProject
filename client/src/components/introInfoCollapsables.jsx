@@ -46,14 +46,15 @@ class IntronInfoCollapsable extends Component {
             <div>
               {this.props.criteria.map((criterion, index) => (
 
-                <div className="m-4 d-flex justify-content-between overflow-auto">
+                <div className="m-4 d-flex justify-content-between">
                   <h5>
                     {criterion}
                   </h5>
                   {intron[this.state.keys[index]] != null ?
                     (
-                      <p className="pl-5">{intron[this.state.keys[index]]
-                      }</p>
+                      <div className="pl-5 overflow-auto"><p>{intron[this.state.keys[index]]
+                      }</p> </div>
+
                     ) :
                     (
                       <span className="pl-5">NA</span>
