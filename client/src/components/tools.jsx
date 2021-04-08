@@ -9,7 +9,7 @@ class SearchCriteriaTools extends Component {
     super(props);
   }
   state = {
-    open: true, // The whole component is visible by default
+    open: false, // The whole component is invisible by default
   };
   // The visibility of the whole component is updated here (visible by default)
 

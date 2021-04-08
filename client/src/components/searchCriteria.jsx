@@ -94,7 +94,7 @@ class SearchCriteria extends Component {
                 size="lg"
                 style={{ fontSize: 22 }}
                 className="col-sm"
-                name="ensemblGeneId"
+                name="ensembleGeneId"
               />
             </div>
             <div className="row p-auto m-2">
@@ -104,7 +104,7 @@ class SearchCriteria extends Component {
               <Form.Control
                 size="lg"
                 className="col-sm"
-                name="transcriptomeId"
+                name="ensembleTranscriptId"
               />
             </div>
             <div className="row p-auto m-2">
@@ -123,7 +123,7 @@ class SearchCriteria extends Component {
               <div className="col-sm m-auto p-auto">
                 <Form.Check
                   style={{ fontSize: 22 }}
-                  name="intronType"
+                  name="intronClass"
                   inline
                   type="radio"
                   label="U2"
@@ -133,7 +133,7 @@ class SearchCriteria extends Component {
                 />
                 <Form.Check
                   style={{ fontSize: 22 }}
-                  name="intronType"
+                  name="intronClass"
                   inline
                   type="radio"
                   label="U12"
@@ -156,7 +156,7 @@ class SearchCriteria extends Component {
               <Form.Control
                 size="lg"
                 className="col-sm"
-                name="intronLength"
+                name="relativeLength"
               />
             </div>
             <div className="row p-auto m-2">

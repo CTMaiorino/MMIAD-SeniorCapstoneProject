@@ -98,7 +98,7 @@ const generateQuery = (filteredSearchParam) => {
         // whereClause = whereClause.concat(where);
         break;
       case "sequence":
-        where = andOperator + "WHERE i.intronSequence = " + "'" + keyValue + "'" + " ";
+        where = andOperator + "i.intronSequence = " + "'" + keyValue + "'" + " ";
         whereClause = whereClause.concat(where);
         break;
       default:
@@ -147,69 +147,6 @@ searchRouter.get("/intron", function (req, res) {
     .catch((err) => console.log(err));
 });
 
-<<<<<<< HEAD
-searchRouter.get("/intron",function(req, res, next) {
-  connection.query(
-    "SELECT * FROM `Intron`",
-    
-    function(error, results, fields) {
-      if (error) throw error;
-      
-      res.json(results);
-      
-    })
-  
-});
-
-searchRouter.get("/intron/:intronId",function(req, res, next) {
-
-  var intronId=req.params.intronId;
-
-  connection.query(
-
-    
-    "SELECT * FROM `Intron` WHERE  intronId = '" + intronId + "'",
-    
-    function(error, results, fields) {
-      if (error) throw error;
-      
-      res.json(results);
-      
-    })
-  
-});
-
-
-searchRouter.get("/species/:speciesName/:genomeVersion",function(req, res, next) {
-  
-  var species=req.params.speciesName
-  var version=req.params.genomeVersion
-
-  connection.query(
-    "SELECT * FROM `Species`  WHERE speciesName = '" + species + "' AND genomeVersion = '" + version + "'" ,
-    function(error, results, fields) {
-      if (error) throw error;
-      res.json(results);
-    }
-  );
-
-});
-
-
-
-
-
-
-searchRouter.get("/species/:speciesName",function(req, res, next) {
-  connection.query(
-    "SELECT * FROM `Species`  WHERE speciesName = ?",
-    req.params.speciesName,
-    function(error, results, fields) {
-      if (error) throw error;
-      res.json(results);
-    }
-  );
-=======
 /* GET Route 
  *  https://major-and-minor-intron-db.ue.r.appspot.com/search/intron/:intronNumId
  *  Intron ID search route. Returns a single intron based on the requested ID value 
@@ -247,7 +184,6 @@ searchRouter.get("/species/:speciesName/:genomeVersion", function (req, res) {
       res.sendStatus(200);
     })
     .catch((err) => console.log(err));
->>>>>>> Sequelize
 });
 
 /* GET Route 

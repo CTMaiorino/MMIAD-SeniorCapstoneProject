@@ -6,6 +6,7 @@ import ResultsTable from "./components/resultsTable";
 import BackToSearch from "./components/backToSearch";
 import React, { Component } from "react";
 import * as Icon from "react-bootstrap-icons";
+import ExportButtons from "./components/exportButtons";
 
 class SearchResults extends Component {
   constructor(props) {
@@ -29,6 +30,7 @@ class SearchResults extends Component {
     fetch('https://major-and-minor-intron-db.ue.r.appspot.com/search/', requestOptions)
       .then(response => response.json())
       .then(data =>{
+        console.log(data)
         if(data[0].length!=0)
         {
         this.setState({
@@ -54,14 +56,7 @@ class SearchResults extends Component {
 
         <div className="container-fluid ">
           <h2>Results:</h2>
-          <Button className="m-2 p-auto float-right" variant="outline-primary">
-            <Icon.EnvelopeFill style={{ paddingRight: "5px" }} />
-          Email
-        </Button>
-          <Button className="m-2 p-auto float-right" variant="outline-primary">
-            <Icon.ArrowDownCircleFill style={{ paddingRight: "5px" }} />
-          Export
-        </Button>
+          <ExportButtons introns={this.state.results}/>
           <BackToSearch />
 
           {isEmpty ?
