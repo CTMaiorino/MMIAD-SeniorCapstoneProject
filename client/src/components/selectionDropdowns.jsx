@@ -1,16 +1,18 @@
 import React, { Component } from "react";
 import Form from "react-bootstrap/Form";
+import { Multiselect } from 'multiselect-react-dropdown';
 class Dropdowns extends Component {
   constructor(props) {
     super(props);
     this.handleSelectSpecies = this.handleSelectSpecies.bind(this);
-
+    console.log()
   }
 
   state = {
     selectedSpecies: false,
     speciesList: [{ "speciesName": "Test Monkey" }],
-    versionList: [{ "version": "Monkey" }]
+    versionList: [{ "version": "Monkey" }],
+    selectedValues: [{}]
   };
 
   async componentDidMount() {
@@ -18,10 +20,12 @@ class Dropdowns extends Component {
     fetch('https://major-and-minor-intron-db.ue.r.appspot.com/search/species')
       .then(response => response.json())
       .then(data => {
+        console.log(data)
         this.setState({
           selectedSpecies: this.state.selectedSpecies,
           speciesList: data,
-          versionList: this.state.versionList
+          versionList: this.state.versionList,
+          selectedValues: this.state.selectedValues
         })
       })
 
@@ -35,12 +39,13 @@ class Dropdowns extends Component {
         this.setState({
           selectedSpecies: true,
           speciesList: this.state.speciesList,
-          versionList: data
+          versionList: data,
+          selectedValues: this.state.selectedValues
         })
       })
   }
   render() {
-    
+
     return (
       <div className="my-4 d-flex">
         <Form.Control
@@ -57,6 +62,17 @@ class Dropdowns extends Component {
           ))}
           ;
         </Form.Control>
+
+        <Multiselect
+          options={this.state.speciesList} // Options to display in the dropdown
+          selectedValues={this.state.selectedValue} // Preselected value to persist in dropdown
+          onSelect={this.onSelect} // Function will trigger on select event
+          onRemove={this.onRemove} // Function will trigger on remove event
+          displayValue="speciesName"
+          showCheckbox="true"
+          closeOnSelect="false"
+           // Property name to display in the dropdown options
+        />
 
         <Form.Control
           disabled={!this.state.selectedSpecies}

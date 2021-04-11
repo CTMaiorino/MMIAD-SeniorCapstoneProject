@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import * as Icon from "react-bootstrap-icons";
 import { Modal, Button, Form } from "react-bootstrap";
-import { exportAsGtf, exportAsBed } from './../exportHelperFunctions';
+import { exportAsGtf, exportAsBed, exportAsDownstreamFasta, exportAsUpstreamFasta, exportAsDefault } from './../exportHelperFunctions';
 class ExportButtons extends Component {
   constructor(props) {
     super(props);
@@ -17,7 +17,35 @@ class ExportButtons extends Component {
     console.log(this.state.introns)
     const formData = new FormData(e.target),
       formDataObj = Object.fromEntries(formData.entries());
-    exportAsBed(this.state.introns);
+      const introns=this.props.introns
+      const fileTypes=this.fileTypes.types;
+    Object.keys(formDataObj).forEach(type => {
+      switch (type) {
+        case fileTypes[0].toLowerCase():
+          exportAsDefault(introns);
+          break;
+        case fileTypes[1].toLowerCase():
+          exportAsGtf(introns);
+          break;
+        case fileTypes[2].toLowerCase():
+          exportAsBed(introns);
+          break;
+        case fileTypes[3].toLowerCase():
+          exportAsDownstreamFasta(introns);
+          break;
+        case fileTypes[4].toLowerCase():
+          exportAsUpstreamFasta(introns);
+          break;
+
+        default:
+        // code block
+      }
+    })
+    console.log(formDataObj);
+    //exportAsBed(this.props.introns);
+  }
+  fileTypes = {
+    types: ["Default", "Exon GTF", "Intron Bed", "Downstream Exon Fasta", "Upstream Exon Fasta"]
   }
 
   state = {
@@ -28,8 +56,7 @@ class ExportButtons extends Component {
   render() {
 
     const isEmail = this.state.isEmail;
-    const fileTypes = ["Default", "Exon GTF", "Intron Bed", "Downstream Exon Fasta", "Upstream Exon Fasta"]
-    console.log(fileTypes)
+    const fileTypes = this.fileTypes.types
     return (
       <div>
         <Button onClick={(e) => this.openModal(true)} className="m-2 p-auto float-right" variant="outline-primary">
