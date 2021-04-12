@@ -17,8 +17,8 @@ class ExportButtons extends Component {
     console.log(this.state.introns)
     const formData = new FormData(e.target),
       formDataObj = Object.fromEntries(formData.entries());
-      const introns=this.props.introns
-      const fileTypes=this.fileTypes.types;
+    const introns = this.props.introns
+    const fileTypes = this.fileTypes.types;
     Object.keys(formDataObj).forEach(type => {
       switch (type) {
         case fileTypes[0].toLowerCase():

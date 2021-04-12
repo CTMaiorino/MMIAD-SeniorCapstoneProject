@@ -12,6 +12,8 @@ class SearchPage extends Component {
   constructor(props) {
     super(props);
     this.onFormSubmit = this.onFormSubmit.bind(this);
+    this.handleSpecies = this.handleSpecies.bind(this);
+    this.handleVersions = this.handleVersions.bind(this);
   }
 
 
@@ -72,7 +74,18 @@ class SearchPage extends Component {
   }
 
 
+state = {
+  selectedSpecies: [],
+  selectedVersions: []
+}
 
+handleSpecies = (species) => {
+  this.setState({selectedSpecies: species , selectedVersions: this.state.selectedVersions });
+}
+
+handleVersions = (versions) => {
+  this.setState({selectedSpecies: this.state.selectedSpecies , selectedVersions: versions });
+}
 
 
 
@@ -81,21 +94,23 @@ class SearchPage extends Component {
 
 
   onFormSubmit = (e) => {
+    
     e.preventDefault();
-    const formData = new FormData(e.target),
-      formDataObj = Object.fromEntries(formData.entries());
-    if (formDataObj.speciesName == "Species") {
+    const formData = new FormData(e.target)
+    const  formDataObj = Object.fromEntries(formData.entries());
+    formDataObj.species=this.state.selectedSpecies
+    formDataObj.version=this.state.selectedVersions
+    if (formDataObj.species.length==0) {
       alert("You must select a species and a genome version")
     }
-    else if(formDataObj.version == undefined)
+    else if(formDataObj.version.length==0 && formDataObj.species.length==1)
     {
       alert("You must select a genome version")
     }
     else {
 
       var params = formDataObj; // The object containing search parameters
-      var species = params.species
-      var version = params.version
+
 
       this.props.history.push({
         pathname: "/results",
@@ -109,15 +124,17 @@ class SearchPage extends Component {
   render() {
     return (
       <div>
+        
         <Header />
         <div className="container-fluid ">
-          <Form onSubmit={this.onFormSubmit}>
+          <Form onSubmit={this.onFormSubmit} >
             <div className="row">
               <div className="col-lg-4 p-auto my-1 ">
-                <Dropdowns />
+                <Dropdowns handleSpecies={this.handleSpecies} handleVersions={this.handleVersions}/>
                 <SearchCriteria />
               </div>
               <div className="col-lg-8 p-auto my-1">
+                
                 <h1 className="my-4 text-center">Filters</h1>
                 <SearchCriteriaTools
                   title={this.referenceData.label}
