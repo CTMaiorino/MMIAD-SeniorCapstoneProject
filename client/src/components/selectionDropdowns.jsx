@@ -78,6 +78,8 @@ class Dropdowns extends Component {
   }
   render() {
 
+    console.log(this.state.allData)
+    
     return (
       <div className="my-4 d-flex">
 

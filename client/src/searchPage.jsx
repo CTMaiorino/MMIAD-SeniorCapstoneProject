@@ -2,11 +2,11 @@ import Dropdowns from "./components/selectionDropdowns";
 import SearchCriteria from "./components/searchCriteria";
 import SearchCriteriaTools from "./components/tools";
 import Header from "./components/header";
-import Button from "react-bootstrap/Button";
 import "bootstrap/dist/css/bootstrap.css";
-import Form from "react-bootstrap/Form";
 import Image from "react-bootstrap/Image";
 import React, { Component } from "react";
+import { Modal, Button, Form } from "react-bootstrap";
+import { MultiSelect } from 'primereact/multiselect';
 
 class SearchPage extends Component {
   constructor(props) {
@@ -14,6 +14,8 @@ class SearchPage extends Component {
     this.onFormSubmit = this.onFormSubmit.bind(this);
     this.handleSpecies = this.handleSpecies.bind(this);
     this.handleVersions = this.handleVersions.bind(this);
+    this.handleTypes = this.handleTypes.bind(this);
+
   }
 
 
@@ -73,19 +75,29 @@ class SearchPage extends Component {
     ],
   }
 
+  fileTypes = {
+    types: ["Default", "Exon GTF", "Intron Bed", "Downstream Exon Fasta", "Upstream Exon Fasta"]
+  }
 
-state = {
-  selectedSpecies: [],
-  selectedVersions: []
-}
 
-handleSpecies = (species) => {
-  this.setState({selectedSpecies: species , selectedVersions: this.state.selectedVersions });
-}
+  state = {
+    selectedSpecies: [],
+    selectedVersions: [],
+    selectedTypes: []
+  }
 
-handleVersions = (versions) => {
-  this.setState({selectedSpecies: this.state.selectedSpecies , selectedVersions: versions });
-}
+
+  handleSpecies = (species) => {
+    this.setState({ selectedSpecies: species, selectedVersions: this.state.selectedVersions, selectedTypes: this.state.selectedTypes });
+  }
+
+  handleVersions = (versions) => {
+    this.setState({ selectedSpecies: this.state.selectedSpecies, selectedVersions: versions, selectedTypes: this.state.selectedTypes });
+  }
+
+  handleTypes(event) {
+    this.setState({ selectedSpecies: this.state.selectedSpecies, selectedVersions: this.state.selectedVersions, selectedTypes: event.value });
+  }
 
 
 
@@ -94,21 +106,30 @@ handleVersions = (versions) => {
 
 
   onFormSubmit = (e) => {
-    
+
+    console.log("A submit was hit")
     e.preventDefault();
     const formData = new FormData(e.target)
-    const  formDataObj = Object.fromEntries(formData.entries());
-    formDataObj.species=this.state.selectedSpecies
-    formDataObj.version=this.state.selectedVersions
-    if (formDataObj.species.length==0) {
+    const formDataObj = Object.fromEntries(formData.entries());
+    formDataObj.speciesName = this.state.selectedSpecies
+    formDataObj.genomeVersion = this.state.selectedVersions
+    formDataObj.emailFormatOptions = this.state.selectedTypes
+    const email = formDataObj.email
+    console.log(formDataObj)
+    if (formDataObj.speciesName.length == 0) {
       alert("You must select a species and a genome version")
     }
-    else if(formDataObj.version.length==0 && formDataObj.species.length==1)
-    {
+    else if (formDataObj.genomeVersion.length == 0 && formDataObj.speciesName.length == 1) {
       alert("You must select a genome version")
     }
+    else if (email.length > 0 && (!email.includes(".") || !email.includes("@") || email.indexOf("@") > email.indexOf("."))) {
+      alert("Invalid email")
+    }
+    else if (email.length > 0 && formDataObj.emailFormatOptions.length == 0) {
+      alert("Select at least one file type for your results to be sent by email")
+    }
     else {
-
+      console.log("I should submit")
       var params = formDataObj; // The object containing search parameters
 
 
@@ -119,22 +140,25 @@ handleVersions = (versions) => {
         }
       })
     }
+
   }
 
   render() {
+    const fileTypes = this.fileTypes.types
     return (
+
       <div>
-        
+
         <Header />
         <div className="container-fluid ">
           <Form onSubmit={this.onFormSubmit} >
             <div className="row">
               <div className="col-lg-4 p-auto my-1 ">
-                <Dropdowns handleSpecies={this.handleSpecies} handleVersions={this.handleVersions}/>
+                <Dropdowns handleSpecies={this.handleSpecies} handleVersions={this.handleVersions} />
                 <SearchCriteria />
               </div>
               <div className="col-lg-8 p-auto my-1">
-                
+
                 <h1 className="my-4 text-center">Filters</h1>
                 <SearchCriteriaTools
                   title={this.referenceData.label}
@@ -153,6 +177,36 @@ handleVersions = (versions) => {
                   criteria={this.externalData.criteria}
                 />
 
+                <div className="d-flex">
+                  <Form.Label style={{ fontSize: 22 }} className="m-2">
+                    Send Results to Email
+              </Form.Label>
+                  <Form.Control
+                    size="lg"
+                    className="col-lg mx-2"
+                    name="email"
+                    placeholder="Email (Optional)"
+                  />
+
+
+                  <MultiSelect
+                    options={this.fileTypes.types}
+                    value={this.state.selectedTypes}
+                    placeholder="Select Formats"
+                    filter={true}
+                    onChange={this.handleTypes}
+                    className="m-auto"
+                    maxSelectedLabels="1"
+                    scrollHeight="200px"
+                    name="Species"
+                    id="speciesSelections"
+                  />
+
+
+
+                </div>
+
+
                 <Button
                   className="float-right"
                   size="lg"
@@ -162,11 +216,10 @@ handleVersions = (versions) => {
                 >
                   <Image src="searchIcon.jpg" width="20px" />
                   Search
-                </Button>
-
-              </div>
+                </Button></div>
               <div />
             </div>
+
           </Form>
         </div>
       </div>
