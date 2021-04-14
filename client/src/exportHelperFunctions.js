@@ -7,7 +7,7 @@ You will also need to change the import in exportButtons.jsx to match the functi
 
 
 
-export const exportAsGtf = (introns) => {
+export const exportAsGtf = (introns,isEmail) => {
     var geneString = ""
     var transcriptString = ""
     var totalString = ""
@@ -27,14 +27,14 @@ export const exportAsGtf = (introns) => {
         const geneBioType = "transcribed_unprocessed_pseudogene"
         //GTF format has these properties separated by tabs, followed by a new line
         geneString = "transcribed_unprocessed_pseudogene  gene " + "   " + "gene_id: " + geneId + "   " + "gene_name: " + geneName + "   " + "gene_source: " + geneSource + "   " + "gene_start: " + start + "   " + "gene_end: " + end + "   " + "gene_score: " + score + "   " + "gene_strand: " + strand + "   " + "gene_sequence: " + sequence + "   " + "gene_bioType: " + geneBioType + "\n"
-        transcriptString = "processed_transcript                transcript " + "   " + "gene_id: " + geneId + "   " + "transcript_id: " + transcriptomeId + "   " + "gene_name: " +geneName + "   " + "gene_source: " + geneSource + "   " + "gene_bioType: " + geneBioType + "   " + "gene_name: " +geneName + "\n"
+        transcriptString = "processed_transcript                transcript " + "   " + "gene_id: " + geneId + "   " + "transcript_id: " + transcriptomeId + "   " + "gene_name: " + geneName + "   " + "gene_source: " + geneSource + "   " + "gene_bioType: " + geneBioType + "   " + "gene_name: " + geneName + "\n"
         totalString += geneString + transcriptString + "\n"
     })
     downloadFile(totalString, "gtf");
 }
 
 //Using this function as an example of how to code the rest
-export const exportAsBed = (introns) => {
+export const exportAsBed = (introns,isEmail) => {
     var totalString = ""//Your entire file must be saved as 1 string. TotalString will be this string
     console.log(introns);
     introns.forEach((intron) => {//Add to the string for every intron
@@ -53,76 +53,80 @@ export const exportAsBed = (introns) => {
 
     })
     downloadFile(totalString, "bed");//This function gets your data, with a speficied type(Which could be wrong but I guessed) and  will download the file
-    
-    
-}
-export const exportAsDefault = (introns) => {
-    var totalString = ""
-    console.log(introns);
-    introns.forEach((intron) => {
 
+
+}
+export const exportAsDefault = (introns,isEmail) => {
+    
+    var totalString = ""
+    introns.forEach((intron) => {
+        delete intron.speciesId
+
+        delete intron.geneId
+        delete intron.intronId
+        delete intron.scoreId
+        totalString+= Object.values(intron).toString() + "\n"
     })
-    downloadFile(totalString, "default");
-    
-    
+    var headerString=Object.keys(introns[0]).toString() + "\n"
+    totalString= headerString + totalString
+    downloadFile(totalString, "csv");
 }
 
 
-export const exportAsDownstreamFasta = (introns) => {
+export const exportAsDownstreamFasta = (introns,isEmail) => {
     var totalString = ""
-    console.log(introns);
+    console.log(introns,isEmail);
     introns.forEach((intron) => {
-        const id=intron.intronId;
-        const speciesName=intron.speciesName;
-        const chromosome=intron.chromosome;
-        const strand=intron.strand;
-        const start=intron.geneStartCoord;
-        const end=intron.geneEndCoord;
-        const geneLength=intron.geneLength;
-        const score=intron.scoreId;
-        const rank=intron.rank;
-        const sequence=intron.intronSequence;
-        totalString+=">" + id + "|" + speciesName + "|" + chromosome + "|" + strand + "|" + start 
-        + "|" + end + "|" + geneLength + "|" + score + "|" + rank + "\n" 
-        + sequence + "\n";
+        const id = intron.intronId;
+        const speciesName = intron.speciesName;
+        const chromosome = intron.chromosome;
+        const strand = intron.strand;
+        const start = intron.geneStartCoord;
+        const end = intron.geneEndCoord;
+        const geneLength = intron.geneLength;
+        const score = intron.scoreId;
+        const rank = intron.rank;
+        const sequence = intron.intronSequence;
+        totalString += ">" + id + "|" + speciesName + "|" + chromosome + "|" + strand + "|" + start
+            + "|" + end + "|" + geneLength + "|" + score + "|" + rank + "\n"
+            + sequence + "\n";
     })
     downloadFile(totalString, "dwnfasta");
-    
-    
+
+
 }
 
-export const exportAsUpstreamFasta = (introns) => {
+export const exportAsUpstreamFasta = (introns,isEmail) => {
     var totalString = ""
-    console.log(introns);
+    console.log(introns,isEmail);
     introns.forEach((intron) => {
-        const id=intron.intronId;
-        const speciesName=intron.speciesName;
-        const chromosome=intron.chromosome;
-        const strand=intron.strand;
-        const start=intron.geneStartCoord;
-        const end=intron.geneEndCoord;
-        const geneLength=intron.geneLength;
-        const score=intron.scoreId;
-        const rank=intron.rank;
-        const sequence=intron.intronSequence;
-        totalString+=">" + id + "|" + speciesName + "|" + chromosome + "|" + strand + "|" + start 
-        + "|" + end + "|" + geneLength + "|" + score + "|" + rank + "\n" 
-        + sequence + "\n";
+        const id = intron.intronId;
+        const speciesName = intron.speciesName;
+        const chromosome = intron.chromosome;
+        const strand = intron.strand;
+        const start = intron.geneStartCoord;
+        const end = intron.geneEndCoord;
+        const geneLength = intron.geneLength;
+        const score = intron.scoreId;
+        const rank = intron.rank;
+        const sequence = intron.intronSequence;
+        totalString += ">" + id + "|" + speciesName + "|" + chromosome + "|" + strand + "|" + start
+            + "|" + end + "|" + geneLength + "|" + score + "|" + rank + "\n"
+            + sequence + "\n";
     })
     downloadFile(totalString, "upfasta");
-    
-    
+
+
 }
 
 //Downloads the file
-export const downloadFile = (data,type) =>
-{
+export const downloadFile = (data, type) => {
     const element = document.createElement("a");
-    const file = new Blob([data], {type: 'text/plain'});
+    const file = new Blob([data], { type: 'text/plain' });
     element.href = URL.createObjectURL(file);
     element.download = "MMIAD" + type + "." + type; //This is the file structure I chose. For example, a bed file would be MMIADbed.bed
     document.body.appendChild(element); // Required for this to work in FireFox
     element.click();
 }
 
-    
+
