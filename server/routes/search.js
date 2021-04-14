@@ -180,6 +180,7 @@ const generateQuery = (filteredSearchParam) => {
  *  to generate a relevant qurey string to pull results from the database based on user input.
  */
 searchRouter.post("/", async (req, res) => {
+  console.log(req.body)
   const email = req.body.email;
   const exportOptions = req.body.emailFormatOptions
   delete req.body.email
@@ -188,9 +189,7 @@ searchRouter.post("/", async (req, res) => {
 
   filterSearchCriteria(req.body);
 
-  if (filterSearchCriteria.email != undefined) {
-    email = filterSearchCriteria.email;
-  }
+
 
   const sqlQuery = generateQuery(filteredCriteria);
   return sequelize
@@ -198,38 +197,81 @@ searchRouter.post("/", async (req, res) => {
       type: QueryTypes.SELECT,
     })
     .then((response) => {
-      console.log(response);
       res.json(response);
-      if (email.length > 0) {
-        //Email code
-        emailUser(response)
+      if (email != undefined) {
+        emailUser(response, email, exportOptions)
       }
       return response;
     });
 });
 
-function emailUser(introns) {
+function emailUser(introns, email, exportOps) {
+  console.log("Email=" + email)
+  var attachments = []
+  console.log(exportOps);
+  for (key in exportOps) {
+    switch (key) {
+      case 'Default':
+        attachments.push(exportAsDefault(introns));
+        console.log("Default")
+        console.log(attachments);
+        break;
+      case 'Exon GTF':
+        attachments.push(exportAsGtf(introns));
+        console.log('Exon GTF')
+        console.log(attachments);
+        break;
+      case 'Intron Bed':
+        attachments.push(exportAsBed(introns));
+        console.log('Intron Bed')
+        console.log(attachments);
+        break;
+      case 'Upstream Exon Fasta':
+        attachments.push(exportAsUpstreamFasta(introns));
+        console.log('Upstream Exon Fasta')
+        console.log(attachments);
+        break;
+      case 'Downstream Exon Fasta':
+        attachments.push(exportAsDownstreamFasta(introns));
+        console.log("Downstream Exon Fasta")
+        console.log(attachments);
+        break;
+      default:
+        break;
+    }
+  }
+  console.log(attachments);
+
   const transporter = nodemailer.createTransport({
-    port: 465, // true for 465, false for other ports
+    port: 465,               // true for 465, false for other ports
     host: "smtp.gmail.com",
+    service: "gmail",
     auth: {
-      user: "youremail@gmail.com",
-      pass: "password",
+      user: 'james101544@gmail.com',
+      pass: 'nickydudes'
     },
-    secure: true,
+    //secure: true,
   });
-  const mailData = {
-    from: 'youremail@gmail.com',  // sender address
-    to: 'myfriend@gmail.com',   // list of receivers
-    subject: 'Sending Email using Node.js',
-    text: 'Here are your files!',
-    attachments: [
-      {
-        filename: 'text notes.txt',
-        path: 'notes.txt'
-      },
-    ]
+
+  const mailOptions = {
+    from: "james101544@gmail.com",  // sender address
+    to: email,   // list of receivers
+    subject: 'MMIAD files',
+    text: 'Here are your requested files',
+    attachments: attachments
+
+
   };
+
+  transporter.sendMail(mailOptions, function (err, info) {
+    if (err)
+      console.log(err)
+    else
+      console.log(info);
+  });
+
+
+
 }
 /* GET Route
  *  https://major-and-minor-intron-db.ue.r.appspot.com/search/intron
@@ -251,17 +293,13 @@ searchRouter.get("/intron", function (req, res) {
  */
 searchRouter.post("/email", async (req, res) => {
   const introns = req.body;
-  const exportOptions = introns.exportOptions
+  const email = req.body.email
+  const exportOptions = introns.emailFormatOptions
+  delete req.body.email
+  delete req.body.emailFormatOptions
   console.log(req.body)
   console.log(exportOptions)
-  const email = "";
-  if (filterSearchCriteria.email != undefined) {
-    email = filterSearchCriteria.email;
-  }
-  if (email.length > 0) {
-    //Email code
-    //emailUser(response)
-  }
+  emailUser(introns, email, exportOptions)
 });
 
 /* GET Route
@@ -334,5 +372,134 @@ searchRouter.get("/species", function (req, res) {
     })
     .catch((err) => console.log(err));
 });
+
+
+
+const exportAsGtf = (introns) => {
+  var geneString = ""
+  var transcriptString = ""
+  var totalString = ""
+  introns.forEach((intron) => {
+    //Here, it grabs information about the intron that is needed for the file. You will need to do this as well for different properties
+    const sequence = intron.sequence
+    const geneId = intron.ensemblGeneId
+    const start = intron.intronStartCoord
+    const end = intron.intronStartCoord
+    const score = intron.overallScore
+    const strand = intron.strand
+    const transcriptomeId = intron.transcriptomeId
+    //Following data points do not currently exist in the DB
+    //Replace at later date when data is supported 
+    const geneSource = "N/A"
+    const geneName = "N/A" // intron.geneName is currently null in DB
+    const geneBioType = "transcribed_unprocessed_pseudogene"
+    //GTF format has these properties separated by tabs, followed by a new line
+    geneString = "transcribed_unprocessed_pseudogene  gene " + "   " + "gene_id: " + geneId + "   " + "gene_name: " + geneName + "   " + "gene_source: " + geneSource + "   " + "gene_start: " + start + "   " + "gene_end: " + end + "   " + "gene_score: " + score + "   " + "gene_strand: " + strand + "   " + "gene_sequence: " + sequence + "   " + "gene_bioType: " + geneBioType + "\n"
+    transcriptString = "processed_transcript                transcript " + "   " + "gene_id: " + geneId + "   " + "transcript_id: " + transcriptomeId + "   " + "gene_name: " + geneName + "   " + "gene_source: " + geneSource + "   " + "gene_bioType: " + geneBioType + "   " + "gene_name: " + geneName + "\n"
+    totalString += geneString + transcriptString + "\n"
+  })
+  return downloadFile(totalString, "gtf");
+}
+
+//Using this function as an example of how to code the rest
+const exportAsBed = (introns) => {
+  var totalString = ""//Your entire file must be saved as 1 string. TotalString will be this string
+  console.log(introns);
+  introns.forEach((intron) => {//Add to the string for every intron
+    //console.log(intron)
+
+    //Here, it grabs information about the intron that is needed for the file. You will need to do this as well for different properties
+    const chromosome = intron.chromosome
+    const start = intron.intronStartCoord
+    const end = intron.intronStartCoord
+    const intronId = intron.intronId
+    const score = intron.overallScore
+    const strand = intron.strand
+    //Bed format has these properties separated by tabs, followed by a new line
+    //You might need to do more complecated string stuff. I know for Fasta, I would need to have 2 \n's"
+    totalString += chromosome + "   " + start + "   " + end + "   " + intronId + "   " + score + "   " + strand + "\n"
+
+  })
+  return downloadFile(totalString, "bed");//This function gets your data, with a speficied type(Which could be wrong but I guessed) and  will download the file
+
+
+}
+
+const exportAsDefault = (introns) => {
+  console.log("Exporting as default")
+  var totalString = ""
+  introns.forEach((intron) => {
+    delete intron.speciesId
+
+    delete intron.geneId
+    delete intron.intronId
+    delete intron.scoreId
+    totalString += Object.values(intron).toString() + "\n"
+  })
+  var headerString = Object.keys(introns[0]).toString() + "\n"
+  totalString = headerString + totalString
+  return downloadFile(totalString, "csv");
+}
+
+
+const exportAsDownstreamFasta = (introns) => {
+  var totalString = ""
+  console.log(introns);
+  introns.forEach((intron) => {
+    const id = intron.intronId;
+    const speciesName = intron.speciesName;
+    const chromosome = intron.chromosome;
+    const strand = intron.strand;
+    const start = intron.geneStartCoord;
+    const end = intron.geneEndCoord;
+    const geneLength = intron.geneLength;
+    const score = intron.scoreId;
+    const rank = intron.rank;
+    const sequence = intron.intronSequence;
+    totalString += ">" + id + "|" + speciesName + "|" + chromosome + "|" + strand + "|" + start
+      + "|" + end + "|" + geneLength + "|" + score + "|" + rank + "\n"
+      + sequence + "\n";
+  })
+  return downloadFile(totalString, "dwnfasta");
+
+
+}
+
+const exportAsUpstreamFasta = (introns) => {
+  var totalString = ""
+  console.log(introns);
+  introns.forEach((intron) => {
+    const id = intron.intronId;
+    const speciesName = intron.speciesName;
+    const chromosome = intron.chromosome;
+    const strand = intron.strand;
+    const start = intron.geneStartCoord;
+    const end = intron.geneEndCoord;
+    const geneLength = intron.geneLength;
+    const score = intron.scoreId;
+    const rank = intron.rank;
+    const sequence = intron.intronSequence;
+    totalString += ">" + id + "|" + speciesName + "|" + chromosome + "|" + strand + "|" + start
+      + "|" + end + "|" + geneLength + "|" + score + "|" + rank + "\n"
+      + sequence + "\n";
+  })
+  return downloadFile(totalString, "upfasta");
+
+
+}
+
+// Downloads the file
+const downloadFile = (data, type) => {
+  var email = {
+    fileName: "MMIAD" + type + "." + type,
+    content: data
+  }
+  return email
+}
+
+
+
+
+
 
 module.exports = searchRouter;
