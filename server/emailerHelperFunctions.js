@@ -59,10 +59,6 @@ module = emailerHelperFunctions => {
     const exportAsDefault = (introns) => {
         var totalString = ""
         introns.forEach((intron) => {
-            delete intron.speciesId
-            delete intron.geneId
-            delete intron.intronId
-            delete intron.scoreId
             totalString += Object.values(intron).toString() + "\n"
         })
         var headerString = Object.keys(introns[0]).toString() + "\n"
@@ -117,8 +113,9 @@ module = emailerHelperFunctions => {
 
     // Downloads the file
     const downloadFile = (data, type) => {
+        const filename="MMIAD" + type + "." + type;
         var email = {
-            fileName: "MMIAD" + type + "." + type,
+            filename: 'output.' + type,
             content: data
         }
         return email

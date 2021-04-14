@@ -180,7 +180,6 @@ const generateQuery = (filteredSearchParam) => {
  *  to generate a relevant qurey string to pull results from the database based on user input.
  */
 searchRouter.post("/", async (req, res) => {
-  console.log(req.body)
   const email = req.body.email;
   const exportOptions = req.body.emailFormatOptions
   delete req.body.email
@@ -199,7 +198,7 @@ searchRouter.post("/", async (req, res) => {
     .then((response) => {
       res.json(response);
       if (email != undefined) {
-        emailUser(response, email, exportOptions)
+        emailUser(response[0], email, exportOptions)
       }
       return response;
     });
@@ -293,10 +292,10 @@ searchRouter.get("/intron", function (req, res) {
  */
 searchRouter.post("/email", async (req, res) => {
   const introns = req.body;
-  const email = req.body.email
-  const exportOptions = introns.emailFormatOptions
-  delete req.body.email
-  delete req.body.emailFormatOptions
+  const email = introns.email
+  const exportOptions = introns.fileTypes
+  delete introns.email
+  delete introns.fileTypes
   console.log(req.body)
   console.log(exportOptions)
   emailUser(introns, email, exportOptions)
@@ -404,7 +403,6 @@ const exportAsGtf = (introns) => {
 //Using this function as an example of how to code the rest
 const exportAsBed = (introns) => {
   var totalString = ""//Your entire file must be saved as 1 string. TotalString will be this string
-  console.log(introns);
   introns.forEach((intron) => {//Add to the string for every intron
     //console.log(intron)
 
@@ -429,11 +427,6 @@ const exportAsDefault = (introns) => {
   console.log("Exporting as default")
   var totalString = ""
   introns.forEach((intron) => {
-    delete intron.speciesId
-
-    delete intron.geneId
-    delete intron.intronId
-    delete intron.scoreId
     totalString += Object.values(intron).toString() + "\n"
   })
   var headerString = Object.keys(introns[0]).toString() + "\n"
@@ -491,7 +484,7 @@ const exportAsUpstreamFasta = (introns) => {
 // Downloads the file
 const downloadFile = (data, type) => {
   var email = {
-    fileName: "MMIAD" + type + "." + type,
+    filename: "MMIAD" + type + "." + type,
     content: data
   }
   return email
