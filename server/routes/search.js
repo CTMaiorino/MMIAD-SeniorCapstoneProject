@@ -2,6 +2,7 @@ var express = require("express");
 var searchRouter = express.Router();
 var bodyParser = require("body-parser");
 const { text } = require("body-parser");
+const nodemailer = require("nodemailer");
 //Database and sequelize model imports
 var connection = require("../database");
 const sequelize = connection.sequelize;
@@ -47,7 +48,7 @@ const filterSearchCriteria = (searchCriteria) => {
     if (
       filteredCriteria[key] === "" ||
       filteredCriteria[key] === null ||
-      filteredCriteria[key].length
+      filteredCriteria[key].length === 0
     ) {
       delete filteredCriteria[key];
     }
@@ -62,6 +63,7 @@ const generateQuery = (filteredSearchParam) => {
   var whereClause = "WHERE "; // Initiate the whereClause string. It will be added to the tableJoin string.
   var andOperator = ""; // Used in conjunction with counter variable for adding AND operators to whereClause
   var orOperator = ""; // Used when more than one species are selected
+  var where = "";
   // TODO: Loop through the filteredCriteria object and create a string for each key/value pair. Add them after the tableJoin string
   for (const key in filteredSearchParam) {
     var keyValue = filteredSearchParam[key];
@@ -84,7 +86,8 @@ const generateQuery = (filteredSearchParam) => {
           orCount++;
         }
         wrap = "(" + whereEqualsOr + ") "; // Wrap the species OR statements in parentheses: (s.speciesName = '' OR s.speciesName = '' OR ...)
-        where = andOperator + wrap; // Add an AND clause before orWrap
+        // where = andOperator + wrap; // Add an AND clause before orWrap
+        where += wrap; // Add an AND clause before orWrap
         whereClause = whereClause.concat(where); // Add the where string to the whole whereClause
         // orCount = 1;
         break;
@@ -103,7 +106,8 @@ const generateQuery = (filteredSearchParam) => {
           orCount++;
         }
         wrap = "(" + whereEqualsOr + ") "; // Wrap the species OR statements in parentheses: (s.speciesName = '' OR s.speciesName = '' OR ...)
-        where = andOperator + wrap; // Add an AND clause before orWrap
+        // where = andOperator + wrap; // Add an AND clause before orWrap
+        where += wrap; // Add an AND clause before orWrap
         whereClause = whereClause.concat(where); // Add the where string to the whole whereClause
         break;
 
@@ -148,7 +152,7 @@ const generateQuery = (filteredSearchParam) => {
       case "sequence":
         where =
           andOperator +
-          "WHERE i.intronSequence = " +
+          "i.intronSequence = " +
           "'" +
           keyValue +
           "'" +
@@ -176,7 +180,11 @@ const generateQuery = (filteredSearchParam) => {
  *  to generate a relevant qurey string to pull results from the database based on user input.
  */
 searchRouter.post("/", async (req, res) => {
-  const email = "";
+  const email = req.body.email;
+  const exportOptions = req.body.emailFormatOptions
+  delete req.body.email
+  delete req.body.emailFormatOptions
+
 
   filterSearchCriteria(req.body);
 
@@ -194,11 +202,35 @@ searchRouter.post("/", async (req, res) => {
       res.json(response);
       if (email.length > 0) {
         //Email code
+        emailUser(response)
       }
       return response;
     });
 });
 
+function emailUser(introns) {
+  const transporter = nodemailer.createTransport({
+    port: 465, // true for 465, false for other ports
+    host: "smtp.gmail.com",
+    auth: {
+      user: "youremail@gmail.com",
+      pass: "password",
+    },
+    secure: true,
+  });
+  const mailData = {
+    from: 'youremail@gmail.com',  // sender address
+    to: 'myfriend@gmail.com',   // list of receivers
+    subject: 'Sending Email using Node.js',
+    text: 'Here are your files!',
+    attachments: [
+      {
+        filename: 'text notes.txt',
+        path: 'notes.txt'
+      },
+    ]
+  };
+}
 /* GET Route
  *  https://major-and-minor-intron-db.ue.r.appspot.com/search/intron
  *  Intron route. Returns all introns currently in the database.
@@ -211,6 +243,25 @@ searchRouter.get("/intron", function (req, res) {
       res.sendStatus(200);
     })
     .catch((err) => console.log(err));
+});
+
+/* POST Route
+ *  https://major-and-minor-intron-db.ue.r.appspot.com/search/email
+ *  Reads intron data from front to email to user
+ */
+searchRouter.post("/email", async (req, res) => {
+  const introns = req.body;
+  const exportOptions = introns.exportOptions
+  console.log(req.body)
+  console.log(exportOptions)
+  const email = "";
+  if (filterSearchCriteria.email != undefined) {
+    email = filterSearchCriteria.email;
+  }
+  if (email.length > 0) {
+    //Email code
+    //emailUser(response)
+  }
 });
 
 /* GET Route
