@@ -7,16 +7,30 @@ var connection = require("../database");
 const sequelize = connection.sequelize;
 const QueryTypes = require("sequelize");
 const { Op } = require("sequelize");
-const Intron = connection['Intron'];
-const Species = connection['Species'];
+const Intron = connection["Intron"];
+const Species = connection["Species"];
 
 var filteredCriteria = {}; // An object containing only non-empty search criteria values (Global variable)
 
-// Object for debugging
+// Test Objects
 const sampleCriteria = {
   strand: "+",
-  speciesName: "Anopheles gambiae",
-  version: "AgamP4",
+  speciesName: ["Anopheles gambiae"],
+  version: ["AgamP4"],
+  relativeLength: 99,
+};
+
+const humanCriteria = {
+  strand: "+",
+  speciesName: ["Homo sapiens"],
+  version: ["GRCh37"],
+  relativeLength: 99,
+};
+
+// Test Object for cross species selection
+const crossSpeciesCriteria = {
+  speciesName: ["Anopheles gambiae", "Apis mellifera", "Arabidopsis thaliana"],
+  version: ["AgamP4", "Amel_4.5", "TAIR10"],
   relativeLength: 99,
 };
 
@@ -39,9 +53,11 @@ const filterSearchCriteria = (searchCriteria) => {
 // Step 2. This function takes in an object of non-empty search parameters and generates a string for a SQL query
 const generateQuery = (filteredSearchParam) => {
   var count = 1; // Helps detertime andOperator variable
+  var orCount = 1; // Helps determine orOperator
+  var whereClause = "WHERE "; // Initiate the whereClause string. It will be added to the tableJoin string.
   var andOperator = ""; // Used in conjunction with counter variable for adding AND operators to whereClause
-  var whereClause = "WHERE "; // Initiate the whereClause string. It begins with a WHERE clause
-  // Loop through the filteredCriteria object and create a string for each key/value pair. Add them after the tableJoin string
+  var orOperator = ""; // Used when more than one species are selected
+  // TODO: Loop through the filteredCriteria object and create a string for each key/value pair. Add them after the tableJoin string
   for (const key in filteredSearchParam) {
     var keyValue = filteredSearchParam[key];
     if (count > 1) {
@@ -49,62 +65,97 @@ const generateQuery = (filteredSearchParam) => {
     }
     switch (key) {
       case "speciesName":
-        where = andOperator + "s.speciesName = " + "'" + keyValue + "'" + " "; // Create the WHERE statement
+        var speciesArrLength = keyValue.length; // Length of the species array
+        var whereEqualsOr = "";
+        for (i = 0; i < speciesArrLength; i++) {
+          if (orCount > 1) {
+            orOperator = "OR ";
+          }
+          // console.log("This species is: " + keyValue[i]); // DEBUG: Print value of the each index in species array
+          whereEquals =
+            orOperator + "s.speciesName = " + "'" + keyValue[i] + "'" + " "; // Create the OR statements for the species
+          whereEqualsOr = whereEqualsOr.concat(whereEquals);
+          // console.log(whereEqualsOr); // DEBUG
+          orCount++;
+        }
+        wrap = "(" + whereEqualsOr + ") "; // Wrap the species OR statements in parentheses: (s.speciesName = '' OR s.speciesName = '' OR ...)
+        where = andOperator + wrap; // Add an AND clause before orWrap
+        whereClause = whereClause.concat(where); // Add the where string to the whole whereClause
+        // orCount = 1;
+        break;
+
+      case "version":
+        var versionArrLength = keyValue.length; // Length of version array
+        var whereEqualsOr = "";
+        // console.log(orCount); // DEBUG
+        for (i = 0; i < versionArrLength; i++) {
+          if (orCount > 1) {
+            orOperator = "OR ";
+          }
+          whereEquals =
+            orOperator + "s.genomeVersion = " + "'" + keyValue[i] + "'" + " "; // Create the OR statements for the species
+          whereEqualsOr = whereEqualsOr.concat(whereEquals);
+          orCount++;
+        }
+        wrap = "(" + whereEqualsOr + ") "; // Wrap the species OR statements in parentheses: (s.speciesName = '' OR s.speciesName = '' OR ...)
+        where = andOperator + wrap; // Add an AND clause before orWrap
         whereClause = whereClause.concat(where); // Add the where string to the whole whereClause
         break;
-      case "version":
-        where = andOperator + "s.genomeVersion = " + "'" + keyValue + "'" + " ";
-        whereClause = whereClause.concat(where);
-        break;
+
       case "ensembleGeneId":
         where =
-          andOperator + "g.ensembleGeneId = " + "'" + keyValue + "'" + " ";
-        whereClause = whereClause.concat(where);
+          andOperator + "g.ensembleGeneId = " + "'" + keyValue + "'" + " "; // Create the WHERE statement
+        whereClause = whereClause.concat(where); // Add the where string to the whole whereClause
         break;
       case "ensembleTranscriptId":
         where =
-          andOperator + "t.transcriptomeId = " + "'" + keyValue + "'" + " ";
-        whereClause = whereClause.concat(where);
+          andOperator + "t.transcriptomeId = " + "'" + keyValue + "'" + " "; // Create the WHERE statement
+        whereClause = whereClause.concat(where); // Add the where string to the whole whereClause
         break;
-      // Currently, there are no values for "geneSymbol" in the database
       case "geneSymbol":
-        // where = andOperator + "s.speciesName = " + "'" + keyValue + "'" + " ";
-        // whereClause = whereClause.concat(where);
+        // where = andOperator + "s.speciesName = " + "'" + keyValue + "'" + " "; // Create the WHERE statement
+        // whereClause = whereClause.concat(where); // Add the where string to the whole whereClause
         break;
       case "intronClass":
-        where = andOperator + "i.intronType = " + "'" + keyValue + "'" + " ";
-        whereClause = whereClause.concat(where);
+        where = andOperator + "i.intronType = " + "'" + keyValue + "'" + " "; // Create the WHERE statement
+        whereClause = whereClause.concat(where); // Add the where string to the whole whereClause
         break;
       case "exactLength":
-        where = andOperator + "i.intronLength = " + "'" + keyValue + "'" + " ";
-        whereClause = whereClause.concat(where);
+        where = andOperator + "i.intronLength = " + "'" + keyValue + "'" + " "; // Create the WHERE statement
+        whereClause = whereClause.concat(where); // Add the where string to the whole whereClause
         break;
       case "relativeLength":
-        where = andOperator + "g.geneLength = " + "'" + keyValue + "'" + " ";
-        whereClause = whereClause.concat(where);
+        where = andOperator + "g.geneLength = " + "'" + keyValue + "'" + " "; // Create the WHERE statement
+        whereClause = whereClause.concat(where); // Add the where string to the whole whereClause
         break;
       case "strand":
-        where = andOperator + "i.strand = " + "'" + keyValue + "'" + " ";
-        whereClause = whereClause.concat(where);
+        where = andOperator + "i.strand = " + "'" + keyValue + "'" + " "; // Create the WHERE statement
+        whereClause = whereClause.concat(where); // Add the where string to the whole whereClause
         break;
-      // Currently, there are no values for "coordinates" in the database
       case "coordinates":
-        // where = andOperator + "s.species = " + "'" + keyValue + "'" + " ";
-        // whereClause = whereClause.concat(where);
+        // where = andOperator + "s.species = " + "'" + keyValue + "'" + " "; // Create the WHERE statement
+        // whereClause = whereClause.concat(where); // Add the where string to the whole whereClause
         break;
-      // Currently, there are no values for "relativeExonLength" in the database
       case "relativeExonLength":
-        // where = andOperator + "s.species = " + "'" + keyValue + "'" + " ";
-        // whereClause = whereClause.concat(where);
+        // where = andOperator + "s.species = " + "'" + keyValue + "'" + " "; // Create the WHERE statement
+        // whereClause = whereClause.concat(where); // Add the where string to the whole whereClause
         break;
       case "sequence":
-        where = andOperator + "i.intronSequence = " + "'" + keyValue + "'" + " ";
-        whereClause = whereClause.concat(where);
+        where =
+          andOperator +
+          "WHERE i.intronSequence = " +
+          "'" +
+          keyValue +
+          "'" +
+          " "; // Create the WHERE statement
+        whereClause = whereClause.concat(where); // Add the where string to the whole whereClause
         break;
       default:
         break;
     }
     count++;
+    orCount = 1; // Reset the count (other switch cases)
+    orOperator = ""; // Reset the orOperator string for the next loop (other switch cases)
   }
   const tableJoin =
     "SELECT * FROM Species s INNER JOIN Gene g ON s.speciesId = g.speciesId INNER JOIN Transcriptome t ON g.geneNumId = t.geneNumId INNER JOIN intron_transcriptome_junction itj ON t.transcriptomeNumId = itj.transcriptomeNumId INNER JOIN Intron i ON itj.intronNumId = i.intronNumId INNER JOIN Exon e ON i.intronNumId = e.intronNumId INNER JOIN intron_score_junction isj ON i.intronNumId = isj.intronNumId INNER JOIN Score score ON isj.scoreId = score.scoreId ";
@@ -114,9 +165,9 @@ const generateQuery = (filteredSearchParam) => {
   return generatedQuery;
 };
 
-/* POST Route 
+/* POST Route
  *  https://major-and-minor-intron-db.ue.r.appspot.com/search/
- *  Main search route. Uses both the filterSearchCriteria, and generateQuery methods 
+ *  Main search route. Uses both the filterSearchCriteria, and generateQuery methods
  *  to generate a relevant qurey string to pull results from the database based on user input.
  */
 searchRouter.post("/", async (req, res) => {
@@ -133,12 +184,12 @@ searchRouter.post("/", async (req, res) => {
     });
 });
 
-/* GET Route 
+/* GET Route
  *  https://major-and-minor-intron-db.ue.r.appspot.com/search/intron
  *  Intron route. Returns all introns currently in the database.
  */
 searchRouter.get("/intron", function (req, res) {
-   Intron.findAll()
+  Intron.findAll()
     .then((intron) => {
       console.log(intron);
       res.json(intron);
@@ -147,9 +198,9 @@ searchRouter.get("/intron", function (req, res) {
     .catch((err) => console.log(err));
 });
 
-/* GET Route 
+/* GET Route
  *  https://major-and-minor-intron-db.ue.r.appspot.com/search/intron/:intronNumId
- *  Intron ID search route. Returns a single intron based on the requested ID value 
+ *  Intron ID search route. Returns a single intron based on the requested ID value
  */
 searchRouter.get("/intron/:intronNumId", function (req, res) {
   Intron.findAll({
@@ -165,7 +216,7 @@ searchRouter.get("/intron/:intronNumId", function (req, res) {
     .catch((err) => console.log(err));
 });
 
-/* GET Route 
+/* GET Route
  *  https://major-and-minor-intron-db.ue.r.appspot.com/search/species/:speciesName/:genomeVersion
  *  Species search route. Returns all species filtered by speciesName and genmeVersion currently in the database.
  */
@@ -186,7 +237,7 @@ searchRouter.get("/species/:speciesName/:genomeVersion", function (req, res) {
     .catch((err) => console.log(err));
 });
 
-/* GET Route 
+/* GET Route
  *  https://major-and-minor-intron-db.ue.r.appspot.com/search/species/:speciesName
  *  Species search route. Returns all species filtered by speciesName currently in the database.
  */
@@ -204,7 +255,7 @@ searchRouter.get("/species/:speciesName", function (req, res, next) {
     .catch((err) => console.log(err));
 });
 
-/* GET Route 
+/* GET Route
  *  https://major-and-minor-intron-db.ue.r.appspot.com/search/species
  *  Species route. Returns all species currently in the database.
  */
@@ -218,7 +269,4 @@ searchRouter.get("/species", function (req, res) {
     .catch((err) => console.log(err));
 });
 
-
 module.exports = searchRouter;
-
-
