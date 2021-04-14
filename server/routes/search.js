@@ -20,6 +20,7 @@ const sampleCriteria = {
   relativeLength: 99,
 };
 
+// Species with two genome versions
 const humanCriteria = {
   strand: "+",
   speciesName: ["Homo sapiens"],
@@ -27,7 +28,7 @@ const humanCriteria = {
   relativeLength: 99,
 };
 
-// Test Object for cross species selection
+// Test object for cross species selection
 const crossSpeciesCriteria = {
   speciesName: ["Anopheles gambiae", "Apis mellifera", "Arabidopsis thaliana"],
   version: ["AgamP4", "Amel_4.5", "TAIR10"],
@@ -43,7 +44,11 @@ const filterSearchCriteria = (searchCriteria) => {
   // Loop through the copied object
   for (const key in filteredCriteria) {
     // If value of key/value pair is empty ('') or null, then remove key from the object
-    if (filteredCriteria[key] === "" || filteredCriteria[key] === null) {
+    if (
+      filteredCriteria[key] === "" ||
+      filteredCriteria[key] === null ||
+      filteredCriteria[key].length
+    ) {
       delete filteredCriteria[key];
     }
   }
@@ -171,7 +176,14 @@ const generateQuery = (filteredSearchParam) => {
  *  to generate a relevant qurey string to pull results from the database based on user input.
  */
 searchRouter.post("/", async (req, res) => {
+  const email = "";
+
   filterSearchCriteria(req.body);
+
+  if (filterSearchCriteria.email != undefined) {
+    email = filterSearchCriteria.email;
+  }
+
   const sqlQuery = generateQuery(filteredCriteria);
   return sequelize
     .query(sqlQuery, {
@@ -180,6 +192,9 @@ searchRouter.post("/", async (req, res) => {
     .then((response) => {
       console.log(response);
       res.json(response);
+      if (email.length > 0) {
+        //Email code
+      }
       return response;
     });
 });
