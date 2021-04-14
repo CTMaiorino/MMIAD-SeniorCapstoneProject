@@ -209,7 +209,7 @@ function emailUser(introns, email, exportOps) {
   console.log("Email=" + email)
   var attachments = []
   console.log(exportOps);
-  for (key in exportOps) {
+  exportOps.forEach((key => {
     switch (key) {
       case 'Default':
         attachments.push(exportAsDefault(introns));
@@ -239,7 +239,7 @@ function emailUser(introns, email, exportOps) {
       default:
         break;
     }
-  }
+  }))
   console.log(attachments);
 
   const transporter = nodemailer.createTransport({

@@ -36,7 +36,6 @@ module = emailerHelperFunctions => {
     //Using this function as an example of how to code the rest
     const exportAsBed = (introns) => {
         var totalString = ""//Your entire file must be saved as 1 string. TotalString will be this string
-        console.log(introns);
         introns.forEach((intron) => {//Add to the string for every intron
             //console.log(intron)
 
@@ -58,11 +57,9 @@ module = emailerHelperFunctions => {
     }
 
     const exportAsDefault = (introns) => {
-        console.log("Exporting as default")
         var totalString = ""
         introns.forEach((intron) => {
             delete intron.speciesId
-
             delete intron.geneId
             delete intron.intronId
             delete intron.scoreId
@@ -76,7 +73,6 @@ module = emailerHelperFunctions => {
 
     const exportAsDownstreamFasta = (introns) => {
         var totalString = ""
-        console.log(introns);
         introns.forEach((intron) => {
             const id = intron.intronId;
             const speciesName = intron.speciesName;
@@ -99,7 +95,6 @@ module = emailerHelperFunctions => {
 
     const exportAsUpstreamFasta = (introns) => {
         var totalString = ""
-        console.log(introns);
         introns.forEach((intron) => {
             const id = intron.intronId;
             const speciesName = intron.speciesName;
