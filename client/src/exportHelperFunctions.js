@@ -49,13 +49,26 @@ export const exportAsDefault = (introns) => {
     
 }
 
+
 export const exportAsDownstreamFasta = (introns) => {
     var totalString = ""
     console.log(introns);
     introns.forEach((intron) => {
-
+        const id=intron.intronId;
+        const speciesName=intron.speciesName;
+        const chromosome=intron.chromosome;
+        const strand=intron.strand;
+        const start=intron.geneStartCoord;
+        const end=intron.geneEndCoord;
+        const geneLength=intron.geneLength;
+        const score=intron.scoreId;
+        const rank=intron.rank;
+        const sequence=intron.intronSequence;
+        totalString+=">" + id + "|" + speciesName + "|" + chromosome + "|" + strand + "|" + start 
+        + "|" + end + "|" + geneLength + "|" + score + "|" + rank + "\n" 
+        + sequence + "\n";
     })
-    downloadFile(totalString, "fasta");
+    downloadFile(totalString, "dwnfasta");
     
     
 }
@@ -64,9 +77,21 @@ export const exportAsUpstreamFasta = (introns) => {
     var totalString = ""
     console.log(introns);
     introns.forEach((intron) => {
-
+        const id=intron.intronId;
+        const speciesName=intron.speciesName;
+        const chromosome=intron.chromosome;
+        const strand=intron.strand;
+        const start=intron.geneStartCoord;
+        const end=intron.geneEndCoord;
+        const geneLength=intron.geneLength;
+        const score=intron.scoreId;
+        const rank=intron.rank;
+        const sequence=intron.intronSequence;
+        totalString+=">" + id + "|" + speciesName + "|" + chromosome + "|" + strand + "|" + start 
+        + "|" + end + "|" + geneLength + "|" + score + "|" + rank + "\n" 
+        + sequence + "\n";
     })
-    downloadFile(totalString, "fasta");
+    downloadFile(totalString, "upfasta");
     
     
 }

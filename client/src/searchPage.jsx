@@ -98,12 +98,12 @@ handleVersions = (versions) => {
     e.preventDefault();
     const formData = new FormData(e.target)
     const  formDataObj = Object.fromEntries(formData.entries());
-    formDataObj.species=this.state.selectedSpecies
-    formDataObj.version=this.state.selectedVersions
-    if (formDataObj.species.length==0) {
+    formDataObj.speciesName="Bos taurus"//this.state.selectedSpecies
+    formDataObj.genomeVersion="UMD3.1"//this.state.selectedVersions
+    if (formDataObj.speciesName.length==0) {
       alert("You must select a species and a genome version")
     }
-    else if(formDataObj.version.length==0 && formDataObj.species.length==1)
+    else if(formDataObj.genomeVersion.length==0 && formDataObj.speciesName.length==1)
     {
       alert("You must select a genome version")
     }
