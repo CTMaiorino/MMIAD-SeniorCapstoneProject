@@ -30,7 +30,7 @@ export const exportAsGtf = (introns,isEmail) => {
         transcriptString = "processed_transcript                transcript " + "   " + "gene_id: " + geneId + "   " + "transcript_id: " + transcriptomeId + "   " + "gene_name: " + geneName + "   " + "gene_source: " + geneSource + "   " + "gene_bioType: " + geneBioType + "   " + "gene_name: " + geneName + "\n"
         totalString += geneString + transcriptString + "\n"
     })
-    downloadFile(totalString, "gtf");
+    downloadFile(totalString, "gtf", isEmail);
 }
 
 //Using this function as an example of how to code the rest
@@ -52,7 +52,7 @@ export const exportAsBed = (introns,isEmail) => {
         totalString += chromosome + "   " + start + "   " + end + "   " + intronId + "   " + score + "   " + strand + "\n"
 
     })
-    downloadFile(totalString, "bed");//This function gets your data, with a speficied type(Which could be wrong but I guessed) and  will download the file
+    downloadFile(totalString, "bed", isEmail);//This function gets your data, with a speficied type(Which could be wrong but I guessed) and  will download the file
 
 
 }
@@ -60,22 +60,16 @@ export const exportAsDefault = (introns,isEmail) => {
     
     var totalString = ""
     introns.forEach((intron) => {
-        delete intron.speciesId
-
-        delete intron.geneId
-        delete intron.intronId
-        delete intron.scoreId
         totalString+= Object.values(intron).toString() + "\n"
     })
     var headerString=Object.keys(introns[0]).toString() + "\n"
     totalString= headerString + totalString
-    downloadFile(totalString, "csv");
+    downloadFile(totalString, "csv", isEmail);
 }
 
 
 export const exportAsDownstreamFasta = (introns,isEmail) => {
     var totalString = ""
-    console.log(introns,isEmail);
     introns.forEach((intron) => {
         const id = intron.intronId;
         const speciesName = intron.speciesName;
@@ -91,7 +85,7 @@ export const exportAsDownstreamFasta = (introns,isEmail) => {
             + "|" + end + "|" + geneLength + "|" + score + "|" + rank + "\n"
             + sequence + "\n";
     })
-    downloadFile(totalString, "dwnfasta");
+    downloadFile(totalString, "dwnfasta", isEmail);
 
 
 }
@@ -114,19 +108,26 @@ export const exportAsUpstreamFasta = (introns,isEmail) => {
             + "|" + end + "|" + geneLength + "|" + score + "|" + rank + "\n"
             + sequence + "\n";
     })
-    downloadFile(totalString, "upfasta");
+    return downloadFile(totalString, "upfasta", isEmail);
 
 
 }
 
 //Downloads the file
-export const downloadFile = (data, type) => {
+export const downloadFile = (data, type, isEmail) => {
     const element = document.createElement("a");
     const file = new Blob([data], { type: 'text/plain' });
     element.href = URL.createObjectURL(file);
+    if(isEmail)
+    {
+        
+    }
+    else
+    {
     element.download = "MMIAD" + type + "." + type; //This is the file structure I chose. For example, a bed file would be MMIADbed.bed
     document.body.appendChild(element); // Required for this to work in FireFox
     element.click();
+    }
 }
 
 

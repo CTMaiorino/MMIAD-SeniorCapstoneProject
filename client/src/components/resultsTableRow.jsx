@@ -24,6 +24,7 @@ class ResultsTableRow extends Component {
             <tr>
                 <td><Link to={{ pathname:this.state.intronPath, state:this.state.intron}}>{this.state.intron.genomeVersion}</Link></td>
                 <td>{this.state.intron.speciesName}</td>
+                <td>{this.state.intron.transcriptomeId}</td>
                 <td>{this.state.intron.ensemblGeneId}</td>
                 <td>{this.state.intron.geneType}</td>
                 <td>{this.state.intron.subtype}</td>

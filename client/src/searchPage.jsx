@@ -15,7 +15,7 @@ class SearchPage extends Component {
     this.handleSpecies = this.handleSpecies.bind(this);
     this.handleVersions = this.handleVersions.bind(this);
     this.handleTypes = this.handleTypes.bind(this);
-
+    this.handleEmail=this.handleEmail.bind(this);
   }
 
 
@@ -83,20 +83,26 @@ class SearchPage extends Component {
   state = {
     selectedSpecies: [],
     selectedVersions: [],
-    selectedTypes: []
+    selectedTypes: [],
+    emailIsEmpty: true
   }
 
 
   handleSpecies = (species) => {
-    this.setState({ selectedSpecies: species, selectedVersions: this.state.selectedVersions, selectedTypes: this.state.selectedTypes });
+    this.setState({ selectedSpecies: species, selectedVersions: this.state.selectedVersions, selectedTypes: this.state.selectedTypes, emailIsEmpty:this.state.emailIsEmpty });
   }
 
   handleVersions = (versions) => {
-    this.setState({ selectedSpecies: this.state.selectedSpecies, selectedVersions: versions, selectedTypes: this.state.selectedTypes });
+    this.setState({ selectedSpecies: this.state.selectedSpecies, selectedVersions: versions, selectedTypes: this.state.selectedTypes, emailIsEmpty:this.state.emailIsEmpty });
   }
 
   handleTypes(event) {
-    this.setState({ selectedSpecies: this.state.selectedSpecies, selectedVersions: this.state.selectedVersions, selectedTypes: event.value });
+    this.setState({ selectedSpecies: this.state.selectedSpecies, selectedVersions: this.state.selectedVersions, selectedTypes: event.value, emailIsEmpty:this.state.emailIsEmpty });
+  }
+
+  handleEmail(event) {
+    const isEmpty=event.target.value==""
+    this.setState({ selectedSpecies: this.state.selectedSpecies, selectedVersions: this.state.selectedVersions, selectedTypes: this.state.selectedTypes, emailIsEmpty:isEmpty });
   }
 
 
@@ -129,7 +135,6 @@ class SearchPage extends Component {
       alert("Select at least one file type for your results to be sent by email")
     }
     else {
-      console.log("I should submit")
       var params = formDataObj; // The object containing search parameters
 
 
@@ -186,6 +191,7 @@ class SearchPage extends Component {
                     className="col-lg mx-2"
                     name="email"
                     placeholder="Email (Optional)"
+                    onChange={this.handleEmail}
                   />
 
 
@@ -212,10 +218,9 @@ class SearchPage extends Component {
                   size="lg"
                   type="submit"
 
-
                 >
                   <Image src="searchIcon.jpg" width="20px" />
-                  Search
+                  {this.state.emailIsEmpty ? "Search" : "Search and Email"}
                 </Button></div>
               <div />
             </div>

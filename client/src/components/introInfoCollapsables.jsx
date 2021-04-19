@@ -6,6 +6,7 @@ class IntronInfoCollapsable extends Component {
   constructor(props) {
     super(props);
     console.log(props.intron)
+    this.copyToClipboard=this.copyToClipboard.bind(this)
   }
 
   state = {
@@ -14,10 +15,14 @@ class IntronInfoCollapsable extends Component {
     keys: this.props.dataKeys
   };
 
+  copyToClipboard(sequence){
+    navigator.clipboard.writeText(sequence)
+    alert("Copied to clipboard")
+  }
   render() {
     var { open } = this.state;
     var intron = this.state.intron
-
+  
 
 
 
@@ -52,9 +57,18 @@ class IntronInfoCollapsable extends Component {
                   </h5>
                   {intron[this.state.keys[index]] != null ?
                     (
-                      <div className="pl-5 overflow-auto"><p>{intron[this.state.keys[index]]
-                      }</p> </div>
+                      this.state.keys[index] != "intronSequence" ? (
+                        <div className="pl-5 overflow-auto"><p>{intron[this.state.keys[index]]
+                        }</p> </div>
 
+                      ) : (
+                        <div className="d-flex overflow-auto">
+                        <a className="mx-5" onClick={() => this.copyToClipboard(intron[this.state.keys[index]])}>Copy Sequence</a>
+                        <div className=" pl-5 overflow-auto"><p id="sequence">{intron[this.state.keys[index]]
+                        }</p> </div>
+                        </div>
+
+                      )
                     ) :
                     (
                       <span className="pl-5">NA</span>

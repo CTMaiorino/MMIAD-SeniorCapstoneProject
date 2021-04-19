@@ -19,28 +19,47 @@ class ExportButtons extends Component {
       formDataObj = Object.fromEntries(formData.entries());
     const introns = this.props.introns
     const fileTypes = this.fileTypes.types;
+    const isEmail=this.state.isEmail
+    var attachments=[]
+    if(!isEmail){
     Object.keys(formDataObj).forEach(type => {
       switch (type) {
         case fileTypes[0].toLowerCase():
-          exportAsDefault(introns);
+          exportAsDefault(introns,isEmail);
           break;
         case fileTypes[1].toLowerCase():
-          exportAsGtf(introns);
+          exportAsGtf(introns,isEmail);
           break;
         case fileTypes[2].toLowerCase():
-          exportAsBed(introns);
+          exportAsBed(introns,isEmail);
           break;
         case fileTypes[3].toLowerCase():
-          exportAsDownstreamFasta(introns);
+          exportAsDownstreamFasta(introns,isEmail);
           break;
         case fileTypes[4].toLowerCase():
-          exportAsUpstreamFasta(introns);
+          exportAsUpstreamFasta(introns,isEmail);
           break;
 
         default:
         // code block
       }
     })
+  }
+  else
+  {
+    const email=formDataObj.email;
+    const fileTypes=Object.keys(formDataObj)
+    introns.email=email
+    introns.fileTypes=fileTypes
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+      body: JSON.stringify(introns)
+    };
+    fetch('https://major-and-minor-intron-db.ue.r.appspot.com/search/email', requestOptions)
+      .then(response => response.json())
+      alert("Email Sent")
+  }
     console.log(formDataObj);
     //exportAsBed(this.props.introns);
   }
@@ -59,10 +78,7 @@ class ExportButtons extends Component {
     const fileTypes = this.fileTypes.types
     return (
       <div>
-        <Button onClick={(e) => this.openModal(true)} className="m-2 p-auto float-right" variant="outline-primary">
-          <Icon.EnvelopeFill style={{ paddingRight: "5px" }} />
-          Email
-        </Button>
+        
         <Button onClick={(e) => this.openModal(false)} className="m-2 p-auto float-right" variant="outline-primary">
           <Icon.ArrowDownCircleFill style={{ paddingRight: "5px" }} />
           Export

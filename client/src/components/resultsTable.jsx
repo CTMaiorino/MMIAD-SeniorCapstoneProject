@@ -26,6 +26,7 @@ class ResultsTable extends Component {
                     <tr>
                         <th>Genome Version</th>
                         <th>Species</th>
+                        <th>Transcriptome</th>
                         <th>Gene </th>
                         <th>Type</th>
                         <th>Subtype</th>
