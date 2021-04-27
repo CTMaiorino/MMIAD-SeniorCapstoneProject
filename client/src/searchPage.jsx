@@ -116,9 +116,8 @@ class SearchPage extends Component {
     console.log("A submit was hit")
     e.preventDefault();
     const formData = new FormData(e.target)
-    const formDataObj = Object.fromEntries(formData.entries());
-    formDataObj.speciesName = this.state.selectedSpecies
-    formDataObj.genomeVersion = this.state.selectedVersions
+    var formDataObj = Object.fromEntries(formData.entries());
+    formDataObj={speciesName : this.state.selectedSpecies, genomeVersion: this.state.selectedVersions , ...formDataObj}
     formDataObj.emailFormatOptions = this.state.selectedTypes
     const email = formDataObj.email
     console.log(formDataObj)
