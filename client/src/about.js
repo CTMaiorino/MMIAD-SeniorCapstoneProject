@@ -13,11 +13,12 @@ function About() {
   return (
     <div>
       <Header />
-
       <div className="container-fluid" style={{ marginBottom: "20px" }}>
         <div className="row justify-content-center">
           <div className="col-lg-6" style={{ marginTop: "30px" }}>
+            {/* Within the centered row, an accordion is used to display the three cards. */}
             <Accordion>
+              {/* This card contains information on the project background */}
               <Card>
                 <Card.Header>
                   <Accordion.Toggle as={Button} variant="link" eventKey="0">
@@ -40,8 +41,10 @@ function About() {
                     these features, MMIAD offers users an intuitive interface
                     and the convenience of exporting search results.
                   </Card.Body>
+                  {/* By default, each card is collapsed and only displays the header title. */}
                 </Accordion.Collapse>
               </Card>
+              {/* Information on the project's technologies */}
               <Card>
                 <Card.Header>
                   <Accordion.Toggle as={Button} variant="link" eventKey="1">
@@ -58,6 +61,7 @@ function About() {
                   </Card.Body>
                 </Accordion.Collapse>
               </Card>
+              {/* Information on the development behind the system */}
               <Card>
                 <Card.Header>
                   <Accordion.Toggle as={Button} variant="link" eventKey="2">
@@ -76,6 +80,7 @@ function About() {
         </div>
       </div>
 
+      {/* Back button (from the React components folder) that brings you back to the search page */}
       <BackToSearch />
     </div>
   );
