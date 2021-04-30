@@ -1,3 +1,11 @@
+/*
+Search Page
+Created by: James Jacobson
+4/30/2021
+Contains the search criteria, selection dropdown, and tools. Used to search for introns, and to send to email
+*/
+
+
 import Dropdowns from "./components/selectionDropdowns";
 import SearchCriteria from "./components/searchCriteria";
 import SearchCriteriaTools from "./components/tools";
@@ -15,7 +23,7 @@ class SearchPage extends Component {
     this.handleSpecies = this.handleSpecies.bind(this);
     this.handleVersions = this.handleVersions.bind(this);
     this.handleTypes = this.handleTypes.bind(this);
-    this.handleEmail=this.handleEmail.bind(this);
+    this.handleEmail = this.handleEmail.bind(this);
   }
 
 
@@ -79,7 +87,8 @@ class SearchPage extends Component {
     types: ["Default", "Exon GTF", "Intron Bed", "Downstream Exon Fasta", "Upstream Exon Fasta"]
   }
 
-
+  //needed to keep track of the selected species and version, since there is both primereact and react-bootstrap
+  //The forms do not work together
   state = {
     selectedSpecies: [],
     selectedVersions: [],
@@ -89,35 +98,35 @@ class SearchPage extends Component {
 
 
   handleSpecies = (species) => {
-    this.setState({ selectedSpecies: species, selectedVersions: this.state.selectedVersions, selectedTypes: this.state.selectedTypes, emailIsEmpty:this.state.emailIsEmpty });
+    this.setState({ selectedSpecies: species, selectedVersions: this.state.selectedVersions, selectedTypes: this.state.selectedTypes, emailIsEmpty: this.state.emailIsEmpty });
   }
 
   handleVersions = (versions) => {
-    this.setState({ selectedSpecies: this.state.selectedSpecies, selectedVersions: versions, selectedTypes: this.state.selectedTypes, emailIsEmpty:this.state.emailIsEmpty });
+    this.setState({ selectedSpecies: this.state.selectedSpecies, selectedVersions: versions, selectedTypes: this.state.selectedTypes, emailIsEmpty: this.state.emailIsEmpty });
   }
 
   handleTypes(event) {
-    this.setState({ selectedSpecies: this.state.selectedSpecies, selectedVersions: this.state.selectedVersions, selectedTypes: event.value, emailIsEmpty:this.state.emailIsEmpty });
+    this.setState({ selectedSpecies: this.state.selectedSpecies, selectedVersions: this.state.selectedVersions, selectedTypes: event.value, emailIsEmpty: this.state.emailIsEmpty });
   }
 
   handleEmail(event) {
-    const isEmpty=event.target.value==""
-    this.setState({ selectedSpecies: this.state.selectedSpecies, selectedVersions: this.state.selectedVersions, selectedTypes: this.state.selectedTypes, emailIsEmpty:isEmpty });
+    const isEmpty = event.target.value == ""
+    this.setState({ selectedSpecies: this.state.selectedSpecies, selectedVersions: this.state.selectedVersions, selectedTypes: this.state.selectedTypes, emailIsEmpty: isEmpty });
   }
 
 
 
 
-  // Debugging purposes
 
-
+  //Collects the form inputs, and send it the results page, which actually calls the data
+  //Handles form validation
   onFormSubmit = (e) => {
 
     console.log("A submit was hit")
     e.preventDefault();
     const formData = new FormData(e.target)
     var formDataObj = Object.fromEntries(formData.entries());
-    formDataObj={speciesName : this.state.selectedSpecies, genomeVersion: this.state.selectedVersions , ...formDataObj}
+    formDataObj = { speciesName: this.state.selectedSpecies, genomeVersion: this.state.selectedVersions, ...formDataObj }
     formDataObj.emailFormatOptions = this.state.selectedTypes
     const email = formDataObj.email
     console.log(formDataObj)

@@ -1,5 +1,10 @@
+/*
+Selection Dropdown
+Created by: James Jacobson
+4/30/2021
+Contains the species and version dropdowns. Note that they use primereact to allow for mutlipe selections in a dropdown
+*/
 import React, { Component } from "react";
-import Form from "react-bootstrap/Form";
 import { MultiSelect } from 'primereact/multiselect';
 
 class Dropdowns extends Component {
@@ -9,6 +14,7 @@ class Dropdowns extends Component {
     this.handleSelectVersions = this.handleSelectVersions.bind(this);
   }
 
+
   state = {
     allData: [{}],
     speciesList: [{ "speciesName": "Test Monkey" }],
@@ -17,6 +23,7 @@ class Dropdowns extends Component {
     selectedVersions: [],
   };
 
+  //Grabs the data needed before the page is loaded for the species and for the version
   async componentDidMount() {
     //Retrives all of the species in the database, and places them into the species selection dropdown
     fetch('https://major-and-minor-intron-db.ue.r.appspot.com/search/species')

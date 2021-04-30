@@ -1,6 +1,12 @@
+/*
+Results Table
+Created by: James Jacobson
+4/30/2021
+Contains the table headers, and iterates through intron data
+*/
+
 import Table from "react-bootstrap/Table";
 import React, { Component } from "react";
-import { Link } from 'react-router-dom';
 import ResultsTableRow from "./resultsTableRow";
 
 
@@ -10,15 +16,8 @@ class ResultsTable extends Component {
     constructor(props) {
         super(props);
         console.log(props.introns);
-        
+
     }
-
-    state = {
-        selectedSpecies: false,
-        selectedVersion: true,
-    };
-
-
     render() {
         return (
             <Table bordered hover>
@@ -38,14 +37,9 @@ class ResultsTable extends Component {
                 <tbody>
 
                     {this.props.introns.map((intron) => (
-                        
-                            <ResultsTableRow intron={intron}/>
 
-
-                        
-
+                        <ResultsTableRow intron={intron} />
                     ))}
-
                 </tbody>
             </Table>
         )

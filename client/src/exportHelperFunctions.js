@@ -1,4 +1,7 @@
 /*
+exporterHelperFunctions
+Created by: James, Phil, and Corey
+Parses intron data as different file types
 If you need to modify the file type names, go to line 47 in exportButtons.jsx
 And if the function names need to change, go to line 15 in exportButtons.jsx and change the one you need, and in here as well
 You will also need to change the import in exportButtons.jsx to match the function as well

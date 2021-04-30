@@ -1,3 +1,10 @@
+/*
+Tools
+Created by: James Jacobson
+4/30/2021
+Allow the user to select data for the results table. However, the functionality went unimplemented 
+*/
+
 import React, { Component } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";

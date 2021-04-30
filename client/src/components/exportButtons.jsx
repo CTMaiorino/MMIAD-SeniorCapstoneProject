@@ -1,3 +1,11 @@
+/*
+Export Buttons
+Created by: James Jacobson
+4/30/2021
+Buttons that allow the users to download different file types to their computer/
+Modal that lets the user select the file types
+*/
+
 import React, { Component } from "react";
 import * as Icon from "react-bootstrap-icons";
 import { Modal, Button, Form } from "react-bootstrap";
@@ -9,9 +17,11 @@ class ExportButtons extends Component {
   }
 
 
-  openModal = (source) => this.setState({ introns: this.state.introns, isOpen: true, isEmail: source });
-  closeModal = () => this.setState({ introns: this.state.introns, isOpen: false, isEmail: this.state.isEmail });
+  openModal = () => this.setState({ introns: this.state.introns, isOpen: true });
+  closeModal = () => this.setState({ introns: this.state.introns, isOpen: false });
 
+  /*When the export button is clicked check which checkmarks are selected in the modal 
+  and send the data to be created into that file type(s)*/
   onSubmit = (e) => {
     e.preventDefault();
     console.log(this.state.introns)
@@ -19,67 +29,36 @@ class ExportButtons extends Component {
       formDataObj = Object.fromEntries(formData.entries());
     const introns = this.props.introns
     const fileTypes = this.fileTypes.types;
-    const isEmail=this.state.isEmail
-    var attachments=[]
-    if(!isEmail){
+    const isEmail = this.state.isEmail
+
     Object.keys(formDataObj).forEach(type => {
       switch (type) {
         case fileTypes[0].toLowerCase():
-          exportAsDefault(introns,isEmail);
+          exportAsDefault(introns, isEmail);
           break;
         case fileTypes[1].toLowerCase():
-          exportAsGtf(introns,isEmail);
+          exportAsGtf(introns, isEmail);
           break;
         case fileTypes[2].toLowerCase():
-          exportAsBed(introns,isEmail);
+          exportAsBed(introns, isEmail);
           break;
         case fileTypes[3].toLowerCase():
-          exportAsDownstreamFasta(introns,isEmail);
+          exportAsDownstreamFasta(introns, isEmail);
           break;
         case fileTypes[4].toLowerCase():
-          exportAsUpstreamFasta(introns,isEmail);
+          exportAsUpstreamFasta(introns, isEmail);
           break;
 
         default:
-        // code block
       }
     })
   }
-  else
-  {
-    const email=formDataObj.email;
-    const fileTypes=Object.keys(formDataObj)
-    introns.email=email
-    introns.fileTypes=fileTypes
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
-      body: JSON.stringify(introns)
-    };
-    fetch('https://major-and-minor-intron-db.ue.r.appspot.com/search/email', requestOptions)
-      .then(response => response.json())
-      alert("Email Sent")
-  }
-    console.log(formDataObj);
-    //exportAsBed(this.props.introns);
-  }
-  fileTypes = {
-    types: ["Default", "Exon GTF", "Intron Bed", "Downstream Exon Fasta", "Upstream Exon Fasta"]
-  }
-
-  state = {
-    introns: this.props.introns,
-    isOpen: false,
-    isEmail: true
-  }
   render() {
-
-    const isEmail = this.state.isEmail;
     const fileTypes = this.fileTypes.types
     return (
       <div>
-        
-        <Button onClick={(e) => this.openModal(false)} className="m-2 p-auto float-right" variant="outline-primary">
+
+        <Button onClick={(e) => this.openModal()} className="m-2 p-auto float-right" variant="outline-primary">
           <Icon.ArrowDownCircleFill style={{ paddingRight: "5px" }} />
           Export
         </Button>

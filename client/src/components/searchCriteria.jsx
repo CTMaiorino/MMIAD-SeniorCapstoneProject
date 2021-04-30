@@ -1,3 +1,10 @@
+/*
+Search Criteria
+Created by: James Jacobson
+4/30/2021
+Contains the search criteria inputs/form for the search page
+*/
+
 import React, { Component } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -9,6 +16,7 @@ class SearchCriteria extends Component {
     this.myRef = React.createRef();
   }
 
+  //These are needed for the state of the different radio buttons
   state = {
     strand: 3,
     type: 3,
@@ -64,6 +72,7 @@ class SearchCriteria extends Component {
 
   render() {
     return (
+      
       <div className={this.state.isVisible === true ? "border" : ""}>
         <div className="border border-dark d-flex p-3">
           <Button
@@ -85,6 +94,7 @@ class SearchCriteria extends Component {
             this.state.isVisible === true ? "p-3 visable" : "p-3 invisible"
           }
         >
+          //These each should really be a componet. Could implement if there is time
           <Form.Group className="container">
             <div className="row p-auto m-2">
               <Form.Label style={{ fontSize: 22 }} className="col-sm m-auto ">

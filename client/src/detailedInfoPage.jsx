@@ -1,3 +1,10 @@
+
+/*
+Detailed intron info page
+Created by: James Jacobson
+4/30/2021
+Contains all of an introns data
+*/
 import Header from "./components/header";
 import "bootstrap/dist/css/bootstrap.css";
 import IntronInfoCollapsable from './components/introInfoCollapsables';
@@ -126,6 +133,7 @@ class DetailedIntronInfo extends Component {
         <div className="mt-3 "><BackToSearch /></div>
 
         <div className="container-fluid  ">
+          {/* all data is stored in IntronInfoCollasables, with different pieces of the introns information*/}
           <IntronInfoCollapsable title={this.basicData.label} criteria={this.basicData.criteria} dataKeys={this.basicData.keys} intron={this.state.intron} />
           <IntronInfoCollapsable title={this.geneData.label} criteria={this.geneData.criteria} dataKeys={this.geneData.keys} intron={this.state.intron} />
           <IntronInfoCollapsable title={this.intronData.label} criteria={this.intronData.criteria} dataKeys={this.intronData.keys} intron={this.state.intron}/>

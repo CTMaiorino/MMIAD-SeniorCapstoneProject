@@ -1,3 +1,12 @@
+/*
+intronInfoCollapsables
+Created by: James Jacobson
+4/30/2021
+In the detailed intron information page. Contains intron data, displayed in collapasables
+Special attention is needed for the intron sequence
+*/
+
+
 import React, { Component } from "react";
 import Button from "react-bootstrap/Button";
 import Image from "react-bootstrap/Image";
@@ -49,6 +58,7 @@ class IntronInfoCollapsable extends Component {
         <div aria-controls="tool">
           <Collapse in={open}>
             <div>
+              {/* checkes if the intron is null, or if the keys is the intron sequence*/}
               {this.props.criteria.map((criterion, index) => (
 
                 <div className="m-4 d-flex justify-content-between">
@@ -62,6 +72,7 @@ class IntronInfoCollapsable extends Component {
                         }</p> </div>
 
                       ) : (
+                        /* Adds a scrollable text if the seuqencne is long, but will always have a copy text. Does not work on Mac Devices */
                         <div className="d-flex overflow-auto">
                         <a className="mx-5" onClick={() => this.copyToClipboard(intron[this.state.keys[index]])}>Copy Sequence</a>
                         <div className=" pl-5 overflow-auto"><p id="sequence">{intron[this.state.keys[index]]

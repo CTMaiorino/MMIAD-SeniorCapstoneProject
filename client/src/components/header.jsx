@@ -1,3 +1,10 @@
+/*
+Header
+Created by: James Jacobson
+4/30/2021
+Header for all pages
+*/
+
 import React, { Component } from "react";
 import Button from "react-bootstrap/Button";
 import Navbar from "react-bootstrap/Navbar";

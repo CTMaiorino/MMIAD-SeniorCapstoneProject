@@ -1,11 +1,15 @@
+/*
+Search Results Page
+Created by: James Jacobson
+4/30/2021
+Displays the search results, calls the search query
+*/
+
 import Header from "./components/header";
 import "bootstrap/dist/css/bootstrap.css";
-import Button from "react-bootstrap/Button";
-import Image from "react-bootstrap/Image";
 import ResultsTable from "./components/resultsTable";
 import BackToSearch from "./components/backToSearch";
 import React, { Component } from "react";
-import * as Icon from "react-bootstrap-icons";
 import ExportButtons from "./components/exportButtons";
 
 class SearchResults extends Component {
