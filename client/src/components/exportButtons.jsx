@@ -29,7 +29,7 @@ class ExportButtons extends Component {
       formDataObj = Object.fromEntries(formData.entries());
     const introns = this.props.introns
     const fileTypes = this.fileTypes.types;
-    const isEmail = this.state.isEmail
+    const isEmail = false
 
     Object.keys(formDataObj).forEach(type => {
       switch (type) {
@@ -53,6 +53,15 @@ class ExportButtons extends Component {
       }
     })
   }
+
+  fileTypes = {
+    types: ["Default", "Exon GTF", "Intron Bed", "Downstream Exon Fasta", "Upstream Exon Fasta"]
+  }
+
+  state = {
+    introns: this.props.introns,
+    isOpen: false
+  }
   render() {
     const fileTypes = this.fileTypes.types
     return (
@@ -69,7 +78,7 @@ class ExportButtons extends Component {
           <Modal.Header closeButton className="border-0 px-2 py-0" />
           <div className="p-2">
             <Form onSubmit={this.onSubmit}>
-              {isEmail ?
+              {false ?
                 (<Form.Control
                   name="email"
                   placeholder="Enter email"

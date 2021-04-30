@@ -94,7 +94,7 @@ class SearchCriteria extends Component {
             this.state.isVisible === true ? "p-3 visable" : "p-3 invisible"
           }
         >
-          //These each should really be a componet. Could implement if there is time
+          {/*These each should really be a componet. Could implement if there is time*/}
           <Form.Group className="container">
             <div className="row p-auto m-2">
               <Form.Label style={{ fontSize: 22 }} className="col-sm m-auto ">
