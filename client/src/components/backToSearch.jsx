@@ -1,3 +1,10 @@
+/*
+Back to Search
+Created by: Phillip Nam
+4/30/2021
+When this button is click, it will take users back to the search page
+*/
+
 import React, { Component } from "react";
 import Button from "react-bootstrap/Button";
 import Navbar from "react-bootstrap/Navbar";
@@ -7,7 +14,6 @@ import * as Icon from "react-bootstrap-icons";
 class BackToSearch extends Component {
   constructor(props) {
     super(props);
-    console.log(props);
   }
   render() {
     return (

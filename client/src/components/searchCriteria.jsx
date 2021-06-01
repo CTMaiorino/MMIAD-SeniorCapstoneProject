@@ -1,3 +1,10 @@
+/*
+Search Criteria
+Created by: James Jacobson
+4/30/2021
+Contains the search criteria inputs/form for the search page
+*/
+
 import React, { Component } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -9,30 +16,63 @@ class SearchCriteria extends Component {
     this.myRef = React.createRef();
   }
 
+  //These are needed for the state of the different radio buttons
   state = {
-    strand: "Strand",
+    strand: 3,
+    type: 3,
     isVisible: true,
   };
 
-  handleSelect = (e) => {
-    this.setState({ strand: e });
-  };
 
   setVisibility = (e) => {
     this.setState({
       strand: this.state.strand,
+      type: this.state.type,
       isVisible: !this.state.isVisible,
     });
   };
 
-  onClick = (num) => () => {
-    this.setState({
-      strand: num,
-    });
+  onStrandClick = (num) => () => {
+    if (this.state.strand != num) {
+      this.setState({
+        strand: num,
+        type: this.state.type,
+        isVisible: this.state.isVisible,
+      });
+    }
+    else {
+      this.setState({
+        strand: 3,
+        type: this.state.type,
+        isVisible: this.state.isVisible,
+      });
+    }
+
   };
+
+  onTypeClick = (num) => () => {
+    if (this.state.type != num) {
+      this.setState({
+        strand: this.state.strand,
+        type: num,
+        isVisible: this.state.isVisible,
+      });
+    }
+    else {
+      this.setState({
+        strand: this.state.strand,
+        type: 3,
+        isVisible: this.state.isVisible,
+      });
+    }
+
+  };
+
+
 
   render() {
     return (
+      
       <div className={this.state.isVisible === true ? "border" : ""}>
         <div className="border border-dark d-flex p-3">
           <Button
@@ -54,6 +94,7 @@ class SearchCriteria extends Component {
             this.state.isVisible === true ? "p-3 visable" : "p-3 invisible"
           }
         >
+          {/*These each should really be a componet. Could implement if there is time*/}
           <Form.Group className="container">
             <div className="row p-auto m-2">
               <Form.Label style={{ fontSize: 22 }} className="col-sm m-auto ">
@@ -63,7 +104,7 @@ class SearchCriteria extends Component {
                 size="lg"
                 style={{ fontSize: 22 }}
                 className="col-sm"
-                name="ensembleGeneID"
+                name="ensembleGeneId"
               />
             </div>
             <div className="row p-auto m-2">
@@ -73,7 +114,7 @@ class SearchCriteria extends Component {
               <Form.Control
                 size="lg"
                 className="col-sm"
-                name="ensemblTranscriptID"
+                name="ensembleTranscriptId"
               />
             </div>
             <div className="row p-auto m-2">
@@ -92,17 +133,23 @@ class SearchCriteria extends Component {
               <div className="col-sm m-auto p-auto">
                 <Form.Check
                   style={{ fontSize: 22 }}
-                  name="U2"
+                  name="intronClass"
                   inline
-                  type="checkbox"
+                  type="radio"
                   label="U2"
+                  value="U2"
+                  onClick={this.onTypeClick(1)}
+                  checked={this.state.type === 1 ? true : false}
                 />
                 <Form.Check
                   style={{ fontSize: 22 }}
-                  name="U12"
+                  name="intronClass"
                   inline
-                  type="checkbox"
+                  type="radio"
                   label="U12"
+                  value="U12"
+                  onClick={this.onTypeClick(2)}
+                  checked={this.state.type === 2 ? true : false}
                 />
               </div>
             </div>
@@ -134,19 +181,21 @@ class SearchCriteria extends Component {
                   style={{ fontSize: 22 }}
                   inline
                   type="radio"
-                  name="+"
+                  name="strand"
                   label="+"
-                  onClick={this.onClick(1)}
+                  value="+"
+                  onClick={this.onStrandClick(1)}
                   checked={this.state.strand === 1 ? true : false}
                 />
                 <Form.Check
                   style={{ fontSize: 22 }}
                   inline
                   type="radio"
-                  name="-"
+                  name="strand"
                   eventKey="-"
                   label="-"
-                  onClick={this.onClick(2)}
+                  value="-"
+                  onClick={this.onStrandClick(2)}
                   checked={this.state.strand === 2 ? true : false}
                 />
               </div>

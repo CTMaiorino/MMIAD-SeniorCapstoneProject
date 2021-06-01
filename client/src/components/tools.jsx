@@ -1,3 +1,10 @@
+/*
+Tools
+Created by: James Jacobson
+4/30/2021
+Allow the user to select data for the results table. However, the functionality went unimplemented 
+*/
+
 import React, { Component } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -9,7 +16,7 @@ class SearchCriteriaTools extends Component {
     super(props);
   }
   state = {
-    open: true, // The whole component is visible by default
+    open: false, // The whole component is invisible by default
   };
   // The visibility of the whole component is updated here (visible by default)
 
