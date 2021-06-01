@@ -6,4 +6,4 @@ The system consists of a fully functional front-end UI, integrated with a back-e
 
 
 # Development Credit: 
-# Quinnipiac Software Engineering Capstone Project Team 2020-2021: Corey Maiorino, James Jacobson, Phillip Nam. 
+ Quinnipiac Software Engineering Capstone Project Team 2020-2021: Corey Maiorino, James Jacobson, Phillip Nam. 
