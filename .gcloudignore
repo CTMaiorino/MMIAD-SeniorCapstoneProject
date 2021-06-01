@@ -12,6 +12,9 @@
 # below:
 .git
 .gitignore
+<<<<<<< HEAD
+=======
 
+>>>>>>> abc56526e4e3304b49c7cfc73efe23d33c9a91eb
 # Node.js dependencies:
 node_modules/

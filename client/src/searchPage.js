@@ -6,7 +6,7 @@ import Button from "react-bootstrap/Button";
 import "bootstrap/dist/css/bootstrap.css";
 import Form from "react-bootstrap/Form";
 import Image from "react-bootstrap/Image";
-import {Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const referenceData = {
   label: "Reference",
@@ -59,32 +59,10 @@ const externalData = {
   ],
 };
 
-const species = [
-  "Apis mellifera",
-  "Arabidopsis thaliana",
-  "Bos taurus",
-  "Caenorhabditis elegans",
-  "Canis familiaris",
-  "Ciona intestinalis",
-  "Danio rerio",
-  "Drosophila melanogaster",
-  "Fugu rubripes",
-  "Gallus_gallus",
-  "Homo_sapiens",
-  "Macaca mulatta",
-  "Monodelphis_domestica",
-  "Mus musculus",
-  "Pan_troglodytes",
-  "Rattus_norvegicus",
-  "Saccharomyces_cerevisiae",
-  "Tetraodon_nigroviridis",
-  "Xenopus_tropicalis",
-];
+
 
 // Debugging purposes
-function onSearch() {
-
-}
+function onSearch() {}
 
 const onFormSubmit = (e) => {
   e.preventDefault();
@@ -116,7 +94,7 @@ function SearchPage() {
         <Form onSubmit={onFormSubmit}>
           <div className="row">
             <div className="col-lg-4 p-auto my-5 ">
-              <Dropdowns species={species} />
+              <Dropdowns />
               <SearchCriteria />
             </div>
             <div className="col-lg-8 p-auto my-5">
@@ -136,16 +114,16 @@ function SearchPage() {
                 title={externalData.label}
                 criteria={externalData.criteria}
               />
-              <Link to="/results"><Button
-                className="float-right"
-                size="lg"
-                type="submit"
-                onClick={onSearch}
-              >
-                  
-                <Image src="searchIcon.jpg" width="20px" />
-                Search
-              </Button>
+              <Link to="/results">
+                <Button
+                  className="float-right"
+                  size="lg"
+                  type="submit"
+                  onClick={onSearch}
+                >
+                  <Image src="searchIcon.jpg" width="20px" />
+                  Search
+                </Button>
               </Link>
             </div>
             <div />

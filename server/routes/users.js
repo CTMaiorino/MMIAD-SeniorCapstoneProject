@@ -9,9 +9,9 @@ router
   })
 
   //Testing
-  .get("/phil", function (req, res, next) {
+  .get("/test", function (req, res, next) {
     console.log("Test");
-    res.send("hello phil");
+    res.send("hello test");
   });
 
 module.exports = router;

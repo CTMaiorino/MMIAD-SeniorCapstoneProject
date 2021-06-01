@@ -1,5 +1,6 @@
 import Table from "react-bootstrap/Table";
 import React, { Component } from "react";
+import { Link } from 'react-router-dom';
 
 
 
@@ -34,7 +35,7 @@ class ResultsTable extends Component {
                 <tbody>
                     <tr class="bg-warning">
                         <td >Result 1:Genome Version</td>
-                        <td class="bg-warning">Result 1:Species</td>
+                        <td class="bg-warning"><Link to="/results/details">Result 1:Species</Link></td>
                         <td class="bg-warning">Result 1:Gene </td>
                         <td class="bg-warning">Result 1:Type</td>
                         <td class="bg-warning">Result 1:Subtype</td>

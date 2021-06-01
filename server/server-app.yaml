@@ -5,4 +5,5 @@ env_variables:
   DB_DATABASE: mmiadDB
   DB_USER: root
   DB_PASS: admin456
+  DB_NAME: mmiadDB
   DB_INSTANCE_NAME: major-and-minor-intron-db:us-east1:mmiad-db

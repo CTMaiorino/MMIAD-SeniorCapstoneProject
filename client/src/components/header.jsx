@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import Button from "react-bootstrap/Button";
 import Navbar from "react-bootstrap/Navbar";
+import { Link } from "react-router-dom";
+
 class Header extends Component {
   constructor(props) {
     super(props);
@@ -8,11 +10,13 @@ class Header extends Component {
   }
   render() {
     return (
-      <Navbar bg="light" className="border-bottom" expand="lg">
-        <h1 className="ml-auto">Major & Minor Intron Annotation Database</h1>
-        <Button className="ml-auto" variant="outline-primary">
-          About
-        </Button>
+      <Navbar bg="light" className="border-bottom justify-content-center" expand="lg">
+        <h1 className="">Major & Minor Intron Annotation Database</h1>
+        <Link to="/about">
+          <Button className="ml-auto" variant="outline-primary">
+            About
+          </Button>
+        </Link>
       </Navbar>
     );
   }
